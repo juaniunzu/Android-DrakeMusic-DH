@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ProjectoIntegrador</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="template_artista">Artista: %s</string>
+    <string name="template_titulo">Titulo: %s</string>
+    <string name="template_album">Album: %s</string>
+    <string name="template_duracion">Duracion: %s</string>
+</resources>
