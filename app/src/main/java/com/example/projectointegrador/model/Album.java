@@ -1,6 +1,8 @@
 package com.example.projectointegrador.model;
 
-public class Album {
+import java.io.Serializable;
+
+public class Album implements Serializable {
     private Integer id;
     private String title;
     private Integer cover;

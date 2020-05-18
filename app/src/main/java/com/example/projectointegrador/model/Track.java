@@ -1,5 +1,7 @@
 package com.example.projectointegrador.model;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 
 public class Track implements Serializable {
@@ -55,5 +57,14 @@ public class Track implements Serializable {
 
     public void setAlbum(Album album) {
         this.album = album;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if(this == obj) return true;
+        if(obj == null) return false;
+        if(!(obj instanceof Track)) return false;
+        Track trackAComparar = (Track) obj;
+        return (trackAComparar.getId().equals(this.getId()));
     }
 }
