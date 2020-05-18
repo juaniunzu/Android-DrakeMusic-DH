@@ -1,6 +1,8 @@
 package com.example.projectointegrador.model;
 
-public class Artist {
+import java.io.Serializable;
+
+public class Artist implements Serializable {
     private Integer id;
     private String name;
     private Integer picture;

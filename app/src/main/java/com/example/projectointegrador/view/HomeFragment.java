@@ -67,13 +67,12 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
         recyclerViewArtists.setLayoutManager(linearLayoutManagerArtist);
         recyclerViewArtists.setAdapter(artistAdapter);
 
-
         return view;
     }
 
     @Override
-    public void adapterRecomendadoOnClickRecomendados(Track track) {
-        listener.fragmentOnClickRecomendados(track);
+    public void adapterRecomendadoOnClickRecomendados(Track track, List<Track> trackList) {
+        listener.fragmentOnClickRecomendados(track, trackList);
     }
 
     @Override
@@ -82,7 +81,7 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
     }
 
     public interface FragmentHomeListener {
-        void fragmentOnClickRecomendados(Track track);
+        void fragmentOnClickRecomendados(Track track, List<Track> trackList);
         void fragmentOnClickUltimosReproducidos(Track track);
     }
 

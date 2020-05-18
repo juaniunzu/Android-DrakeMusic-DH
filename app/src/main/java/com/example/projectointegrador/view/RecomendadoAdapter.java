@@ -59,7 +59,8 @@ public class RecomendadoAdapter extends RecyclerView.Adapter<RecomendadoAdapter.
                 @Override
                 public void onClick(View v) {
                     Track track = listaDeTracks.get(getAdapterPosition());
-                    recomendadoAdapterListener.adapterRecomendadoOnClickRecomendados(track);
+                    List<Track> trackList = listaDeTracks;
+                    recomendadoAdapterListener.adapterRecomendadoOnClickRecomendados(track, trackList);
                 }
             });
         }
@@ -70,6 +71,6 @@ public class RecomendadoAdapter extends RecyclerView.Adapter<RecomendadoAdapter.
         }
     }
     public interface RecomendadoAdapterListener{
-        void adapterRecomendadoOnClickRecomendados(Track track);
+        void adapterRecomendadoOnClickRecomendados(Track track, List<Track> trackList);
     }
 }
