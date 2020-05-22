@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.model.Album;
 
@@ -54,7 +56,14 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
             textViewNombreAlbum = itemView.findViewById(R.id.celdaAlbum_TextViewNombreAlbum);
         }
         public void darValores(Album album){
-            imageViewImagenAlbum.setImageResource(album.getCover());
+            // Forma de obtener el id con solo el nombre del drawabale. Esto hace que no rompan los datos hardcodeados.
+            //int id = itemView.getContext().getResources().getIdentifier("drawable/" + album.getCover(), null, itemView.getContext().getPackageName());
+            //imageViewImagenAlbum.setImageResource(id);
+            RequestOptions requestOptions = new RequestOptions()
+                    .placeholder(R.drawable.charizard_tomando_cafe);
+            Glide.with(itemView)
+                    .setDefaultRequestOptions(requestOptions)
+                    .load(album.getCover()).into(imageViewImagenAlbum);
             textViewNombreAlbum.setText(album.getTitle());
         }
     }

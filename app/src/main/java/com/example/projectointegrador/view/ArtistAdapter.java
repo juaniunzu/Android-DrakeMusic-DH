@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.model.Artist;
 
@@ -54,7 +56,16 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistaVie
         }
 
         public void darValores(Artist artist) {
-            imageViewImagenArtist.setImageResource(artist.getPicture());
+            // Forma de obtener el id con solo el nombre del drawabale (Magia negra) esto hace que no rompan los datos hardcodeados.
+            //int id = itemView.getContext().getResources().getIdentifier("drawable/" + artist.getPicture(), null, itemView.getContext().getPackageName());
+            //imageViewImagenArtist.setImageResource(id);
+
+            RequestOptions requestOptions = new RequestOptions()
+                    .placeholder(R.drawable.charizard_tomando_cafe);
+            Glide.with(itemView)
+                    .setDefaultRequestOptions(requestOptions)
+                    .load(artist.getPicture())
+                    .into(imageViewImagenArtist);
             textViewNombreArtist.setText(artist.getName());
         }
     }

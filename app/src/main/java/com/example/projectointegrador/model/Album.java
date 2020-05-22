@@ -5,9 +5,9 @@ import java.io.Serializable;
 public class Album implements Serializable {
     private Integer id;
     private String title;
-    private Integer cover;
+    private String cover;
 
-    public Album(Integer id, String title, Integer cover) {
+    public Album(Integer id, String title, String cover) {
         this.id = id;
         this.title = title;
         this.cover = cover;
@@ -29,11 +29,11 @@ public class Album implements Serializable {
         this.title = title;
     }
 
-    public Integer getCover() {
+    public String getCover() {
         return cover;
     }
 
-    public void setCover(Integer cover) {
+    public void setCover(String cover) {
         this.cover = cover;
     }
 }

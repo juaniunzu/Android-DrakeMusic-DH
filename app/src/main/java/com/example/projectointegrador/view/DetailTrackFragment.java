@@ -12,8 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.model.Track;
+import com.example.projectointegrador.util.Utils;
 
 import org.w3c.dom.Text;
 
@@ -63,7 +65,13 @@ public class DetailTrackFragment extends Fragment {
      * @param trackRecibido
      */
     private void setResources(Track trackRecibido) {
-        imageViewImagenTrack.setImageResource(trackRecibido.getAlbum().getCover());
+        // Forma de obtener el id con solo el nombre del drawabale (Magia negra)
+        //int id = getContext().getResources().getIdentifier("drawable/" + trackRecibido.getAlbum().getCover(), null, getContext().getPackageName());
+        //imageViewImagenTrack.setImageResource(id);
+        // Esto Puede ir en un if que checke si hay o no Internet y cargar datos hardcodeados en caso de que no haya internet.
+
+        Glide.with(getActivity()).load(trackRecibido.getAlbum().getCover()).into(imageViewImagenTrack);
+
         textViewNombreDelTrack.setText(String.format(getString(R.string.template_titulo), trackRecibido.getTitle()));
         textViewDuracionDelTrack.setText(String.format(getString(R.string.template_duracion), trackRecibido.getDuration().toString()+" Segundos"));
         textViewNombreAlbumDelTrack.setText(String.format(getString(R.string.template_album), trackRecibido.getAlbum().getTitle()));

@@ -11,11 +11,11 @@ public abstract class ArtistDao {
     public static List<Artist> getArtists() {
         List<Artist> artistsADevolver = new ArrayList<>();
 
-        artistsADevolver.add(new Artist(200,"Eminem", R.drawable.eminem));
-        artistsADevolver.add(new Artist(202,"Iron Maiden", R.drawable.iron_maiden));
-        artistsADevolver.add(new Artist(204,"La Renga", R.drawable.la_renga));
-        artistsADevolver.add(new Artist(206,"Metallica", R.drawable.metallica));
-        artistsADevolver.add(new Artist(208,"Queen", R.drawable.queen));
+        artistsADevolver.add(new Artist(200,"Eminem", "eminem"));
+        artistsADevolver.add(new Artist(202,"Iron Maiden", "iron_maiden"));
+        artistsADevolver.add(new Artist(204,"La Renga", "la_renga"));
+        artistsADevolver.add(new Artist(206,"Metallica", "metallica"));
+        artistsADevolver.add(new Artist(208,"Queen", "queen"));
 
         return artistsADevolver;
     }
