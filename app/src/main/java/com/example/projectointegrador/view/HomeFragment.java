@@ -43,10 +43,7 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
         listaDeArtistas = ArtistDao.getArtists();
         listaDeRecomendados = TrackDao.getRecomendados();
         listaDeUltimasReproducciones = TrackDao.getUltimosReproducidos();
-        recyclerViewAlbums = view.findViewById(R.id.fargmentHome_RecyclerDeAlbumes);
-        recyclerViewArtists = view.findViewById(R.id.fargmentHome_RecyclerDeArtistas);
-        recyclerViewRecomendados = view.findViewById(R.id.fargmentHome_RecyclerDeRecomendados);
-        recyclerViewUltimasReproducciones = view.findViewById(R.id.fargmentHome_RecyclerDeUltimasReproducciones);
+        setFindViewByIds(view);
 
         LinearLayoutManager linearLayoutManagerAlbum = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
         LinearLayoutManager linearLayoutManagerRecomendado = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
@@ -68,6 +65,13 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
         recyclerViewArtists.setAdapter(artistAdapter);
 
         return view;
+    }
+
+    private void setFindViewByIds(View view) {
+        recyclerViewAlbums = view.findViewById(R.id.fargmentHome_RecyclerDeAlbumes);
+        recyclerViewArtists = view.findViewById(R.id.fargmentHome_RecyclerDeArtistas);
+        recyclerViewRecomendados = view.findViewById(R.id.fargmentHome_RecyclerDeRecomendados);
+        recyclerViewUltimasReproducciones = view.findViewById(R.id.fargmentHome_RecyclerDeUltimasReproducciones);
     }
 
     @Override
