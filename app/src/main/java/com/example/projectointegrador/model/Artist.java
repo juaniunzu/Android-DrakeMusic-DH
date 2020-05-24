@@ -5,19 +5,19 @@ import java.io.Serializable;
 public class Artist implements Serializable {
     private Integer id;
     private String name;
-    private Integer picture;
+    private String picture;
 
-    public Artist(Integer id, String name,Integer picture) {
+    public Artist(Integer id, String name,String picture) {
         this.id = id;
         this.name = name;
         this.picture = picture;
     }
 
-    public Integer getPicture() {
+    public String getPicture() {
         return picture;
     }
 
-    public void setPicture(Integer picture) {
+    public void setPicture(String picture) {
         this.picture = picture;
     }
 

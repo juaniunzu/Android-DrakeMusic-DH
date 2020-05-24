@@ -12,12 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.projectointegrador.R;
+import com.example.projectointegrador.controller.AlbumController;
+import com.example.projectointegrador.controller.ArtistController;
+import com.example.projectointegrador.controller.TrackController;
 import com.example.projectointegrador.dao.AlbumDao;
 import com.example.projectointegrador.dao.ArtistDao;
 import com.example.projectointegrador.dao.TrackDao;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
 import com.example.projectointegrador.model.Track;
+import com.example.projectointegrador.util.ResultListener;
 
 import java.util.List;
 
@@ -43,31 +47,62 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
         listaDeArtistas = ArtistDao.getArtists();
         listaDeRecomendados = TrackDao.getRecomendados();
         listaDeUltimasReproducciones = TrackDao.getUltimosReproducidos();
-        recyclerViewAlbums = view.findViewById(R.id.fargmentHome_RecyclerDeAlbumes);
-        recyclerViewArtists = view.findViewById(R.id.fargmentHome_RecyclerDeArtistas);
-        recyclerViewRecomendados = view.findViewById(R.id.fargmentHome_RecyclerDeRecomendados);
-        recyclerViewUltimasReproducciones = view.findViewById(R.id.fargmentHome_RecyclerDeUltimasReproducciones);
+        setFindViewByIds(view);
 
         LinearLayoutManager linearLayoutManagerAlbum = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
         LinearLayoutManager linearLayoutManagerRecomendado = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
         LinearLayoutManager linearLayoutManagerUltimasReproducciones= new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
         LinearLayoutManager linearLayoutManagerArtist = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
 
-        AlbumAdapter albumAdapter = new AlbumAdapter(listaDeAlbums);
-        ArtistAdapter artistAdapter = new ArtistAdapter(listaDeArtistas);
-        RecomendadoAdapter recomendadoAdapter = new RecomendadoAdapter(listaDeRecomendados,this);
+        //AlbumAdapter albumAdapter = new AlbumAdapter(listaDeAlbums);
+        //ArtistAdapter artistAdapter = new ArtistAdapter(listaDeArtistas);
+        //RecomendadoAdapter recomendadoAdapter = new RecomendadoAdapter(listaDeRecomendados,this);
         UltimosReproducidosAdapter ultimosReproducidosAdapter = new UltimosReproducidosAdapter(listaDeUltimasReproducciones,this);
 
-        recyclerViewAlbums.setLayoutManager(linearLayoutManagerAlbum);
-        recyclerViewAlbums.setAdapter(albumAdapter);
-        recyclerViewUltimasReproducciones.setLayoutManager(linearLayoutManagerUltimasReproducciones);
-        recyclerViewUltimasReproducciones.setAdapter(ultimosReproducidosAdapter);
-        recyclerViewRecomendados.setLayoutManager(linearLayoutManagerRecomendado);
-        recyclerViewRecomendados.setAdapter(recomendadoAdapter);
+        TrackController trackController = new TrackController();
+        trackController.getTracks(getContext(), new ResultListener<List<Track>>() {
+            @Override
+            public void finish(List<Track> resultado) {
+                RecomendadoAdapter recomendadoAdapter = new RecomendadoAdapter(resultado,HomeFragment.this);
+                recyclerViewRecomendados.setAdapter(recomendadoAdapter);
+            }
+        });
+        ArtistController artistController = new ArtistController();
+        artistController.getArtists(getContext(), new ResultListener<List<Artist>>() {
+            @Override
+            public void finish(List<Artist> resultado) {
+                ArtistAdapter artistAdapter = new ArtistAdapter(resultado);
+                recyclerViewArtists.setAdapter(artistAdapter);
+            }
+        });
+        AlbumController albumController = new AlbumController();
+        albumController.getAlbums(getContext(), new ResultListener<List<Album>>() {
+            @Override
+            public void finish(List<Album> resultado) {
+                AlbumAdapter albumAdapter = new AlbumAdapter(resultado);
+                recyclerViewAlbums.setAdapter(albumAdapter);
+            }
+        });
+
+
         recyclerViewArtists.setLayoutManager(linearLayoutManagerArtist);
-        recyclerViewArtists.setAdapter(artistAdapter);
+        recyclerViewRecomendados.setLayoutManager(linearLayoutManagerRecomendado);
+        recyclerViewUltimasReproducciones.setLayoutManager(linearLayoutManagerUltimasReproducciones);
+        recyclerViewAlbums.setLayoutManager(linearLayoutManagerAlbum);
+
+        //recyclerViewAlbums.setAdapter(albumAdapter);
+        recyclerViewUltimasReproducciones.setAdapter(ultimosReproducidosAdapter);
+        //recyclerViewRecomendados.setAdapter(recomendadoAdapter);
+        //recyclerViewArtists.setAdapter(artistAdapter);
 
         return view;
+    }
+
+    private void setFindViewByIds(View view) {
+        recyclerViewAlbums = view.findViewById(R.id.fargmentHome_RecyclerDeAlbumes);
+        recyclerViewArtists = view.findViewById(R.id.fargmentHome_RecyclerDeArtistas);
+        recyclerViewRecomendados = view.findViewById(R.id.fargmentHome_RecyclerDeRecomendados);
+        recyclerViewUltimasReproducciones = view.findViewById(R.id.fargmentHome_RecyclerDeUltimasReproducciones);
     }
 
     @Override

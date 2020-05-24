@@ -12,7 +12,7 @@ import com.example.projectointegrador.R;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private final int DURACION_DEL_SPLASH = 2000;
+    private final int DURACION_DEL_SPLASH = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
