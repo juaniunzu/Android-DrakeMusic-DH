@@ -5,8 +5,8 @@
     <string name="ultimas_reproducciones">Ultimas Reproducciones</string>
     <string name="artistas">Artistas</string>
     <string name="albumes">Albumes</string>
-    <string name="template_artista">"Artista: "</string>
-    <string name="template_titulo">"Titulo: "</string>
-    <string name="template_album">"Album: "</string>
-    <string name="template_duracion">"Duracion: "</string>
+    <string name="template_artista">"Artista: %s"</string>
+    <string name="template_titulo">"Titulo: %s"</string>
+    <string name="template_album">"Album: %s"</string>
+    <string name="template_duracion">Duracion: %s segundos</string>
 </resources>

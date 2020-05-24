@@ -73,7 +73,7 @@ public class DetailTrackFragment extends Fragment {
         Glide.with(getActivity()).load(trackRecibido.getAlbum().getCover()).into(imageViewImagenTrack);
 
         textViewNombreDelTrack.setText(String.format(getString(R.string.template_titulo), trackRecibido.getTitle()));
-        textViewDuracionDelTrack.setText(String.format(getString(R.string.template_duracion), trackRecibido.getDuration().toString()+" Segundos"));
+        textViewDuracionDelTrack.setText(String.format(getString(R.string.template_duracion), trackRecibido.getDuration().toString()));
         textViewNombreAlbumDelTrack.setText(String.format(getString(R.string.template_album), trackRecibido.getAlbum().getTitle()));
         textViewNombreArtistDelTrack.setText(String.format(getString(R.string.template_artista), trackRecibido.getArtist().getName()));
     }
