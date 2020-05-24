@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Proyecto Integrador</string>
+    <string name="recomendados">Recomendados</string>
+    <string name="ultimas_reproducciones">Ultimas Reproducciones</string>
+    <string name="artistas">Artistas</string>
+    <string name="albumes">Albumes</string>
+    <string name="template_artista">"Artista: "</string>
+    <string name="template_titulo">"Titulo: "</string>
+    <string name="template_album">"Album: "</string>
+    <string name="template_duracion">"Duracion: "</string>
+</resources>

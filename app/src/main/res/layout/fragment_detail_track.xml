@@ -18,7 +18,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nombre del tema"
+        android:text="Nombre de la cancion"
         android:id="@+id/fragmentDetailTrack_TextviewNombreDelTrack"
         android:textSize="20sp"
         android:textColor="@color/primary_text"

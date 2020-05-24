@@ -23,8 +23,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Ejemplo"
             android:textSize="15sp"
+            android:text="Ejemplo"
             android:textColor="@color/primary_text"
             android:id="@+id/celdaAlbum_TextViewNombreAlbum"/>
     </LinearLayout>
