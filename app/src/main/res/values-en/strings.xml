@@ -9,4 +9,6 @@
     <string name="template_titulo">"Title: %s"</string>
     <string name="template_album">"Album: %s"</string>
     <string name="template_duracion">Duration: %s seconds</string>
+    <string name="buscar">Search</string>
+    <string name="tracks_artistas_albumes">Tracks, artists, albums...</string>
 </resources>

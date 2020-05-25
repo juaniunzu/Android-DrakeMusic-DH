@@ -1,8 +1,11 @@
 package com.example.projectointegrador.model;
 
+import com.example.projectointegrador.R;
+import com.example.projectointegrador.util.Utils;
+
 import java.io.Serializable;
 
-public class Album implements Serializable {
+public class Album implements Serializable, Utils.Searchable {
     private Integer id;
     private String title;
     private String cover;
@@ -35,5 +38,20 @@ public class Album implements Serializable {
 
     public void setCover(String cover) {
         this.cover = cover;
+    }
+
+    @Override
+    public String informarTitulo() {
+        return getTitle();
+    }
+
+    @Override
+    public String informarImagen() {
+        return getCover();
+    }
+
+    @Override
+    public String informarDescripcion() {
+        return "Artista";
     }
 }
