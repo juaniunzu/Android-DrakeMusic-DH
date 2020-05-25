@@ -52,6 +52,6 @@ public class Album implements Serializable, Utils.Searchable {
 
     @Override
     public String informarDescripcion() {
-        return "Artista";
+        return "Album";
     }
 }
