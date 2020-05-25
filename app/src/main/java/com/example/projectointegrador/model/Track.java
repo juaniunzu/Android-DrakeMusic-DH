@@ -2,9 +2,11 @@ package com.example.projectointegrador.model;
 
 import androidx.annotation.Nullable;
 
+import com.example.projectointegrador.util.Utils;
+
 import java.io.Serializable;
 
-public class Track implements Serializable {
+public class Track implements Serializable, Utils.Searchable {
     private Integer id;
     private String title;
     private Integer duration;
@@ -66,5 +68,20 @@ public class Track implements Serializable {
         if(!(obj instanceof Track)) return false;
         Track trackAComparar = (Track) obj;
         return (trackAComparar.getId().equals(this.getId()));
+    }
+
+    @Override
+    public String informarTitulo() {
+        return getTitle();
+    }
+
+    @Override
+    public String informarImagen() {
+        return getAlbum().getCover();
+    }
+
+    @Override
+    public String informarDescripcion() {
+        return getAlbum().informarTitulo() + " - " + getArtist().informarTitulo();
     }
 }
