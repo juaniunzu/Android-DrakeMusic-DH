@@ -18,34 +18,34 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nombre de la cancion"
+        android:text="@string/template_titulo"
         android:id="@+id/fragmentDetailTrack_TextviewNombreDelTrack"
         android:textSize="20sp"
-        android:textColor="@color/primary_text"
+        android:textColor="@color/text_subtitles"
         android:layout_marginTop="5dp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Duracion del tema"
+        android:text="@string/template_duracion"
         android:id="@+id/fragmentDetailTrack_TextviewDuracionDelTrack"
         android:textSize="20sp"
-        android:textColor="@color/primary_text"
+        android:textColor="@color/text_subtitles"
         android:layout_marginTop="5dp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Artista Correspondiente"
+        android:text="@string/template_artista"
         android:id="@+id/fragmentDetailTrack_TextviewArtistaDelTrack"
         android:textSize="20sp"
-        android:textColor="@color/primary_text"
+        android:textColor="@color/text_subtitles"
         android:layout_marginTop="5dp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Album Correspondiente"
+        android:text="@string/template_album"
         android:id="@+id/fragmentDetailTrack_TextviewAlbumDelTrack"
         android:textSize="20sp"
-        android:textColor="@color/primary_text"
+        android:textColor="@color/text_subtitles"
         android:layout_marginTop="5dp"/>
 
 
