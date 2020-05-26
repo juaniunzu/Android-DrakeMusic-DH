@@ -11,22 +11,29 @@
         android:id="@+id/fragmentSearchTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:background="@color/primary_elevation"
         android:text="@string/buscar"
-        android:textColor="#fff"
-        android:textSize="28dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:textColor="@color/text_title_home"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/fragmentSearchTextInputLayout"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/fragmentSearchTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/tracks_artistas_albumes"
-        android:textColorHint="#fff"
+        android:textColorHint="@color/text_subtitles"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragmentSearchTextView"
+        app:layout_constraintBottom_toTopOf="@+id/fragmentSearchRecyclerView"
         app:startIconDrawable="@drawable/ic_search_black_24dp"
         app:startIconTint="#fff">
 
@@ -34,17 +41,19 @@
             android:id="@+id/fragmentSearchTextInputEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:textColor="#fff"/>
+            android:hint="@string/tracks_artistas_albumes"
+            android:textColor="@color/text_subtitles"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragmentSearchRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragmentSearchTextInputLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

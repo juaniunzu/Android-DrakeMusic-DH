@@ -87,10 +87,10 @@ public class DetailTrackFragment extends Fragment {
      * @param view
      */
     private void findViews(View view) {
-        imageViewImagenTrack = view.findViewById(R.id.fragmentDetailTrack_ImagenviewImagenDelTrack);
-        textViewNombreDelTrack = view.findViewById(R.id.fragmentDetailTrack_TextviewNombreDelTrack);
-        textViewDuracionDelTrack = view.findViewById(R.id.fragmentDetailTrack_TextviewDuracionDelTrack);
-        textViewNombreArtistDelTrack = view.findViewById(R.id.fragmentDetailTrack_TextviewArtistaDelTrack);
-        textViewNombreAlbumDelTrack = view.findViewById(R.id.fragmentDetailTrack_TextviewAlbumDelTrack);
+        imageViewImagenTrack = view.findViewById(R.id.fdetailivtrack);
+        textViewNombreDelTrack = view.findViewById(R.id.fdetailtvtitulo);
+        textViewDuracionDelTrack = view.findViewById(R.id.fdetailtvduracion);
+        textViewNombreArtistDelTrack = view.findViewById(R.id.fdetailtvartista);
+        textViewNombreAlbumDelTrack = view.findViewById(R.id.fdetailtvalbum);
     }
 }

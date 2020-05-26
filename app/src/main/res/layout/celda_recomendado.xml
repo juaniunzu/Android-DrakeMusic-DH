@@ -1,34 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="200dp"
-    android:layout_height="225dp"
+<androidx.cardview.widget.CardView style="@style/celdahome_cardview"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="10dp"
-    android:elevation="5dp"
     app:cardBackgroundColor="@color/accent_elevation_app">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_margin="1dp"
-        android:orientation="vertical">
+    <LinearLayout style="@style/celdahome_layout">
 
         <ImageView
             android:id="@+id/celdaRecomendado_ImageviewRecomendado"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
+            style="@style/celdahome_imageview"
             />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textSize="20sp"
-            android:textColor="@color/text_subtitles"
-            android:id="@+id/celdaRecomendado_TextviewNombreRecomendado"/>
+            android:id="@+id/celdaRecomendado_TextviewNombreRecomendado"
+            style="@style/celdahome_textview"/>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
