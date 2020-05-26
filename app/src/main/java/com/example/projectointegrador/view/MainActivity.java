@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
                         pegarFragment(new HomeFragment());
                         break;
                     case R.id.bottomNavigationView_Search:
-                        Toast.makeText(MainActivity.this, "En Construccion", Toast.LENGTH_SHORT).show();
+                        Intent mainASearch = new Intent(MainActivity.this, SearchActivity.class);
+                        startActivity(mainASearch);
                         break;
                     case R.id.bottomNavigationView_Favorites:
                         Toast.makeText(MainActivity.this, "En Construccion.", Toast.LENGTH_SHORT).show();
