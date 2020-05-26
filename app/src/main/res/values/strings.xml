@@ -14,6 +14,5 @@
     <string name="home">Home</string>
     <string name="buscar">Buscar</string>
     <string name="favoritos">Favoritos</string>
-    <string name="buscar">Buscar</string>
     <string name="tracks_artistas_albumes">Tracks, artistas, álbumes...</string>
 </resources>

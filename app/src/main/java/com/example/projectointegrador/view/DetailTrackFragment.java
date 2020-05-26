@@ -70,7 +70,11 @@ public class DetailTrackFragment extends Fragment {
         //imageViewImagenTrack.setImageResource(id);
         // Esto Puede ir en un if que checke si hay o no Internet y cargar datos hardcodeados en caso de que no haya internet.
 
-        //Glide.with(getActivity()).load(trackRecibido.getAlbum().getCover()).into(imageViewImagenTrack);
+
+        //con este metodo se da la imagen al detalle, solo funciona cuando el detalle que se quiere abrir es
+        //de un track que viene de la API, ya que si el track es local la imagen no es un string sino un int guardado
+        //en los recursos. Tema a resolver cuando veamos qué se hace con la app en modo avion
+        Glide.with(getActivity()).load(trackRecibido.getAlbum().getCover()).into(imageViewImagenTrack);
 
         textViewNombreDelTrack.setText(String.format(getString(R.string.template_titulo), trackRecibido.getTitle()));
         textViewDuracionDelTrack.setText(String.format(getString(R.string.template_duracion), trackRecibido.getDuration().toString()));
