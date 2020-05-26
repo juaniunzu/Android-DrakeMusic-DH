@@ -9,4 +9,7 @@
     <string name="template_titulo">"Titulo: %s"</string>
     <string name="template_album">"Album: %s"</string>
     <string name="template_duracion">Duracion: %s segundos</string>
+    <string name="home">Inicio</string>
+    <string name="buscar">Buscar</string>
+    <string name="favoritos">Favoritos</string>
 </resources>

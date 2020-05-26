@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/activityMain_BottomNavigationView"
             android:background="@color/accent"
+            app:itemTextColor="@color/primary"
             app:menu="@menu/bottom_navigation_menu"/>
     </LinearLayout>
 

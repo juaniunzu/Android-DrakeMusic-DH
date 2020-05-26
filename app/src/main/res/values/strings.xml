@@ -11,4 +11,7 @@
     <string name="ultimas_reproducciones">Ultimas Reproducciones</string>
     <string name="artistas">Artistas</string>
     <string name="albumes">Albumes</string>
+    <string name="home">Home</string>
+    <string name="buscar">Buscar</string>
+    <string name="favoritos">Favoritos</string>
 </resources>

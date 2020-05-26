@@ -3,13 +3,13 @@
     <item
         android:id="@+id/bottomNavigationView_Menu"
         android:icon="@drawable/home_navigation"
-        android:title="Home" />
+        android:title="@string/home" />
     <item
         android:id="@+id/bottomNavigationView_Search"
-        android:title="Buscar"
+        android:title="@string/buscar"
         android:icon="@drawable/search_navigation"/>
     <item
         android:id="@+id/bottomNavigationView_Favorites"
-        android:title="Favoritos"
+        android:title="@string/favoritos"
         android:icon="@drawable/favorite_navigation"/>
 </menu>

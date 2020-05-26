@@ -70,7 +70,7 @@ public class DetailTrackFragment extends Fragment {
         //imageViewImagenTrack.setImageResource(id);
         // Esto Puede ir en un if que checke si hay o no Internet y cargar datos hardcodeados en caso de que no haya internet.
 
-        Glide.with(getActivity()).load(trackRecibido.getAlbum().getCover()).into(imageViewImagenTrack);
+        //Glide.with(getActivity()).load(trackRecibido.getAlbum().getCover()).into(imageViewImagenTrack);
 
         textViewNombreDelTrack.setText(String.format(getString(R.string.template_titulo), trackRecibido.getTitle()));
         textViewDuracionDelTrack.setText(String.format(getString(R.string.template_duracion), trackRecibido.getDuration().toString()));
