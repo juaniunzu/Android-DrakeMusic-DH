@@ -5,126 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary"
-    tools:context=".view.PlayerActivity">
+    tools:context=".view.PlayerActivity"
+    android:id="@+id/activityPlayerFragmentContainer">
 
-    <ImageView
-        android:id="@+id/activityPlayerImageView"
-        android:layout_width="320dp"
-        android:layout_height="320dp"
-        android:layout_marginTop="80dp"
-        android:src="@drawable/iron_maiden"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/activityPlayerToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/activityPlayerTextViewNombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:text="Nombre del track"
-        android:textColor="#fff"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/activityPlayerImageView"
-        app:layout_constraintTop_toBottomOf="@id/activityPlayerImageView" />
-
-    <ImageView
-        android:id="@+id/activityPlayerButtonAddFavorite"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="25dp"
-        android:src="@drawable/favorite_navigation"
-        android:tint="#fff"
-        app:layout_constraintEnd_toEndOf="@id/activityPlayerImageView"
-        app:layout_constraintTop_toBottomOf="@id/activityPlayerImageView" />
-
-    <TextView
-        android:id="@+id/activityPlayerTextViewArtista"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Artista"
-        android:textColor="#fff"
-        android:textSize="18dp"
-        app:layout_constraintStart_toStartOf="@id/activityPlayerImageView"
-        app:layout_constraintTop_toBottomOf="@id/activityPlayerTextViewNombre"
-
-        />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline70"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/activityPlayerViewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.70">
-
-    </androidx.constraintlayout.widget.Guideline>
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activityPlayerToolbar" />
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/activityPlayerButtonPlay"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/ic_play_circle_filled_black_24dp"
-        app:backgroundTint="#FF5722"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline70"
-        app:layout_constraintBottom_toTopOf="@id/guideline80"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/activityPlayerButtonPrevious"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_skip_previous_black_24dp"
-        app:backgroundTint="#FF5722"
-        app:layout_constraintStart_toEndOf="@id/activityPlayerButtonShuffle"
-        app:layout_constraintEnd_toStartOf="@id/activityPlayerButtonPlay"
-        app:layout_constraintTop_toBottomOf="@id/guideline70"
-        app:layout_constraintBottom_toTopOf="@id/guideline80"
-        />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/activityPlayerButtonNext"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_skip_next_black_24dp"
-        app:backgroundTint="#FF5722"
-        app:layout_constraintStart_toEndOf="@id/activityPlayerButtonPlay"
-        app:layout_constraintEnd_toStartOf="@id/activityPlayerButtonRepeat"
-        app:layout_constraintTop_toBottomOf="@id/guideline70"
-        app:layout_constraintBottom_toTopOf="@id/guideline80"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/activityPlayerButtonShuffle"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/ic_shuffle_black_24dp"
-        app:backgroundTint="#FF5722"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/activityPlayerButtonPrevious"
-        app:layout_constraintTop_toBottomOf="@id/guideline70"
-        app:layout_constraintBottom_toTopOf="@id/guideline80"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/activityPlayerButtonRepeat"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/ic_repeat_black_24dp"
-        app:backgroundTint="#FF5722"
-        app:layout_constraintStart_toEndOf="@id/activityPlayerButtonNext"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline70"
-        app:layout_constraintBottom_toTopOf="@id/guideline80"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline80"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.80">
-
-    </androidx.constraintlayout.widget.Guideline>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

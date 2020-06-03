@@ -115,13 +115,13 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
     }
 
     @Override
-    public void onClickUltimosReproducidos(Track track) {
-        listener.fragmentOnClickUltimosReproducidos(track);
+    public void onClickUltimosReproducidos(Track track, List<Track> trackList) {
+        listener.fragmentOnClickUltimosReproducidos(track, trackList);
     }
 
     public interface FragmentHomeListener {
         void fragmentOnClickRecomendados(Track track, List<Track> trackList);
-        void fragmentOnClickUltimosReproducidos(Track track);
+        void fragmentOnClickUltimosReproducidos(Track track, List<Track> trackList);
     }
 
     @Override

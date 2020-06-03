@@ -71,23 +71,27 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         //como la lista completa perteneciente al adapter. me la llevo a una nueva activity donde
         //esta el viewpager que se encargara de crear una lista de fragments con cada track de
         //la lista inicial
-        Intent mainADetail = new Intent(MainActivity.this, DetailActivity.class);
+        Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
         Bundle datos = new Bundle();
         datos.putSerializable("track", track);
         datos.putSerializable("lista", (ArrayList) trackList);
-        mainADetail.putExtras(datos);
-        startActivity(mainADetail);
+        mainAPlayer.putExtras(datos);
+        startActivity(mainAPlayer);
 
     }
 
     @Override
-    public void fragmentOnClickUltimosReproducidos(Track track) {
-        DetailTrackFragment detailTrackFragment = DetailTrackFragment.crearDetailTrackFragment(track);
-        pegarFragment(detailTrackFragment);
+    public void fragmentOnClickUltimosReproducidos(Track track, List<Track> trackList) {
+        Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
+        Bundle datos = new Bundle();
+        datos.putSerializable("track", track);
+        datos.putSerializable("lista", (ArrayList) trackList);
+        mainAPlayer.putExtras(datos);
+        startActivity(mainAPlayer);
     }
 
     private void setFragmentInicial(Fragment fragment) {
-        //Metodo solo hecho para el OnCreate
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.activityMain_contenedorDeFragments, fragment);

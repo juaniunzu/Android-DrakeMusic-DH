@@ -7,11 +7,42 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
+import com.example.projectointegrador.databinding.FragmentPlayerBinding;
+import com.example.projectointegrador.model.Track;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 public class PlayerFragment extends Fragment {
+
+    public static final String KEY_DETAIL_TRACK = "track";
+    private FragmentPlayerBinding binding;
+    private ImageView fragmentPlayerImageView;
+    private FloatingActionButton fragmentPlayerButtonNext;
+    private FloatingActionButton fragmentPlayerButtonPlay;
+    private FloatingActionButton fragmentPlayerButtonPrevious;
+    private FloatingActionButton fragmentPlayerButtonRepeat;
+    private FloatingActionButton fragmentPlayerButtonShuffle;
+    private ImageView fragmentPlayerButtonAddFavorite;
+    private TextView fragmentPlayerTextViewArtista;
+    private TextView fragmentPlayerTextViewNombre;
+
+
+    /**
+     * Nuevo constructor. Setea el fragment segun el {@param track} parametro
+     * @return
+     */
+    public static PlayerFragment crearPlayerFragment(Track track){
+        PlayerFragment fragment = new PlayerFragment();
+        Bundle datosDeTrack = new Bundle();
+        datosDeTrack.putSerializable(KEY_DETAIL_TRACK, track);
+        fragment.setArguments(datosDeTrack);
+        return fragment;
+    }
 
     public PlayerFragment() {
         // Required empty public constructor
@@ -21,7 +52,43 @@ public class PlayerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_player, container, false);
+
+        binding = FragmentPlayerBinding.inflate(inflater, container, false);
+
+        findViews();
+
+        View view = binding.getRoot();
+
+        Bundle desdeMain = getArguments();
+        Track trackRecibido = (Track) desdeMain.getSerializable(KEY_DETAIL_TRACK);
+
+        setViewResources(trackRecibido);
+
+
+        return view;
+    }
+
+    private void setViewResources(Track trackRecibido) {
+        Glide.with(getContext()).load(trackRecibido.getAlbum().getCover()).into(fragmentPlayerImageView);
+        fragmentPlayerTextViewArtista.setText(trackRecibido.getArtist().getName());
+        fragmentPlayerTextViewNombre.setText(trackRecibido.getTitle());
+    }
+
+    private void findViews() {
+        fragmentPlayerImageView = binding.fragmentPlayerImageView;
+        fragmentPlayerButtonNext = binding.fragmentPlayerButtonNext;
+        fragmentPlayerButtonPlay = binding.fragmentPlayerButtonPlay;
+        fragmentPlayerButtonPrevious = binding.fragmentPlayerButtonPrevious;
+        fragmentPlayerButtonRepeat = binding.fragmentPlayerButtonRepeat;
+        fragmentPlayerButtonShuffle = binding.fragmentPlayerButtonShuffle;
+        fragmentPlayerButtonAddFavorite = binding.fragmentPlayerButtonAddFavorite;
+        fragmentPlayerTextViewArtista = binding.fragmentPlayerTextViewArtista;
+        fragmentPlayerTextViewNombre = binding.fragmentPlayerTextViewNombre;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 }
