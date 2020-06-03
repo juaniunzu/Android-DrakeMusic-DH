@@ -1,4 +1,4 @@
-package com.example.projectointegrador.view;
+package com.example.projectointegrador.view.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.model.Track;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 

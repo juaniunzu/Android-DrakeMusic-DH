@@ -22,6 +22,10 @@ import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
 import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.util.ResultListener;
+import com.example.projectointegrador.view.adapter.AlbumAdapter;
+import com.example.projectointegrador.view.adapter.ArtistAdapter;
+import com.example.projectointegrador.view.adapter.RecomendadoAdapter;
+import com.example.projectointegrador.view.adapter.UltimosReproducidosAdapter;
 
 import java.util.List;
 

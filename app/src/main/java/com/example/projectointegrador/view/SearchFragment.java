@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.dao.SearchableDao;
 import com.example.projectointegrador.util.Utils;
+import com.example.projectointegrador.view.adapter.SearchAdapter;
 
 import java.util.List;
 

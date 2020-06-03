@@ -1,4 +1,4 @@
-package com.example.projectointegrador.view;
+package com.example.projectointegrador.view.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
