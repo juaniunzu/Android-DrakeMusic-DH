@@ -57,7 +57,8 @@ public class UltimosReproducidosAdapter extends RecyclerView.Adapter<UltimosRepr
                 @Override
                 public void onClick(View v) {
                     Track track = listaDeTracks.get(getAdapterPosition());
-                    ultimosReproducidosAdapterListener.onClickUltimosReproducidos(track);
+                    List<Track> trackList = listaDeTracks;
+                    ultimosReproducidosAdapterListener.onClickUltimosReproducidos(track, listaDeTracks);
                 }
             });
         }
@@ -70,6 +71,6 @@ public class UltimosReproducidosAdapter extends RecyclerView.Adapter<UltimosRepr
         }
     }
     public interface UltimosReproducidosAdapterListener{
-        void onClickUltimosReproducidos(Track track);
+        void onClickUltimosReproducidos(Track track, List<Track> trackList);
     }
 }
