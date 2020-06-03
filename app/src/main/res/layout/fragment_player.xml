@@ -19,10 +19,11 @@
 
     <TextView
         android:id="@+id/fragmentPlayerTextViewNombre"
-        android:layout_width="wrap_content"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:text="Nombre del track"
+        android:breakStrategy="balanced"
         android:textColor="#fff"
         android:textSize="20dp"
         android:textStyle="bold"

@@ -3,108 +3,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.HomeFragment"
-    android:layout_margin="10dp">
+    android:layout_margin="10dp"
+    tools:context=".view.HomeFragment">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:background="@color/primary_elevation_12dp"
-            android:layout_marginVertical="10dp">
-        </View>
-
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="@color/primary_elevation"
-            android:text="@string/recomendados"
-            android:textStyle="bold"
-            android:textSize="30sp"
-            android:textColor="@color/text_title_home"/>
+            style="@style/title_home"
+            android:text="@string/recomendados" />
+
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/fargmentHome_RecyclerDeRecomendados"
-            />
-
-        <View
             android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:background="@color/primary_elevation_12dp"
-            android:layout_marginVertical="10dp">
-        </View>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="@color/primary_elevation"
-            android:text="@string/ultimas_reproducciones"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_title_home"/>
+            style="@style/title_home"
+            android:text="@string/ultimas_reproducciones" />
+
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/fargmentHome_RecyclerDeUltimasReproducciones"
-            />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:background="@color/primary_elevation_12dp"
-            android:layout_marginVertical="10dp">
-        </View>
-
-
-        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="@color/primary_elevation"
+            android:layout_marginBottom="20dp" />
+
+        <TextView
+            style="@style/title_home"
             android:text="@string/artistas"
-            android:textStyle="bold"
-            android:textSize="25sp"
-            android:textColor="@color/text_title_home"/>
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/fargmentHome_RecyclerDeArtistas"
             />
 
-        <View
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fargmentHome_RecyclerDeArtistas"
             android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:background="@color/primary_elevation_12dp"
-            android:layout_marginVertical="10dp">
-        </View>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="@color/primary_elevation"
+            style="@style/title_home"
             android:text="@string/albumes"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_title_home"/>
+             />
+
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fargmentHome_RecyclerDeAlbumes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/fargmentHome_RecyclerDeAlbumes"
-            />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:background="@color/primary_elevation_12dp"
-            android:layout_marginVertical="10dp">
-        </View>
+            android:layout_marginBottom="20dp" />
 
     </LinearLayout>
 

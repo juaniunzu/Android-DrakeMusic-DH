@@ -48,11 +48,17 @@ public class UltimosReproducidosAdapter extends RecyclerView.Adapter<UltimosRepr
     protected class UltimosReproducidosViewHolder extends RecyclerView.ViewHolder {
         private ImageView imageViewAlbumDelTrack;
         private TextView textViewNombreDelTrack;
+        private TextView textViewNombreDelAlbum;
+        private TextView textViewNombreDelArtista;
 
         public UltimosReproducidosViewHolder(@NonNull View itemView) {
             super(itemView);
             imageViewAlbumDelTrack = itemView.findViewById(R.id.celdaultimosReproducidos_ImageviewTrackAlbum);
             textViewNombreDelTrack = itemView.findViewById(R.id.celdaultimosReproducidos_textviewNombreDelTrack);
+            textViewNombreDelAlbum = itemView.findViewById(R.id.celdaUltimosReproducidos_TextViewAlbumRecomendado);
+            textViewNombreDelArtista = itemView.findViewById(R.id.celdaUltimosReproducidos_TextViewArtistaRecomendado);
+
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -68,6 +74,7 @@ public class UltimosReproducidosAdapter extends RecyclerView.Adapter<UltimosRepr
             int id = itemView.getContext().getResources().getIdentifier("drawable/" + track.getAlbum().getCover(), null, itemView.getContext().getPackageName());
             imageViewAlbumDelTrack.setImageResource(id);
             textViewNombreDelTrack.setText(track.getTitle());
+
         }
     }
     public interface UltimosReproducidosAdapterListener{

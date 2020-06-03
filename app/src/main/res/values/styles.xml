@@ -5,12 +5,22 @@
         <item name="colorPrimaryDark">@color/primary</item>
         <item name="colorAccent">@color/accent</item>
     </style>
+    <style name="title_home">
+        <item name="android:layout_marginLeft">23dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textColor">@color/text_title_home</item>
+        <item name="android:textSize">24dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
     <style name="celdahome_cardview">
         <item name="android:layout_width">200dp</item>
-        <item name="android:layout_height">225dp</item>
-        <item name="android:layout_margin">10dp</item>
-        <item name="android:elevation">5dp</item>
+        <item name="android:layout_height">250dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="cardBackgroundColor">#000</item>
     </style>
 
     <style name="celdahome_layout">
@@ -21,9 +31,10 @@
     </style>
 
     <style name="celdahome_imageview">
-        <item name="android:layout_width">200dp</item>
-        <item name="android:layout_height">200dp</item>
+        <item name="android:layout_width">170dp</item>
+        <item name="android:layout_height">170dp</item>
         <item name="android:scaleType">centerCrop</item>
+        <item name="android:layout_gravity">center</item>
     </style>
 
     <style name="celdahome_textview">
@@ -34,6 +45,23 @@
         <item name="android:ellipsize">end</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/text_subtitles</item>
+    </style>
+
+    <style name="celdahome_titulo_celda">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:breakStrategy">balanced</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="celdahome_album_artista_celda">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_title_home</item>
     </style>
 
 

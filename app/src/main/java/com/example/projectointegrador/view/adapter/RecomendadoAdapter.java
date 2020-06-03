@@ -51,11 +51,15 @@ public class RecomendadoAdapter extends RecyclerView.Adapter<RecomendadoAdapter.
 
         private ImageView imageViewImagenAlbumDelTrack;
         private TextView textViewNombreDelTrack;
+        private TextView textViewArtistaDelTrack;
+        private TextView textViewAlbumDelTrack;
 
         public RecomendadoViewHolder(@NonNull View itemView) {
             super(itemView);
             imageViewImagenAlbumDelTrack = itemView.findViewById(R.id.celdaRecomendado_ImageviewRecomendado);
             textViewNombreDelTrack = itemView.findViewById(R.id.celdaRecomendado_TextviewNombreRecomendado);
+            textViewArtistaDelTrack = itemView.findViewById(R.id.celdaRecomendado_TextViewArtistaRecomendado);
+            textViewAlbumDelTrack = itemView.findViewById(R.id.celdaRecomendado_TextViewAlbumRecomendado);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -76,6 +80,8 @@ public class RecomendadoAdapter extends RecyclerView.Adapter<RecomendadoAdapter.
                     .into(imageViewImagenAlbumDelTrack);
             //imageViewImagenAlbumDelTrack.setImageResource(R.drawable.charizard_tomando_cafe);
             textViewNombreDelTrack.setText(track.getTitle());
+            textViewArtistaDelTrack.setText(track.getArtist().getName());
+            textViewAlbumDelTrack.setText("Single");
         }
     }
     public interface RecomendadoAdapterListener{

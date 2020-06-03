@@ -1,19 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView style="@style/celdahome_cardview"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardBackgroundColor="@color/accent_elevation_app">
+    style="@style/celdahome_cardview">
 
-    <LinearLayout style="@style/celdahome_layout">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/celdaultimosReproducidos_ImageviewTrackAlbum"
-            style="@style/celdahome_imageview"
-            />
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/celdaultimosReproducidos_textviewNombreDelTrack"
-            style="@style/celdahome_textview"/>
-    </LinearLayout>
+            style="@style/celdahome_titulo_celda"
+            app:layout_constraintStart_toStartOf="@id/celdaultimosReproducidos_ImageviewTrackAlbum"
+            app:layout_constraintTop_toBottomOf="@id/celdaultimosReproducidos_ImageviewTrackAlbum" />
+
+        <TextView
+            android:id="@+id/celdaUltimosReproducidos_TextViewAlbumRecomendado"
+            style="@style/celdahome_album_artista_celda"
+            android:text="Artista"
+            app:layout_constraintStart_toStartOf="@id/celdaultimosReproducidos_ImageviewTrackAlbum"
+            app:layout_constraintTop_toBottomOf="@id/celdaultimosReproducidos_textviewNombreDelTrack" />
+
+        <TextView
+            android:id="@+id/celdaUltimosReproducidos_separador"
+            style="@style/celdahome_album_artista_celda"
+            android:text=" · "
+            app:layout_constraintStart_toEndOf="@id/celdaUltimosReproducidos_TextViewAlbumRecomendado"
+            app:layout_constraintTop_toBottomOf="@id/celdaultimosReproducidos_textviewNombreDelTrack" />
+
+        <TextView
+            android:id="@+id/celdaUltimosReproducidos_TextViewArtistaRecomendado"
+            style="@style/celdahome_album_artista_celda"
+            android:text="Album"
+            app:layout_constraintStart_toEndOf="@id/celdaUltimosReproducidos_separador"
+            app:layout_constraintTop_toBottomOf="@id/celdaultimosReproducidos_textviewNombreDelTrack" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
