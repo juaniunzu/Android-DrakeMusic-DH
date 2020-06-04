@@ -11,7 +11,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">10dp</item>
         <item name="android:gravity">start</item>
-        <item name="android:textColor">@color/text_title_home</item>
+        <item name="android:textColor">#fff</item>
         <item name="android:textSize">24dp</item>
         <item name="android:textStyle">bold</item>
     </style>
