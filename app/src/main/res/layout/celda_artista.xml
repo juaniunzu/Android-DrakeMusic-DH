@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView style="@style/celdahome_cardview"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardBackgroundColor="@color/accent_elevation_app">
+    android:layout_width="180dp"
+    android:layout_height="180dp"
+    android:layout_margin="8dp">
 
-    <LinearLayout style="@style/celdahome_layout">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/celdaArtistaCardView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:orientation="vertical"
+        app:cardCornerRadius="75dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/celdaArtista_ImageviewArtista"
-            style="@style/celdahome_imageview"
-            />
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center" />
 
-        <TextView
-            android:id="@+id/celdaArtista_TextviewNombreArtista"
-            style="@style/celdahome_textview"/>
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-</androidx.cardview.widget.CardView>
+    <TextView
+        android:id="@+id/celdaArtista_TextviewNombreArtista"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/celdaArtistaCardView"
+        style="@style/celdahome_titulo_celda"
+        android:layout_marginTop="10dp"
+        android:text="Nombre artista"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

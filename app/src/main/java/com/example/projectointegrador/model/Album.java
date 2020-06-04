@@ -9,11 +9,30 @@ public class Album implements Serializable, Utils.Searchable {
     private Integer id;
     private String title;
     private String cover;
+    private Artist artist;
 
     public Album(Integer id, String title, String cover) {
         this.id = id;
         this.title = title;
         this.cover = cover;
+    }
+
+    public Album(Integer id, String title, String cover, Artist artist) {
+        this.id = id;
+        this.title = title;
+        this.cover = cover;
+        this.artist = artist;
+    }
+
+    public Album() {
+    }
+
+    public Artist getArtist() {
+        return artist;
+    }
+
+    public void setArtist(Artist artist) {
+        this.artist = artist;
     }
 
     public Integer getId() {
