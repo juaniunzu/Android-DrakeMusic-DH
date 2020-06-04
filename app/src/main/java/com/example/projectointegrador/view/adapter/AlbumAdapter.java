@@ -48,10 +48,12 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
     protected class AlbumViewHolder extends RecyclerView.ViewHolder{
         private ImageView imageViewImagenAlbum;
         private TextView textViewNombreAlbum;
+        private TextView textViewNombreArtista;
         public AlbumViewHolder(@NonNull View itemView) {
             super(itemView);
             imageViewImagenAlbum = itemView.findViewById(R.id.celdaAlbum_ImageviewAlbum);
             textViewNombreAlbum = itemView.findViewById(R.id.celdaAlbum_TextViewNombreAlbum);
+            textViewNombreArtista = itemView.findViewById(R.id.celdaAlbum_TextViewAlbum);
         }
         public void darValores(Album album){
             // Forma de obtener el id con solo el nombre del drawabale. Esto hace que no rompan los datos hardcodeados.
@@ -63,6 +65,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
                     .setDefaultRequestOptions(requestOptions)
                     .load(album.getCover()).into(imageViewImagenAlbum);
             textViewNombreAlbum.setText(album.getTitle());
+            textViewNombreArtista.setText(album.getArtist().getName());
         }
     }
 }

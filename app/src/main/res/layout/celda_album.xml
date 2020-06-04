@@ -24,28 +24,12 @@
             app:layout_constraintTop_toBottomOf="@id/celdaAlbum_ImageviewAlbum" />
 
         <TextView
-            android:id="@+id/celdaRecomendado_TextViewAlbumRecomendado"
+            android:id="@+id/celdaAlbum_TextViewAlbum"
             style="@style/celdahome_album_artista_celda"
             android:text="Artista"
             app:layout_constraintStart_toStartOf="@id/celdaAlbum_ImageviewAlbum"
             app:layout_constraintTop_toBottomOf="@id/celdaAlbum_TextViewNombreAlbum" />
 
-        <TextView
-            android:id="@+id/celdaAlbum_separador"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" · "
-            android:textColor="@color/text_title_home"
-            android:textSize="14dp"
-            app:layout_constraintStart_toEndOf="@id/celdaRecomendado_TextViewAlbumRecomendado"
-            app:layout_constraintTop_toBottomOf="@id/celdaAlbum_TextViewNombreAlbum" />
-
-        <TextView
-            android:id="@+id/celdaRecomendado_TextViewArtistaRecomendado"
-            style="@style/celdahome_album_artista_celda"
-            android:text="Album"
-            app:layout_constraintStart_toEndOf="@id/celdaAlbum_separador"
-            app:layout_constraintTop_toBottomOf="@id/celdaAlbum_TextViewNombreAlbum" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
