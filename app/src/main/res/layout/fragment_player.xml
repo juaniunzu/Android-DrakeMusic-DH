@@ -35,7 +35,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="25dp"
-        android:src="@drawable/favorite_navigation"
+        android:src="@drawable/ic_star_white_empty_24dp"
         android:tint="#fff"
         app:layout_constraintEnd_toEndOf="@id/fragmentPlayerImageView"
         app:layout_constraintTop_toBottomOf="@id/fragmentPlayerImageView" />

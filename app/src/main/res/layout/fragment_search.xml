@@ -34,7 +34,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragmentSearchTextView"
         app:layout_constraintBottom_toTopOf="@+id/fragmentSearchRecyclerView"
-        app:startIconDrawable="@drawable/ic_search_black_24dp"
+        app:startIconDrawable="@drawable/ic_search_white_24dp"
         app:startIconTint="#fff">
 
         <com.google.android.material.textfield.TextInputEditText
