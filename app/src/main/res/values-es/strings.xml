@@ -13,4 +13,8 @@
     <string name="buscar">Buscar</string>
     <string name="favoritos">Favoritos</string>
     <string name="tracks_artistas_albumes">Tracks, artistas, álbumes...</string>
+    <string name="Usuario">Usuario</string>
+    <string name="Contraseña">Contraseña</string>
+    <string name="Iniciar_Sesion">Iniciar Sesion</string>
+
 </resources>
