@@ -14,7 +14,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -32,12 +31,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String EMAIL = "email";
     private static final int RC_SIGN_IN = 1;
-    private Button buttonLogin;
+    private Button botonLogin;
     private TextInputEditText textInputEditTextUsername;
     private TextInputEditText textInputEditTextPassword;
-    private SignInButton botonLogearConGoogle;
+    private SignInButton botonLoginConGoogle;
     private GoogleSignInClient mGoogleSignInClient;
-    private LoginButton loginButtonGoogle;
+    private LoginButton botonLoginConFacebook;
     private CallbackManager callbackManager;
 
     @Override
@@ -54,7 +53,14 @@ public class LoginActivity extends AppCompatActivity {
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        botonLogearConGoogle.setOnClickListener(new View.OnClickListener() {
+
+        botonLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pasarALaMainActivityMatandoActividadActual();
+            }
+        });
+        botonLoginConGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signIn();
@@ -63,11 +69,11 @@ public class LoginActivity extends AppCompatActivity {
 
         callbackManager = CallbackManager.Factory.create();
 
-        loginButtonGoogle.setReadPermissions(Arrays.asList(EMAIL));
+        botonLoginConFacebook.setReadPermissions(Arrays.asList(EMAIL));
         // If you are using in a fragment, call loginButton.setFragment(this);
 
         // Callback registration
-        loginButtonGoogle.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        botonLoginConFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 pasarALaMainActivityMatandoActividadActual();
@@ -86,9 +92,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setFindViewByIds() {
-        buttonLogin = findViewById(R.id.activityLogin_ButtonIniciarSesion);
-        botonLogearConGoogle = findViewById(R.id.activityLogin_BotonLoginDeGoogle);
-        loginButtonGoogle = findViewById(R.id.activityLogin_loginbuttonFacebook);
+        botonLogin = findViewById(R.id.activityLogin_ButtonIniciarSesion);
+        botonLoginConGoogle = findViewById(R.id.activityLogin_BotonLoginDeGoogle);
+        botonLoginConFacebook = findViewById(R.id.activityLogin_loginbuttonFacebook);
         textInputEditTextUsername = findViewById(R.id.activityLogin_TextInputEditTextUsername);
         textInputEditTextPassword = findViewById(R.id.activityLogin_TextInputEditTextPassword);
     }
