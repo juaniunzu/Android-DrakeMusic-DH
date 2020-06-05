@@ -14,6 +14,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -60,8 +61,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-      callbackManager = CallbackManager.Factory.create();
-
+        callbackManager = CallbackManager.Factory.create();
 
         loginButtonGoogle.setReadPermissions(Arrays.asList(EMAIL));
         // If you are using in a fragment, call loginButton.setFragment(this);
@@ -70,9 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButtonGoogle.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                startActivity(intent);
-                finish();
+                pasarALaMainActivityMatandoActividadActual();
             }
 
             @Override
@@ -103,24 +101,43 @@ public class LoginActivity extends AppCompatActivity {
         // the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
         //Actualizar la UI
         updateUIGoogle(account);
+        updateUIFacebook(isLoggedInOnFacebook());
     }
+
     private void updateUIGoogle(GoogleSignInAccount account) {
         if (account != null) {
             //Si estas Logueado con Google hace esto.
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            pasarALaMainActivityMatandoActividadActual();
         }
+    }
+
+    private void updateUIFacebook(Boolean isLoggedInOnFacebook) {
+        if (isLoggedInOnFacebook) {
+            pasarALaMainActivityMatandoActividadActual();
+        }
+    }
+
+    private void pasarALaMainActivityMatandoActividadActual() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+
+       // LoginManager.getInstance().logOut();
+
     }
+
+    private boolean isLoggedInOnFacebook() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        return accessToken != null;
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
