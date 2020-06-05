@@ -32,4 +32,16 @@ public class TrackApiDao extends DaoHelper {
             }
         });
     }
+    public void getTop5TracksDeUnArtista(Integer idDelArtista, final ResultListener<List<Track>> listenerDelControler){
+        trackService.obtenerTop5TracksDeUnArtista(idDelArtista).enqueue(new Callback<ResponseTrack>() {
+            @Override
+            public void onResponse(Call<ResponseTrack> call, Response<ResponseTrack> response) {
+                listenerDelControler.finish(response.body().getTracks());
+            }
+
+            @Override
+            public void onFailure(Call<ResponseTrack> call, Throwable t) {
+            }
+        });
+    }
 }

@@ -11,7 +11,7 @@ import com.example.projectointegrador.util.Utils;
 import java.util.List;
 
 public class TrackController {
-    public void getTracks(Context context,  final ResultListener<List<Track>> listenerDeLaVista) {
+    public void getTracks(Context context, final ResultListener<List<Track>> listenerDeLaVista) {
         boolean hayInternet = Utils.hayInternet(context);
         if (hayInternet) {
             TrackApiDao trackApiDao = new TrackApiDao();
@@ -21,8 +21,22 @@ public class TrackController {
                     listenerDeLaVista.finish(resultado);
                 }
             });
-        }else{
+        } else {
             listenerDeLaVista.finish(TrackDao.getRecomendados());
         }
     }
+
+    public void getTop5TracksDeUnArtista(Integer idDelArtista, Context context, final ResultListener<List<Track>> listenerDeLaVista) {
+        boolean hayInternet = Utils.hayInternet(context);
+        if (hayInternet) {
+            TrackApiDao trackApiDao = new TrackApiDao();
+            trackApiDao.getTop5TracksDeUnArtista(idDelArtista, new ResultListener<List<Track>>() {
+                @Override
+                public void finish(List<Track> resultado) {
+                listenerDeLaVista.finish(resultado);
+                }
+            });
+        }
+    }
+
 }
