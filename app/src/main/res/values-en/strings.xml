@@ -13,4 +13,8 @@
     <string name="buscar">Search</string>
     <string name="favoritos">Favorites</string>
     <string name="tracks_artistas_albumes">Tracks, artists, albums...</string>
+    <string name="Usuario">Username</string>
+    <string name="Contraseña">Password</string>
+    <string name="Iniciar_Sesion">Login</string>
+
 </resources>
