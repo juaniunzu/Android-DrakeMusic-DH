@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.SearchInputFragment"
-    android:background="">
+    tools:context=".view.SearchInputFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/fragmentSearchInputCardViewBuscar"
@@ -29,7 +28,7 @@
                 android:layout_marginStart="20dp"
                 android:src="@drawable/ic_search_white_24dp" />
 
-<!--fijate si esto lo queres como un SearchView, solo respetale los tamaños-->
+            <!--fijate si esto lo queres como un SearchView, solo respetale los tamaños-->
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
