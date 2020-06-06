@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.dao.TrackDao;
+import com.example.projectointegrador.model.Album;
+import com.example.projectointegrador.model.Artist;
 import com.example.projectointegrador.model.Track;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -26,10 +28,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements HomeFragment.FragmentHomeListener {
+public class MainActivity extends AppCompatActivity implements HomeFragment.FragmentHomeListener,
+                                                                FragmentArtistDetail.FragmentArtistDetailListener,
+                                                                FragmentTrackList.FragmentTrackListListener {
 
     private DrawerLayout drawerLayout;
     private BottomNavigationView bottomNavigationView;
@@ -72,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
 
     @Override
-    public void fragmentOnClickRecomendados(Track track, List<Track> trackList) {
+    public void fragmentOnClickRecomendadosDesdeHomeFragment(Track track, List<Track> trackList) {
 
         //al momento de hacer click en un track de recomendados, me traigo tanto el track clickeado
         //como la lista completa perteneciente al adapter. me la llevo a una nueva activity donde
@@ -97,6 +102,46 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         startActivity(mainAPlayer);
     }
 
+    @Override
+    public void fragmentOnClickArtistaDesdeHomeFragment(Artist artist) {
+        Bundle datos = new Bundle();
+        datos.putSerializable(FragmentArtistDetail.ARTIST,artist);
+        FragmentArtistDetail fragmentArtistDetail = new FragmentArtistDetail();
+        fragmentArtistDetail.setArguments(datos);
+        pegarFragment(fragmentArtistDetail);
+    }
+
+    @Override
+    public void fragmentOnClickAlbumDesdeHomeFragment(Album album) {
+        Bundle datos = new Bundle();
+        datos.putSerializable(FragmentTrackList.ALBUM, album);
+        FragmentTrackList fragmentTrackList = new FragmentTrackList();
+        fragmentTrackList.setArguments(datos);
+        pegarFragment(fragmentTrackList);
+    }
+
+    @Override
+    public void fragmentOnClickAlbumDesdeFragmentArtistDetail(Album album) {
+        Bundle datos = new Bundle();
+        datos.putSerializable(FragmentTrackList.ALBUM,album);
+        FragmentTrackList fragmentTrackList = new FragmentTrackList();
+        fragmentTrackList.setArguments(datos);
+        pegarFragment(fragmentTrackList);
+    }
+
+    // TODO: 6/6/2020 Definir que hacer cuando se le hace click al Track
+    @Override
+    public void fragmentOnClickTrackDesdeFragmentArtistDetail(Track track) {
+        Toast.makeText(this, "En Construccion", Toast.LENGTH_SHORT).show();
+    }
+
+    // TODO: 6/6/2020 Definir que hacer Cuando se le hace Click al Track
+    @Override
+    public void fragmentOnClickTrackDesdeFragmentTrackList(Track track) {
+        Toast.makeText(this, "En construccion", Toast.LENGTH_SHORT).show();
+    }
+
+
     private void setFragmentInicial(Fragment fragment) {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -112,11 +157,16 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+
+
     /**
-     * Metodo para Logout de FB y GOOGLE
+     * Metodo para Logout de FB y GOOGLE. Despues Se le agregara Firebase. Vuelve a la Login Activity y mata la Actividad Actual.
     */
     public void logout(){
+        //Logout de CaraLibro
         LoginManager.getInstance().logOut();
+
+        //Logout de Google. Si, es bastante mas grande.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -133,4 +183,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
                 }
     );
     }
+
+
+
 }

@@ -1,6 +1,8 @@
 package com.example.projectointegrador.model;
 
-public class Genre {
+import java.io.Serializable;
+
+public class Genre implements Serializable {
 
     private Integer id;
     private String name;
