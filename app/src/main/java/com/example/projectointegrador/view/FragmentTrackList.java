@@ -57,6 +57,9 @@ public class FragmentTrackList extends Fragment implements TrackListAdapter.Trac
                 TrackListAdapter trackListAdapter = new TrackListAdapter(resultado,FragmentTrackList.this);
                 recyclerViewListaDeTemas.setAdapter(trackListAdapter);
                 listaDeTracks = resultado;
+                for (Track track : resultado) {
+                    track.setAlbum(albumRecibido);
+                }
             }
         });
         recyclerViewListaDeTemas.setLayoutManager(linearLayoutManagerDeLosTracks);
@@ -66,13 +69,14 @@ public class FragmentTrackList extends Fragment implements TrackListAdapter.Trac
     /**
      * Listeners... cambiar el tipo de dato que pasa si es necesario.
      */
+
     @Override
-    public void TrackListAdapterOnClickTrack(Track track) {
-        listener.fragmentOnClickTrackDesdeFragmentTrackList(track);
+    public void onClickTrackTrackListAdapter(Track track, List<Track> trackList) {
+        listener.onClickTrackFragmentTrackList(track, listaDeTracks);
     }
 
     public interface FragmentTrackListListener{
-        void fragmentOnClickTrackDesdeFragmentTrackList(Track track);
+        void onClickTrackFragmentTrackList(Track track, List<Track> trackList);
     }
 
     public void onAttach(Context context) {

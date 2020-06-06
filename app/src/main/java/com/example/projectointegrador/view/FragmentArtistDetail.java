@@ -94,10 +94,13 @@ public class FragmentArtistDetail extends Fragment implements AlbumAdapter.Album
         listener.fragmentOnClickAlbumDesdeFragmentArtistDetail(album);
     }
 
+
+
     @Override
-    public void TrackListAdapterOnClickTrack(Track track) {
-        listener.fragmentOnClickTrackDesdeFragmentArtistDetail(track);
+    public void onClickTrackTrackListAdapter(Track track, List<Track> trackList) {
+        // TODO: 06/06/2020
     }
+
     public interface FragmentArtistDetailListener{
         void fragmentOnClickAlbumDesdeFragmentArtistDetail(Album album);
         void fragmentOnClickTrackDesdeFragmentArtistDetail(Track track);

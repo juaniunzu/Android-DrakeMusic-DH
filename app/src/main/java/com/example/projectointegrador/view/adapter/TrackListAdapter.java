@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.model.Track;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.TrackListViewHolder> {
@@ -63,7 +61,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.Trac
                 @Override
                 public void onClick(View v) {
                     Track track = listaDeTracks.get(getAdapterPosition());
-                    trackListListener.TrackListAdapterOnClickTrack(track);
+                    trackListListener.onClickTrackTrackListAdapter(track, listaDeTracks);
                 }
             });
 
@@ -80,6 +78,6 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.Trac
      * Aca deberia pasar los datos que llevara al Reproductor.
      */
     public interface TrackListListener{
-        void TrackListAdapterOnClickTrack(Track track);
+        void onClickTrackTrackListAdapter(Track track, List<Track> trackList);
     }
 }

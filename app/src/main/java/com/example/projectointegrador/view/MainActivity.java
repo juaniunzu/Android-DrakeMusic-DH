@@ -140,10 +140,15 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         Toast.makeText(this, "En Construccion", Toast.LENGTH_SHORT).show();
     }
 
-    // TODO: 6/6/2020 Definir que hacer Cuando se le hace Click al Track
+    //click a un track desde adentro del detalle de un album
     @Override
-    public void fragmentOnClickTrackDesdeFragmentTrackList(Track track) {
-        Toast.makeText(this, "En construccion", Toast.LENGTH_SHORT).show();
+    public void onClickTrackFragmentTrackList(Track track, List<Track> trackList) {
+        Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
+        Bundle datos = new Bundle();
+        datos.putSerializable("track", track);
+        datos.putSerializable("lista", (ArrayList) trackList);
+        mainAPlayer.putExtras(datos);
+        startActivity(mainAPlayer);
     }
 
 
@@ -188,7 +193,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
                 }
     );
     }
-
 
 
 }
