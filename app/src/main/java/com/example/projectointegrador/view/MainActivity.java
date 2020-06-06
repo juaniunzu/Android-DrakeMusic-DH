@@ -2,24 +2,17 @@ package com.example.projectointegrador.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.icu.util.BuddhistCalendar;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.projectointegrador.R;
-import com.example.projectointegrador.dao.TrackDao;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
 import com.example.projectointegrador.model.Track;
@@ -31,12 +24,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements HomeFragment.FragmentHomeListener,
-                                                                FragmentArtistDetail.FragmentArtistDetailListener,
+                                                                DetailArtistFragment.FragmentArtistDetailListener,
                                                                 FragmentTrackList.FragmentTrackListListener {
 
     private DrawerLayout drawerLayout;
@@ -110,10 +102,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     @Override
     public void fragmentOnClickArtistaDesdeHomeFragment(Artist artist) {
         Bundle datos = new Bundle();
-        datos.putSerializable(FragmentArtistDetail.ARTIST,artist);
-        FragmentArtistDetail fragmentArtistDetail = new FragmentArtistDetail();
-        fragmentArtistDetail.setArguments(datos);
-        pegarFragment(fragmentArtistDetail);
+        datos.putSerializable(DetailArtistFragment.ARTIST,artist);
+        DetailArtistFragment detailArtistFragment = new DetailArtistFragment();
+        detailArtistFragment.setArguments(datos);
+        pegarFragment(detailArtistFragment);
     }
 
     @Override

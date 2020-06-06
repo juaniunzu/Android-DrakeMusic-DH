@@ -3,7 +3,6 @@ package com.example.projectointegrador.view;
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,7 +26,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentArtistDetail extends Fragment implements AlbumAdapter.AlbumAdapterListener,
+public class DetailArtistFragment extends Fragment implements AlbumAdapter.AlbumAdapterListener,
                                                                 TrackListAdapter.TrackListListener {
 
     public static final String ARTIST = "artist";
@@ -39,7 +38,7 @@ public class FragmentArtistDetail extends Fragment implements AlbumAdapter.Album
 
     private FragmentArtistDetailListener listener;
 
-    public FragmentArtistDetail() {
+    public DetailArtistFragment() {
     }
 
 
@@ -64,7 +63,7 @@ public class FragmentArtistDetail extends Fragment implements AlbumAdapter.Album
                 for (Album album: resultado) {
                     album.setArtist(new Artist(artistaRecibido.getName()));
                 }
-                AlbumAdapter albumAdapter = new AlbumAdapter(resultado,FragmentArtistDetail.this);
+                AlbumAdapter albumAdapter = new AlbumAdapter(resultado, DetailArtistFragment.this);
                 recyclerViewListaDeAlbumes.setAdapter(albumAdapter);
                 listaDeAlbumesDelArtista = resultado;
             }
@@ -75,7 +74,7 @@ public class FragmentArtistDetail extends Fragment implements AlbumAdapter.Album
         trackController.getTop5TracksDeUnArtistaPorId(artistaRecibido.getId(), getContext(), new ResultListener<List<Track>>() {
             @Override
             public void finish(List<Track> resultado) {
-                TrackListAdapter trackListAdapter = new TrackListAdapter(resultado,FragmentArtistDetail.this);
+                TrackListAdapter trackListAdapter = new TrackListAdapter(resultado, DetailArtistFragment.this);
                 recyclerViewListaDeTop5Tracks.setAdapter(trackListAdapter);
                 listaDeTop5TracksDelArtista = resultado;
             }
@@ -109,8 +108,8 @@ public class FragmentArtistDetail extends Fragment implements AlbumAdapter.Album
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof FragmentArtistDetail.FragmentArtistDetailListener) {
-            listener = (FragmentArtistDetail.FragmentArtistDetailListener) context;
+        if (context instanceof DetailArtistFragment.FragmentArtistDetailListener) {
+            listener = (DetailArtistFragment.FragmentArtistDetailListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement FragmentArtistDetailListener");
