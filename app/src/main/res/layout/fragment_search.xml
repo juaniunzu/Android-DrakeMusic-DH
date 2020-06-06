@@ -4,36 +4,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF"
     tools:context=".view.SearchFragment">
 
     <TextView
         android:id="@+id/fragmentSearchTextView"
+        style="@style/title_home"
+        android:textSize="28dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:background="@color/primary_elevation"
-        android:text="@string/buscar"
-        android:textStyle="bold"
-        android:textSize="30sp"
-        android:textColor="@color/text_title_home"
         android:layout_marginHorizontal="30dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/buscar"
+        app:layout_constraintBottom_toTopOf="@+id/fragmentSearchCardViewBuscar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/searchview"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/fragmentSearchTextView"
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/fragmentSearchCardViewBuscar"
+        app:cardCornerRadius="23dp"
+        android:layout_width="350dp"
+        android:layout_height="46dp"
+        android:backgroundTint="@color/text_subtitles"
         app:layout_constraintBottom_toTopOf="@+id/fragmentSearchRecyclerView"
-        app:queryHint="Canciones, artistas, albumes..."
-        app:iconifiedByDefault="false"
-        />
+        app:layout_constraintStart_toStartOf="@id/fragmentSearchTextView"
+        app:layout_constraintTop_toBottomOf="@id/fragmentSearchTextView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_search_white_24dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/tracks_artistas_albumes"
+                android:textSize="16dp"
+                android:gravity="center_vertical"
+                android:layout_marginStart="10dp"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragmentSearchRecyclerView"
@@ -41,8 +61,8 @@
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchview" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragmentSearchCardViewBuscar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

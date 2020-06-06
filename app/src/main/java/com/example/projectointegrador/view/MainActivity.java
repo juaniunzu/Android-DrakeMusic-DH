@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         HomeFragment homeFragment = new HomeFragment();
         setFragmentInicial(homeFragment);
 
+        bottomNavigationView.setSelectedItemId(R.id.bottomNavigationView_Menu);
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

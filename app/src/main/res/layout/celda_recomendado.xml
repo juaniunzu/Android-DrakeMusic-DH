@@ -26,7 +26,7 @@
         <TextView
             android:id="@+id/celdaRecomendado_TextViewAlbumRecomendado"
             style="@style/celdahome_album_artista_celda"
-            android:text="Artista"
+            android:text="Album"
 
             app:layout_constraintStart_toStartOf="@id/celdaRecomendado_ImageviewRecomendado"
             app:layout_constraintTop_toBottomOf="@id/celdaRecomendado_TextviewNombreRecomendado" />
@@ -44,7 +44,7 @@
         <TextView
             android:id="@+id/celdaRecomendado_TextViewArtistaRecomendado"
             style="@style/celdahome_album_artista_celda"
-            android:text="Album"
+            android:text="Artista"
             app:layout_constraintStart_toEndOf="@id/celdaRecomendado_separador"
             app:layout_constraintTop_toBottomOf="@id/celdaRecomendado_TextviewNombreRecomendado" />
 

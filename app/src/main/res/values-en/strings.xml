@@ -16,5 +16,9 @@
     <string name="Usuario">Username</string>
     <string name="Contraseña">Password</string>
     <string name="Iniciar_Sesion">Login</string>
+    <string name="ver_artistas">See all artists</string>
+    <string name="ver_tracks">See all tracks</string>
+    <string name="ver_albumes">See all albums</string>
+    <string name="en_busqueda">\" %s \" in search</string>
 
 </resources>
