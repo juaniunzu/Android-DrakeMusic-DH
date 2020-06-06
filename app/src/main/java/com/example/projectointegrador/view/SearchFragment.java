@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,7 +28,7 @@ public class SearchFragment extends Fragment implements SearchAdapter.SearchAdap
     private List<Utils.Searchable> searchableList;
     private RecyclerView fragmentSearchRecyclerView;
     private SearchFragmentListener listener;
-
+    private SearchView searchView;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -41,12 +42,15 @@ public class SearchFragment extends Fragment implements SearchAdapter.SearchAdap
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         searchableList = SearchableDao.getSearchables();
+        searchView = view.findViewById(R.id.searchview);
         fragmentSearchRecyclerView = view.findViewById(R.id.fragmentSearchRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         SearchAdapter searchAdapter = new SearchAdapter(searchableList, this);
 
         fragmentSearchRecyclerView.setAdapter(searchAdapter);
         fragmentSearchRecyclerView.setLayoutManager(linearLayoutManager);
+
+
 
 
         return view;

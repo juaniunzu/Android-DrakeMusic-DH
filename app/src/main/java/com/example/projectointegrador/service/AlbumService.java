@@ -11,4 +11,7 @@ public interface AlbumService {
 
     @GET("artist/{idArtista}/albums")
     Call<ResponseAlbum> obtenerAlbumesDeUnArtista(@Path("idArtista") Integer idArtista);
+
+    @GET("search/album?q={busqueda}")
+    Call<ResponseAlbum> buscarAlbumes(@Path("busqueda") String busqueda);
 }
