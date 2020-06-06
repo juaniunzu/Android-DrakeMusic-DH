@@ -21,6 +21,12 @@ import android.widget.Toast;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.dao.TrackDao;
 import com.example.projectointegrador.model.Track;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -54,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
                         break;
                     case R.id.bottomNavigationView_Favorites:
                         Toast.makeText(MainActivity.this, "En Construccion.", Toast.LENGTH_SHORT).show();
+                        logout();
                         break;
                 }
                 return true;
@@ -107,5 +114,26 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         fragmentTransaction.replace(R.id.activityMain_contenedorDeFragments, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+    /**
+     * Metodo para Logout de FB y GOOGLE
+    */
+    public void logout(){
+        LoginManager.getInstance().logOut();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+    );
     }
 }
