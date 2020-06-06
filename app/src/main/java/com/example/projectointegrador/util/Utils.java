@@ -1,8 +1,19 @@
 package com.example.projectointegrador.util;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.palette.graphics.Palette;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 public class Utils {
 
@@ -22,4 +33,24 @@ public class Utils {
         String informarImagen();
         String informarDescripcion();
     }
+
+    public static void setFragmentBackground(Context context, final View view, String url) {
+        Glide.with(context).asBitmap().load(url).into(new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(@NonNull final Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+                    @Override
+                    public void onGenerated(@Nullable Palette palette) {
+                        int dominantColor = palette.getDominantColor(resource.getPixel(0, 0));
+
+                        GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{dominantColor, 0xFF000000});
+                        gd.setCornerRadius(0f);
+
+                        view.setBackground(gd);
+                    }
+                });
+            }
+        });
+    }
+
 }

@@ -27,6 +27,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
         setFragmentInicial(new SearchFragment());
 
         bottomNavigationView = findViewById(R.id.activitySearch_BottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.bottomNavigationView_Search);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -37,7 +38,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
                         startActivity(searchAMain);
                         break;
                     case R.id.bottomNavigationView_Search:
-
+                        setFragmentInicial(new SearchFragment());
                         break;
                     case R.id.bottomNavigationView_Favorites:
                         Toast.makeText(SearchActivity.this, "En Construccion.", Toast.LENGTH_SHORT).show();

@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,7 +29,7 @@ public class SearchFragment extends Fragment implements SearchAdapter.SearchAdap
     private List<Utils.Searchable> searchableList;
     private RecyclerView fragmentSearchRecyclerView;
     private SearchFragmentListener listener;
-    private SearchView searchView;
+    private CardView cardView;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -41,19 +42,24 @@ public class SearchFragment extends Fragment implements SearchAdapter.SearchAdap
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
+        //Setear OnClickListener a este cardview que cree y pegue un SearchInputFragment
+        cardView = view.findViewById(R.id.fragmentSearchCardViewBuscar);
+
+        //esta lista por el momento se llena con datos hardcodeados, en un futuro tiene que recibir data de Firebase
+        setBusquedasRecientesList(view);
+
+
+        return view;
+    }
+
+    private void setBusquedasRecientesList(View view) {
         searchableList = SearchableDao.getSearchables();
-        searchView = view.findViewById(R.id.searchview);
         fragmentSearchRecyclerView = view.findViewById(R.id.fragmentSearchRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         SearchAdapter searchAdapter = new SearchAdapter(searchableList, this);
 
         fragmentSearchRecyclerView.setAdapter(searchAdapter);
         fragmentSearchRecyclerView.setLayoutManager(linearLayoutManager);
-
-
-
-
-        return view;
     }
 
     @Override

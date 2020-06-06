@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="20dp"
+    android:background="#000">
+
+    <ImageView
+        android:id="@+id/celdaSearchInputAlbumImageView"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="20dp"/>
+
+    <TextView
+        android:id="@+id/celdaSearchInputAlbumTextViewTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        style="@style/celdahome_titulo_celda"
+        android:text="Nombre album"
+        app:layout_constraintLeft_toRightOf="@id/celdaSearchInputAlbumImageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/celdaSearchInputAlbumTextViewArtista"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        style="@style/celdahome_album_artista_celda"
+        android:layout_marginTop="10dp"
+        android:text="Artista"
+        app:layout_constraintLeft_toRightOf="@id/celdaSearchInputAlbumImageView"
+        app:layout_constraintTop_toBottomOf="@id/celdaSearchInputAlbumTextViewTitulo" />
+
+
+
+    <View
+        android:layout_width="280dp"
+        android:layout_height="1dp"
+        android:background="#AEAEAE"
+        app:layout_constraintTop_toBottomOf="@id/celdaSearchInputAlbumTextViewArtista"
+        app:layout_constraintStart_toStartOf="@id/celdaSearchInputAlbumTextViewArtista"
+        android:layout_marginTop="20dp"/>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,8 +15,11 @@
     <string name="Usuario">Usuario</string>
     <string name="Contraseña">Contraseña</string>
     <string name="Iniciar_Sesion">Iniciar Sesion</string>
-    <string name="facebook_app_id">4142846972407023</string>
-    <string name="fb_login_protocol_scheme">fb4142846972407023</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="facebook_app_id" translatable="false">4142846972407023</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb4142846972407023</string>
+    <string name="ver_tracks">Ver todos los tracks</string>
+    <string name="ver_artistas">Ver todos los artistas</string>
+    <string name="ver_albumes">Ver todos los álbumes</string>
+    <string name="en_busqueda">\" %s \" en búsqueda</string>
+
 </resources>
