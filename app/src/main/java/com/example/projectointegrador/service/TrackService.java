@@ -15,4 +15,10 @@ public interface TrackService {
 
     @GET("search/track?q={busqueda}")
     Call<ResponseTrack> buscarTracks(@Path("busqueda") String busqueda);
+
+    @GET("artist/{idArtista}/top")
+    Call<ResponseTrack> obtenerTop5TracksDeUnArtista(@Path("idArtista") Integer idArtista);
+
+    @GET("album/{idAlbum}/tracks")
+    Call<ResponseTrack> obtenerTracksDeUnAlbum(@Path("idAlbum") Integer idAlbum);
 }

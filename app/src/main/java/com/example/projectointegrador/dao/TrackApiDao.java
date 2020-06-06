@@ -1,5 +1,7 @@
 package com.example.projectointegrador.dao;
 
+import android.util.Log;
+
 import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.service.ResponseTrack;
 import com.example.projectointegrador.service.TrackService;
@@ -29,6 +31,30 @@ public class TrackApiDao extends DaoHelper {
             @Override
             public void onFailure(Call<ResponseTrack> call, Throwable t) {
                 t.toString();
+            }
+        });
+    }
+    public void getTop5TracksDeUnArtista(Integer idDelArtista, final ResultListener<List<Track>> listenerDelControler){
+        trackService.obtenerTop5TracksDeUnArtista(idDelArtista).enqueue(new Callback<ResponseTrack>() {
+            @Override
+            public void onResponse(Call<ResponseTrack> call, Response<ResponseTrack> response) {
+                listenerDelControler.finish(response.body().getTracks());
+            }
+
+            @Override
+            public void onFailure(Call<ResponseTrack> call, Throwable t) {
+            }
+        });
+    }
+    public void getTracksDeUnAlbumPorId(Integer idDelAlbum, final ResultListener<List<Track>> listenerDelControler){
+        trackService.obtenerTracksDeUnAlbum(idDelAlbum).enqueue(new Callback<ResponseTrack>() {
+            @Override
+            public void onResponse(Call<ResponseTrack> call, Response<ResponseTrack> response) {
+                listenerDelControler.finish(response.body().getTracks());
+            }
+
+            @Override
+            public void onFailure(Call<ResponseTrack> call, Throwable t) {
             }
         });
     }

@@ -19,9 +19,11 @@ import java.util.List;
 public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistaViewHolder> {
 
     private List<Artist> listaDeArtistas;
+    private ArtistAdapterListener artistAdapterListener;
 
-    public ArtistAdapter(List<Artist> listaDeArtistas) {
+    public ArtistAdapter(List<Artist> listaDeArtistas,ArtistAdapterListener listener) {
         this.listaDeArtistas = listaDeArtistas;
+        this.artistAdapterListener = listener;
     }
 
     @NonNull
@@ -53,6 +55,13 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistaVie
             super(itemView);
             imageViewImagenArtist = itemView.findViewById(R.id.celdaArtista_ImageviewArtista);
             textViewNombreArtist = itemView.findViewById(R.id.celdaArtista_TextviewNombreArtista);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Artist artist = listaDeArtistas.get(getAdapterPosition());
+                    artistAdapterListener.artistAdapterOnClickArtista(artist);
+                }
+            });
         }
 
         public void darValores(Artist artist) {
@@ -68,5 +77,8 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistaVie
                     .into(imageViewImagenArtist);
             textViewNombreArtist.setText(artist.getName());
         }
+    }
+    public interface ArtistAdapterListener{
+        void artistAdapterOnClickArtista(Artist artist);
     }
 }

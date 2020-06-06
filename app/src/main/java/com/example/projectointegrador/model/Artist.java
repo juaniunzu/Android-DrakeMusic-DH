@@ -15,6 +15,10 @@ public class Artist implements Serializable, Utils.Searchable {
         this.picture = picture;
     }
 
+    public Artist(String name) {
+        this.name = name;
+    }
+
     public String getPicture() {
         return picture;
     }

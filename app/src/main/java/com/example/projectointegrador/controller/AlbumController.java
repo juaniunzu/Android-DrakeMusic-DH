@@ -26,4 +26,16 @@ public class AlbumController {
             listenerDeLaVista.finish(AlbumDao.getAlbums());
         }
     }
+    public void getAlbumesDeUnArtista(Integer idDelArtista, Context context, final ResultListener<List<Album>>listenerDeLaVista){
+        boolean hayInternet = Utils.hayInternet(context);
+        if(hayInternet){
+            AlbumApiDao albumApiDao = new AlbumApiDao();
+            albumApiDao.getAlbumesDeUnArtista(idDelArtista, new ResultListener<List<Album>>() {
+                @Override
+                public void finish(List<Album> resultado) {
+                    listenerDeLaVista.finish(resultado);
+                }
+            });
+        }
+    }
 }

@@ -31,7 +31,9 @@ import java.util.List;
 
 
 public class HomeFragment extends Fragment implements   RecomendadoAdapter.RecomendadoAdapterListener,
-                                                        UltimosReproducidosAdapter.UltimosReproducidosAdapterListener {
+                                                        UltimosReproducidosAdapter.UltimosReproducidosAdapterListener,
+                                                        ArtistAdapter.ArtistAdapterListener,
+                                                        AlbumAdapter.AlbumAdapterListener {
 
     private List<Album> listaDeAlbums;
     private RecyclerView recyclerViewAlbums;
@@ -75,7 +77,7 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
         artistController.getArtists(getContext(), new ResultListener<List<Artist>>() {
             @Override
             public void finish(List<Artist> resultado) {
-                ArtistAdapter artistAdapter = new ArtistAdapter(resultado);
+                ArtistAdapter artistAdapter = new ArtistAdapter(resultado,HomeFragment.this);
                 recyclerViewArtists.setAdapter(artistAdapter);
             }
         });
@@ -83,7 +85,7 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
         albumController.getAlbums(getContext(), new ResultListener<List<Album>>() {
             @Override
             public void finish(List<Album> resultado) {
-                AlbumAdapter albumAdapter = new AlbumAdapter(resultado);
+                AlbumAdapter albumAdapter = new AlbumAdapter(resultado,HomeFragment.this);
                 recyclerViewAlbums.setAdapter(albumAdapter);
             }
         });
@@ -111,7 +113,7 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
 
     @Override
     public void adapterRecomendadoOnClickRecomendados(Track track, List<Track> trackList) {
-        listener.fragmentOnClickRecomendados(track, trackList);
+        listener.fragmentOnClickRecomendadosDesdeHomeFragment(track, trackList);
     }
 
     @Override
@@ -119,9 +121,25 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
         listener.fragmentOnClickUltimosReproducidos(track, trackList);
     }
 
+    @Override
+    public void artistAdapterOnClickArtista(Artist artist) {
+        listener.fragmentOnClickArtistaDesdeHomeFragment(artist);
+    }
+
+    @Override
+    public void albumAdapterOnClickAlbum(Album album) {
+        listener.fragmentOnClickAlbumDesdeHomeFragment(album);
+    }
+
+    /**
+     * Esta Interface es para que la implemente una Actividad para que conozca los listeners del Fragment. En este Caso la
+     * Main Activity.
+     */
     public interface FragmentHomeListener {
-        void fragmentOnClickRecomendados(Track track, List<Track> trackList);
+        void fragmentOnClickRecomendadosDesdeHomeFragment(Track track, List<Track> trackList);
         void fragmentOnClickUltimosReproducidos(Track track, List<Track> trackList);
+        void fragmentOnClickArtistaDesdeHomeFragment(Artist artist);
+        void fragmentOnClickAlbumDesdeHomeFragment(Album album);
     }
 
     @Override
