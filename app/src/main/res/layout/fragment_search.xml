@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000"
+    android:background="#FFF"
     tools:context=".view.SearchFragment">
 
     <TextView
@@ -22,29 +22,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/fragmentSearchTextInputLayout"/>
+        app:layout_constraintBottom_toTopOf="@+id/searchview"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/fragmentSearchTextInputLayout"
+    
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/text_subtitles"
-        android:layout_marginHorizontal="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragmentSearchTextView"
         app:layout_constraintBottom_toTopOf="@+id/fragmentSearchRecyclerView"
-        app:startIconDrawable="@drawable/ic_search_black_24dp"
-        app:startIconTint="#fff">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/fragmentSearchTextInputEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/tracks_artistas_albumes"
-            android:textColor="@color/text_subtitles"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
+        app:queryHint="Canciones, artistas, albumes..."
+        app:iconifiedByDefault="false"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragmentSearchRecyclerView"
@@ -54,6 +43,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragmentSearchTextInputLayout" />
+        app:layout_constraintTop_toBottomOf="@id/searchview" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

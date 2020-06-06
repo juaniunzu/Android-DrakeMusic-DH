@@ -33,8 +33,7 @@
 
         <TextView
             style="@style/title_home"
-            android:text="@string/artistas"
-            />
+            android:text="@string/artistas" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fargmentHome_RecyclerDeArtistas"
@@ -44,8 +43,7 @@
 
         <TextView
             style="@style/title_home"
-            android:text="@string/albumes"
-             />
+            android:text="@string/albumes" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fargmentHome_RecyclerDeAlbumes"

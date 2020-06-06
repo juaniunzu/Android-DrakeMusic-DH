@@ -32,7 +32,9 @@
 
         <activity android:name=".view.LoginActivity"></activity>
         <activity android:name=".view.PlayerActivity" />
-        <activity android:name=".view.SearchActivity" />
+        <activity android:name=".view.SearchActivity"
+            android:windowSoftInputMode="adjustPan"
+            />
         <activity android:name=".view.MainActivity" />
         <activity android:name=".view.DetailActivity" />
         <activity android:name=".view.SplashActivity">

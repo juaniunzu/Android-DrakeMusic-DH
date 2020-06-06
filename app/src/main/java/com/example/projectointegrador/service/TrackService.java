@@ -13,6 +13,9 @@ public interface TrackService {
     @GET("chart/0/tracks")
     Call<ResponseTrack> obtenerTop10Tracks();
 
+    @GET("search/track?q={busqueda}")
+    Call<ResponseTrack> buscarTracks(@Path("busqueda") String busqueda);
+
     @GET("artist/{idArtista}/top")
     Call<ResponseTrack> obtenerTop5TracksDeUnArtista(@Path("idArtista") Integer idArtista);
 

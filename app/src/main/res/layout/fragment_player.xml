@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.PlayerFragment">
 
     <ImageView
@@ -12,18 +12,18 @@
         android:layout_height="320dp"
         android:layout_marginTop="80dp"
         android:src="@drawable/iron_maiden"
+        app:layout_constraintBottom_toTopOf="@id/fragmentPlayerTextViewNombre"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/fragmentPlayerTextViewNombre"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/fragmentPlayerTextViewNombre"
         android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
-        android:text="Nombre del track"
         android:breakStrategy="balanced"
+        android:text="Nombre del track"
         android:textColor="#fff"
         android:textSize="20dp"
         android:textStyle="bold"
@@ -35,7 +35,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="25dp"
-        android:src="@drawable/favorite_navigation"
+        android:src="@drawable/ic_star_white_empty_24dp"
         android:tint="#fff"
         app:layout_constraintEnd_toEndOf="@id/fragmentPlayerImageView"
         app:layout_constraintTop_toBottomOf="@id/fragmentPlayerImageView" />
@@ -69,10 +69,10 @@
         android:layout_height="60dp"
         android:src="@drawable/ic_play_circle_filled_black_24dp"
         app:backgroundTint="#FF5722"
+        app:layout_constraintBottom_toTopOf="@id/guideline80"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline70"
-        app:layout_constraintBottom_toTopOf="@id/guideline80"/>
+        app:layout_constraintTop_toBottomOf="@id/guideline70" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fragmentPlayerButtonPrevious"
@@ -80,11 +80,10 @@
         android:layout_height="50dp"
         android:src="@drawable/ic_skip_previous_black_24dp"
         app:backgroundTint="#FF5722"
-        app:layout_constraintStart_toEndOf="@id/fragmentPlayerButtonShuffle"
-        app:layout_constraintEnd_toStartOf="@id/fragmentPlayerButtonPlay"
-        app:layout_constraintTop_toBottomOf="@id/guideline70"
         app:layout_constraintBottom_toTopOf="@id/guideline80"
-        />
+        app:layout_constraintEnd_toStartOf="@id/fragmentPlayerButtonPlay"
+        app:layout_constraintStart_toEndOf="@id/fragmentPlayerButtonShuffle"
+        app:layout_constraintTop_toBottomOf="@id/guideline70" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fragmentPlayerButtonNext"
@@ -92,10 +91,10 @@
         android:layout_height="50dp"
         android:src="@drawable/ic_skip_next_black_24dp"
         app:backgroundTint="#FF5722"
-        app:layout_constraintStart_toEndOf="@id/fragmentPlayerButtonPlay"
+        app:layout_constraintBottom_toTopOf="@id/guideline80"
         app:layout_constraintEnd_toStartOf="@id/fragmentPlayerButtonRepeat"
-        app:layout_constraintTop_toBottomOf="@id/guideline70"
-        app:layout_constraintBottom_toTopOf="@id/guideline80"/>
+        app:layout_constraintStart_toEndOf="@id/fragmentPlayerButtonPlay"
+        app:layout_constraintTop_toBottomOf="@id/guideline70" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fragmentPlayerButtonShuffle"
@@ -103,10 +102,10 @@
         android:layout_height="40dp"
         android:src="@drawable/ic_shuffle_black_24dp"
         app:backgroundTint="#FF5722"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideline80"
         app:layout_constraintEnd_toStartOf="@+id/fragmentPlayerButtonPrevious"
-        app:layout_constraintTop_toBottomOf="@id/guideline70"
-        app:layout_constraintBottom_toTopOf="@id/guideline80"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline70" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fragmentPlayerButtonRepeat"
@@ -114,10 +113,10 @@
         android:layout_height="40dp"
         android:src="@drawable/ic_repeat_black_24dp"
         app:backgroundTint="#FF5722"
-        app:layout_constraintStart_toEndOf="@id/fragmentPlayerButtonNext"
+        app:layout_constraintBottom_toTopOf="@id/guideline80"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline70"
-        app:layout_constraintBottom_toTopOf="@id/guideline80"/>
+        app:layout_constraintStart_toEndOf="@id/fragmentPlayerButtonNext"
+        app:layout_constraintTop_toBottomOf="@id/guideline70" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline80"
