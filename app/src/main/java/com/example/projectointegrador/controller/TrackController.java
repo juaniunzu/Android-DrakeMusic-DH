@@ -26,7 +26,7 @@ public class TrackController {
         }
     }
 
-    public void getTop5TracksDeUnArtista(Integer idDelArtista, Context context, final ResultListener<List<Track>> listenerDeLaVista) {
+    public void getTop5TracksDeUnArtistaPorId(Integer idDelArtista, Context context, final ResultListener<List<Track>> listenerDeLaVista) {
         boolean hayInternet = Utils.hayInternet(context);
         if (hayInternet) {
             TrackApiDao trackApiDao = new TrackApiDao();
@@ -38,5 +38,16 @@ public class TrackController {
             });
         }
     }
-
+    public void getTracksDeUnAlbumPorId(Integer idDelAlbum,Context context, final ResultListener<List<Track>> listenerDeLaVista){
+        boolean hayInternet = Utils.hayInternet(context);
+        if(hayInternet){
+            TrackApiDao trackApiDao = new TrackApiDao();
+            trackApiDao.getTracksDeUnAlbumPorId(idDelAlbum, new ResultListener<List<Track>>() {
+                @Override
+                public void finish(List<Track> resultado) {
+                    listenerDeLaVista.finish(resultado);
+                }
+            });
+        }
+    }
 }

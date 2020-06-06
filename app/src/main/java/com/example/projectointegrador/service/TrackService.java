@@ -15,4 +15,7 @@ public interface TrackService {
 
     @GET("artist/{idArtista}/top")
     Call<ResponseTrack> obtenerTop5TracksDeUnArtista(@Path("idArtista") Integer idArtista);
+
+    @GET("album/{idAlbum}/tracks")
+    Call<ResponseTrack> obtenerTracksDeUnAlbum(@Path("idAlbum") Integer idAlbum);
 }
