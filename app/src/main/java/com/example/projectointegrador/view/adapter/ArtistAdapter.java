@@ -59,7 +59,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistaVie
                 @Override
                 public void onClick(View v) {
                     Artist artist = listaDeArtistas.get(getAdapterPosition());
-                    artistAdapterListener.artistAdapterOnClickArtista(artist);
+                    artistAdapterListener.onClickArtistaArtistAdapter(artist);
                 }
             });
         }
@@ -79,6 +79,6 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistaVie
         }
     }
     public interface ArtistAdapterListener{
-        void artistAdapterOnClickArtista(Artist artist);
+        void onClickArtistaArtistAdapter(Artist artist);
     }
 }

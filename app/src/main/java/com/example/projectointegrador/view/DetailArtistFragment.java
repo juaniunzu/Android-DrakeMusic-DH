@@ -45,7 +45,7 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_artist_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_detail_artist, container, false);
 
         Bundle datosRecibidos = getArguments();
         final Artist artistaRecibido = (Artist) datosRecibidos.getSerializable(ARTIST);
@@ -77,6 +77,9 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
                 TrackListAdapter trackListAdapter = new TrackListAdapter(resultado, DetailArtistFragment.this);
                 recyclerViewListaDeTop5Tracks.setAdapter(trackListAdapter);
                 listaDeTop5TracksDelArtista = resultado;
+                for (Track track : resultado) {
+                    track.setArtist(artistaRecibido);
+                }
             }
         });
         recyclerViewListaDeTop5Tracks.setLayoutManager(linearLayoutManagerDeTop5Tracks);
@@ -88,21 +91,21 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
      * Interfaces y metodos para hacer que la actividad donde se pegue el fragment tenga que implementar sus listener
      * y Asi conocerlos.
      */
-    @Override
-    public void albumAdapterOnClickAlbum(Album album) {
-        listener.fragmentOnClickAlbumDesdeFragmentArtistDetail(album);
-    }
-
 
 
     @Override
     public void onClickTrackTrackListAdapter(Track track, List<Track> trackList) {
-        // TODO: 06/06/2020
+        listener.fragmentOnClickTrackDesdeFragmentArtistDetail(track, this.listaDeTop5TracksDelArtista);
+    }
+
+    @Override
+    public void onClickAlbumAlbumAdapter(Album album) {
+        listener.fragmentOnClickAlbumDesdeFragmentArtistDetail(album);
     }
 
     public interface FragmentArtistDetailListener{
         void fragmentOnClickAlbumDesdeFragmentArtistDetail(Album album);
-        void fragmentOnClickTrackDesdeFragmentArtistDetail(Track track);
+        void fragmentOnClickTrackDesdeFragmentArtistDetail(Track track, List<Track> trackList);
     }
 
     @Override

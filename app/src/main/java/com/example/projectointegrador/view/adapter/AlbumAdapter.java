@@ -61,7 +61,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
                 @Override
                 public void onClick(View v) {
                     Album album = listaDeAlbums.get(getAdapterPosition());
-                    albumAdapterListener.albumAdapterOnClickAlbum(album);
+                    albumAdapterListener.onClickAlbumAlbumAdapter(album);
                 }
             });
         }
@@ -79,6 +79,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
         }
     }
     public interface AlbumAdapterListener{
-        void albumAdapterOnClickAlbum(Album album);
+        void
+        onClickAlbumAlbumAdapter(Album album);
     }
 }

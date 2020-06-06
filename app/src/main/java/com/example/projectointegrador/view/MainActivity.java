@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
 
     @Override
-    public void fragmentOnClickRecomendadosDesdeHomeFragment(Track track, List<Track> trackList) {
+    public void onClickRecomendadosDesdeHomeFragment(Track track, List<Track> trackList) {
 
         //al momento de hacer click en un track de recomendados, me traigo tanto el track clickeado
         //como la lista completa perteneciente al adapter. me la llevo a una nueva activity donde
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     }
 
     @Override
-    public void fragmentOnClickUltimosReproducidos(Track track, List<Track> trackList) {
+    public void onClickUltimosReproducidosDesdeHomeFragment(Track track, List<Track> trackList) {
         Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
         Bundle datos = new Bundle();
         datos.putSerializable("track", track);
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     }
 
     @Override
-    public void fragmentOnClickArtistaDesdeHomeFragment(Artist artist) {
+    public void onClickArtistaDesdeHomeFragment(Artist artist) {
         Bundle datos = new Bundle();
         datos.putSerializable(DetailArtistFragment.ARTIST,artist);
         DetailArtistFragment detailArtistFragment = new DetailArtistFragment();
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     }
 
     @Override
-    public void fragmentOnClickAlbumDesdeHomeFragment(Album album) {
+    public void onClickAlbumDesdeHomeFragment(Album album) {
         Bundle datos = new Bundle();
         datos.putSerializable(FragmentTrackList.ALBUM, album);
         FragmentTrackList fragmentTrackList = new FragmentTrackList();
@@ -126,11 +126,16 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         pegarFragment(fragmentTrackList);
     }
 
-    // TODO: 6/6/2020 Definir que hacer cuando se le hace click al Track
     @Override
-    public void fragmentOnClickTrackDesdeFragmentArtistDetail(Track track) {
-        Toast.makeText(this, "En Construccion", Toast.LENGTH_SHORT).show();
+    public void fragmentOnClickTrackDesdeFragmentArtistDetail(Track track, List<Track> trackList) {
+        Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
+        Bundle datos = new Bundle();
+        datos.putSerializable("track", track);
+        datos.putSerializable("lista", (ArrayList) trackList);
+        mainAPlayer.putExtras(datos);
+        startActivity(mainAPlayer);
     }
+    
 
     //click a un track desde adentro del detalle de un album
     @Override

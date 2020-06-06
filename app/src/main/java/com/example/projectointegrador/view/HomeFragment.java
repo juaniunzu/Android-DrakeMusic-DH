@@ -112,23 +112,23 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
     }
 
     @Override
-    public void adapterRecomendadoOnClickRecomendados(Track track, List<Track> trackList) {
-        listener.fragmentOnClickRecomendadosDesdeHomeFragment(track, trackList);
+    public void onClickRecomendadoRecomendadoAdapter(Track track, List<Track> trackList) {
+        listener.onClickRecomendadosDesdeHomeFragment(track, trackList);
     }
 
     @Override
-    public void onClickUltimosReproducidos(Track track, List<Track> trackList) {
-        listener.fragmentOnClickUltimosReproducidos(track, trackList);
+    public void onClickUltimosReproducidosAdapter(Track track, List<Track> trackList) {
+        listener.onClickUltimosReproducidosDesdeHomeFragment(track, trackList);
     }
 
     @Override
-    public void artistAdapterOnClickArtista(Artist artist) {
-        listener.fragmentOnClickArtistaDesdeHomeFragment(artist);
+    public void onClickArtistaArtistAdapter(Artist artist) {
+        listener.onClickArtistaDesdeHomeFragment(artist);
     }
 
     @Override
-    public void albumAdapterOnClickAlbum(Album album) {
-        listener.fragmentOnClickAlbumDesdeHomeFragment(album);
+    public void onClickAlbumAlbumAdapter(Album album) {
+        listener.onClickAlbumDesdeHomeFragment(album);
     }
 
     /**
@@ -136,10 +136,10 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
      * Main Activity.
      */
     public interface FragmentHomeListener {
-        void fragmentOnClickRecomendadosDesdeHomeFragment(Track track, List<Track> trackList);
-        void fragmentOnClickUltimosReproducidos(Track track, List<Track> trackList);
-        void fragmentOnClickArtistaDesdeHomeFragment(Artist artist);
-        void fragmentOnClickAlbumDesdeHomeFragment(Album album);
+        void onClickRecomendadosDesdeHomeFragment(Track track, List<Track> trackList);
+        void onClickUltimosReproducidosDesdeHomeFragment(Track track, List<Track> trackList);
+        void onClickArtistaDesdeHomeFragment(Artist artist);
+        void onClickAlbumDesdeHomeFragment(Album album);
     }
 
     @Override
