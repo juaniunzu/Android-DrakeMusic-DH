@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
 
-       // LoginManager.getInstance().logOut();
+        // LoginManager.getInstance().logOut();
 
     }
 
@@ -151,6 +151,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
 
     @Override
     public void onClickLoginFragmentBotonLogin(String username, String password) {
+        //cuando tengamos firebase authentication, se toca este modulo
         pasarALaMainActivityMatandoActividadActual();
     }
 
@@ -183,22 +184,21 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
     }
 
 
-
     @Override
     public void onClickSignUpFragmentBotonSignUpGoogle(SignInButton button) {
-        //editar!!
+        //editar, esto es crear cuenta con google por 1era vez
         pasarALaMainActivityMatandoActividadActual();
     }
 
     @Override
     public void onClickSignUpFragmentBotonSignUpFacebook(LoginButton button) {
-        //editar!!
+        //editar, esto es crear cuenta con facebook por 1era vez
         pasarALaMainActivityMatandoActividadActual();
     }
 
     @Override
     public void onClickSignUpFragmentBotonRegistrarse(String username, String password) {
-        //editar!!
+        //editar, esto es crear cuenta con datos, cuando tengamos firebase authentication, se toca este modulo
         pasarALaMainActivityMatandoActividadActual();
     }
 
