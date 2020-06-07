@@ -17,38 +17,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/fragmentSearchInputSearchView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/ic_search_white_24dp" />
-
-            <!--fijate si esto lo queres como un SearchView, solo respetale los tamaños-->
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:gravity="center_vertical"
-                android:hint="@string/tracks_artistas_albumes"
-                android:textSize="16dp" />
-
-        </LinearLayout>
+            android:layout_marginStart="10dp"
+            android:gravity="center_vertical"
+            android:hint="@string/tracks_artistas_albumes"/>
 
     </androidx.cardview.widget.CardView>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragmentSearchInputRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragmentSearchInputCardViewBuscar" />
 
     <TextView
         android:id="@+id/fragmentSearchInputTextViewTracks"
@@ -59,8 +36,18 @@
         android:gravity="center_vertical"
         android:text="@string/ver_tracks"
         android:textSize="16dp"
+        android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragmentSearchInputRecyclerView" />
+        app:layout_constraintTop_toBottomOf="@id/fragmentSearchInputCardViewBuscar" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragmentSearchInputRecyclerViewTracks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragmentSearchInputTextViewTracks" />
 
     <TextView
         android:id="@+id/fragmentSearchInputTextViewAlbums"
@@ -70,8 +57,18 @@
         android:gravity="center_vertical"
         android:text="@string/ver_albumes"
         android:textSize="16dp"
+        android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragmentSearchInputTextViewTracks" />
+        app:layout_constraintTop_toBottomOf="@id/fragmentSearchInputRecyclerViewTracks" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragmentSearchInputRecyclerViewAlbums"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragmentSearchInputTextViewAlbums" />
 
     <TextView
         android:id="@+id/fragmentSearchInputTextViewArtistas"
@@ -81,8 +78,18 @@
         android:gravity="center_vertical"
         android:text="@string/ver_artistas"
         android:textSize="16dp"
+        android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragmentSearchInputTextViewAlbums" />
+        app:layout_constraintTop_toBottomOf="@id/fragmentSearchInputRecyclerViewAlbums" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragmentSearchInputRecyclerViewArtists"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragmentSearchInputTextViewArtistas" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

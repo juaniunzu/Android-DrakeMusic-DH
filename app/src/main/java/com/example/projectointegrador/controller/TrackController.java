@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.projectointegrador.dao.TrackApiDao;
 import com.example.projectointegrador.dao.TrackDao;
 import com.example.projectointegrador.model.Track;
+import com.example.projectointegrador.service.ResponseTrack;
 import com.example.projectointegrador.util.ResultListener;
 import com.example.projectointegrador.util.Utils;
 
@@ -46,6 +47,19 @@ public class TrackController {
                 @Override
                 public void finish(List<Track> resultado) {
                     listenerDeLaVista.finish(resultado);
+                }
+            });
+        }
+    }
+
+    public void buscarTracks(Context context, String busqueda, final ResultListener<ResponseTrack> listener){
+        boolean hayInternet = Utils.hayInternet(context);
+        if (hayInternet){
+            TrackApiDao trackApiDao = new TrackApiDao();
+            trackApiDao.buscarTracks(busqueda, new ResultListener<ResponseTrack>() {
+                @Override
+                public void finish(ResponseTrack resultado) {
+                    listener.finish(resultado);
                 }
             });
         }

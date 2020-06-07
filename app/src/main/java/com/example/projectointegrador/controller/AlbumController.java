@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.projectointegrador.dao.AlbumApiDao;
 import com.example.projectointegrador.dao.AlbumDao;
 import com.example.projectointegrador.model.Album;
+import com.example.projectointegrador.service.ResponseAlbum;
 import com.example.projectointegrador.util.ResultListener;
 import com.example.projectointegrador.util.Utils;
 
@@ -34,6 +35,19 @@ public class AlbumController {
                 @Override
                 public void finish(List<Album> resultado) {
                     listenerDeLaVista.finish(resultado);
+                }
+            });
+        }
+    }
+
+    public void buscarAlbumes(Context context, String busqueda, final ResultListener<ResponseAlbum> listener){
+        boolean hayInternet = Utils.hayInternet(context);
+        if(hayInternet){
+            AlbumApiDao albumApiDao = new AlbumApiDao();
+            albumApiDao.buscarAlbumes(busqueda, new ResultListener<ResponseAlbum>() {
+                @Override
+                public void finish(ResponseAlbum resultado) {
+                    listener.finish(resultado);
                 }
             });
         }

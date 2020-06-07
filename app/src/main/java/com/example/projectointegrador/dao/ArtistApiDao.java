@@ -31,4 +31,25 @@ public class ArtistApiDao extends DaoHelper {
             }
         });
     }
+
+    public void buscarArtistas(String busqueda, final ResultListener<ResponseArtist> resultListenerFromController){
+        Call<ResponseArtist> call = artistService.buscarArtistas(busqueda);
+        call.enqueue(new Callback<ResponseArtist>() {
+            @Override
+            public void onResponse(Call<ResponseArtist> call, Response<ResponseArtist> response) {
+                if (response.isSuccessful()) {
+                    ResponseArtist responseArtist = response.body();
+                    resultListenerFromController.finish(responseArtist);
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseArtist> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+
+    }
+
+
 }

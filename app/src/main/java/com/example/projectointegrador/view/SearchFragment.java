@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,6 +51,14 @@ public class SearchFragment extends Fragment implements SearchAdapter.SearchAdap
         setBusquedasRecientesList(view);
 
 
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickSearchFragment();
+            }
+        });
+
+
         return view;
     }
 
@@ -75,5 +85,7 @@ public class SearchFragment extends Fragment implements SearchAdapter.SearchAdap
 
     public interface SearchFragmentListener{
         void onClickSearchFragment(Utils.Searchable searchable);
+        void onClickSearchFragment();
     }
+
 }

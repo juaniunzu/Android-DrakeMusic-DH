@@ -62,8 +62,21 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
         fragmentTransaction.commit();
     }
 
+    private void setFragmentReplace(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.activitySearchFragmentContainer, fragment);
+        fragmentTransaction.commit();
+    }
+
     @Override
     public void onClickSearchFragment(Utils.Searchable searchable) {
 
+    }
+
+    @Override
+    public void onClickSearchFragment() {
+        SearchInputFragment searchInputFragment = new SearchInputFragment();
+        setFragmentReplace(searchInputFragment);
     }
 }
