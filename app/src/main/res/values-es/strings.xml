@@ -20,5 +20,10 @@
     <string name="ver_tracks">Ver todos los tracks</string>
     <string name="ver_albumes">Ver todos los álbumes</string>
     <string name="en_busqueda">\" %s \" en búsqueda</string>
+    <string name="bienvenido">Bienvenido!</string>
+    <string name="o">o</string>
+    <string name="registrarse">Registrarse</string>
+    <string name="bienvenido_denuevo">Bienvenido de nuevo!</string>
+    <string name="slogan">Toda tu música. Justo aquí, en un solo lugar.</string>
 
 </resources>
