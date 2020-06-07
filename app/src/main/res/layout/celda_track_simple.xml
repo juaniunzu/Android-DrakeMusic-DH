@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/celdaTrackSimple">
+
+    <TextView
+        android:id="@+id/celdaTrackSimpleTextViewTitulo"
+        style="@style/celdahome_titulo_celda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:text="Nombre album"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/celdaTrackSimpleTextViewArtista"
+        style="@style/celdahome_album_artista_celda"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:paddingBottom="15dp"
+        android:text="Nombre artista"
+        app:layout_constraintStart_toStartOf="@id/celdaTrackSimpleTextViewTitulo"
+        app:layout_constraintTop_toBottomOf="@id/celdaTrackSimpleTextViewTitulo" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

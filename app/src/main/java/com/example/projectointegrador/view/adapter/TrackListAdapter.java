@@ -27,7 +27,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.Trac
     @Override
     public TrackListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.celda_tracks_de_un_album,parent,false);
+        View view = layoutInflater.inflate(R.layout.celda_track_simple,parent,false);
 
         TrackListViewHolder trackListViewHolder = new TrackListViewHolder(view);
         return trackListViewHolder;
@@ -46,16 +46,14 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.Trac
 
     protected class TrackListViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView textViewNumeroDelTrack;
-        private TextView textViewNombreDelTrack;
-        private TextView textViewDuracionDelTrack;
+        private TextView celdaTrackSimpleTextViewTitulo;
+        private TextView celdaTrackSimpleTextViewArtista;
 
         public TrackListViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            textViewNumeroDelTrack = itemView.findViewById(R.id.celdaTracksDeUnAlbum_NumeroDelTrack);
-            textViewNombreDelTrack = itemView.findViewById(R.id.celdaTracksDeUnAlbum_NombreDelTrack);
-            textViewDuracionDelTrack = itemView.findViewById(R.id.celdaTracksDeUnAlbum_DuracionDelTrack);
+            celdaTrackSimpleTextViewTitulo = itemView.findViewById(R.id.celdaTrackSimpleTextViewTitulo);
+            celdaTrackSimpleTextViewArtista = itemView.findViewById(R.id.celdaTrackSimpleTextViewArtista);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -67,10 +65,8 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.Trac
 
         }
         public void darValores(Track track) {
-            Integer numeroDelTrack = getAdapterPosition()+1;
-            textViewNumeroDelTrack.setText(numeroDelTrack.toString()+".");
-            textViewNombreDelTrack.setText(track.getTitle());
-            textViewDuracionDelTrack.setText(track.getDuration().toString());
+            celdaTrackSimpleTextViewTitulo.setText(track.getTitle());
+            celdaTrackSimpleTextViewArtista.setText(track.getArtist().getName());
         }
     }
 
