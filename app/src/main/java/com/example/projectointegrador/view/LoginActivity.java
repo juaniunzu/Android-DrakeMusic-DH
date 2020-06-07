@@ -2,6 +2,9 @@ package com.example.projectointegrador.view;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,16 +30,12 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Arrays;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements LoginFragment.LoginFragmentListener,
+        LoginInicioFragment.LoginInicioFragmentListener, SignUpFragment.SignUpFragmentListener {
 
     private static final String EMAIL = "email";
     private static final int RC_SIGN_IN = 1;
-    private Button botonLogin;
-    private TextInputEditText textInputEditTextUsername;
-    private TextInputEditText textInputEditTextPassword;
-    private SignInButton botonLoginConGoogle;
     private GoogleSignInClient mGoogleSignInClient;
-    private LoginButton botonLoginConFacebook;
     private CallbackManager callbackManager;
 
     @Override
@@ -44,7 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        setFindViewByIds();
+        pegarFragment(new LoginInicioFragment(this));
+
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -53,50 +53,16 @@ public class LoginActivity extends AppCompatActivity {
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-
-        botonLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pasarALaMainActivityMatandoActividadActual();
-            }
-        });
-        botonLoginConGoogle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
-
         callbackManager = CallbackManager.Factory.create();
 
-        botonLoginConFacebook.setReadPermissions(Arrays.asList(EMAIL));
-        // If you are using in a fragment, call loginButton.setFragment(this);
-
-        // Callback registration
-        botonLoginConFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                pasarALaMainActivityMatandoActividadActual();
-            }
-
-            @Override
-            public void onCancel() {
-                // App code
-            }
-
-            @Override
-            public void onError(FacebookException exception) {
-                // App code
-            }
-        });
     }
 
-    private void setFindViewByIds() {
-        botonLogin = findViewById(R.id.activityLogin_ButtonIniciarSesion);
-        botonLoginConGoogle = findViewById(R.id.activityLogin_BotonLoginDeGoogle);
-        botonLoginConFacebook = findViewById(R.id.activityLogin_loginbuttonFacebook);
-        textInputEditTextUsername = findViewById(R.id.activityLogin_TextInputEditTextUsername);
-        textInputEditTextPassword = findViewById(R.id.activityLogin_TextInputEditTextPassword);
+    private void pegarFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.activityLogin_fragmentContainer, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
 
@@ -135,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
 
-       // LoginManager.getInstance().logOut();
+        // LoginManager.getInstance().logOut();
 
     }
 
@@ -169,6 +135,71 @@ public class LoginActivity extends AppCompatActivity {
             Log.w("GOOGLE", "signInResult:failed code=" + e.getStatusCode());
             updateUIGoogle(null);
         }
+    }
+
+    @Override
+    public void onClickLoginInicioBotonIniciarSesion() {
+        //pega un fragment LoginFragment
+        pegarFragment(new LoginFragment(this));
+    }
+
+    @Override
+    public void onClickLoginInicioBotonRegistrarse() {
+        //pega un fragment SignUpFragment
+        pegarFragment(new SignUpFragment(this));
+    }
+
+    @Override
+    public void onClickLoginFragmentBotonLogin(String username, String password) {
+        //cuando tengamos firebase authentication, se toca este modulo
+        pasarALaMainActivityMatandoActividadActual();
+    }
+
+    @Override
+    public void onClickLoginFragmentBotonLoginConGoogle() {
+        signIn();
+    }
+
+    @Override
+    public void onClickLoginFragmentBotonLoginConFacebook(LoginButton loginButton) {
+
+        loginButton.setReadPermissions(Arrays.asList(EMAIL));
+
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                pasarALaMainActivityMatandoActividadActual();
+            }
+
+            @Override
+            public void onCancel() {
+                // App code
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                // App code
+            }
+        });
+    }
+
+
+    @Override
+    public void onClickSignUpFragmentBotonSignUpGoogle(SignInButton button) {
+        //editar, esto es crear cuenta con google por 1era vez
+        pasarALaMainActivityMatandoActividadActual();
+    }
+
+    @Override
+    public void onClickSignUpFragmentBotonSignUpFacebook(LoginButton button) {
+        //editar, esto es crear cuenta con facebook por 1era vez
+        pasarALaMainActivityMatandoActividadActual();
+    }
+
+    @Override
+    public void onClickSignUpFragmentBotonRegistrarse(String username, String password) {
+        //editar, esto es crear cuenta con datos, cuando tengamos firebase authentication, se toca este modulo
+        pasarALaMainActivityMatandoActividadActual();
     }
 
 //    Metodo para conseguir la hashkey.

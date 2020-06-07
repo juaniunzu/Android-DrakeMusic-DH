@@ -4,64 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.LoginActivity"
     android:background="@color/primary"
     android:orientation="vertical"
-    >
+    tools:context=".view.LoginActivity">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/activityLogin_TextInputLayoutUsername"
+    <FrameLayout
+        android:id="@+id/activityLogin_fragmentContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="30dp"
-        android:textColorHint="@color/text_subtitles">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/activityLogin_TextInputEditTextUsername"
-            android:hint="@string/Usuario"
-            android:textColor="@color/text_subtitles" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/activityLogin_TextInputLayoutPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:textColorHint="@color/text_subtitles">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/activityLogin_TextInputEditTextPassword"
-            android:hint="@string/Contraseña"
-            android:textColor="@color/text_subtitles"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:id="@+id/activityLogin_ButtonIniciarSesion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/Iniciar_Sesion"
-        android:layout_margin="10dp"
-        android:textSize="15sp"
-        android:background="@color/accent"
-        style="@style/Widget.MaterialComponents.Button"
-        />
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/activityLogin_BotonLoginDeGoogle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/activityLogin_loginbuttonFacebook"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

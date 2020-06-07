@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.LoginFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/fragmentLoginGuideline25"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/fragmentLoginGuideline75"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <ImageView
+        android:id="@+id/fragmentLogin_ImageViewLogo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/iron_maiden"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/fragmentLoginTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/bienvenido_denuevo"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragmentLogin_ImageViewLogo" />
+
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/fragmentLogin_BotonLoginDeGoogle"
+        android:layout_width="180dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="@id/fragmentLoginGuideline25"
+        app:layout_constraintStart_toStartOf="@id/fragmentLoginGuideline25"
+        app:layout_constraintTop_toBottomOf="@id/fragmentLoginTextView" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/fragmentLogin_loginbuttonFacebook"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="34dp"
+        android:paddingTop="17dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintEnd_toEndOf="@id/fragmentLoginGuideline75"
+        app:layout_constraintStart_toStartOf="@id/fragmentLoginGuideline75"
+        app:layout_constraintTop_toBottomOf="@id/fragmentLoginTextView" />
+
+    <TextView
+        android:id="@+id/fragmentLogin_textViewO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/o"
+        android:textColor="#000"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragmentLogin_BotonLoginDeGoogle" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fragmentLogin_TextInputLayoutUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"
+        android:textColorHint="@color/text_subtitles"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragmentLogin_textViewO">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fragmentLogin_TextInputEditTextUsername"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/Usuario"
+            android:textColor="@color/text_subtitles" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fragmentLogin_TextInputLayoutPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:textColorHint="@color/text_subtitles"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragmentLogin_TextInputLayoutUsername">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/fragmentLogin_TextInputEditTextPassword"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/Contraseña"
+            android:textColor="@color/text_subtitles" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/fragmentLogin_ButtonIniciarSesion"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:background="@color/accent"
+        android:text="@string/Iniciar_Sesion"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragmentLogin_TextInputLayoutPassword" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
