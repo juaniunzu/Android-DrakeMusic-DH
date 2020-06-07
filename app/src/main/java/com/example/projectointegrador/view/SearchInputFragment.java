@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.projectointegrador.R;
+import com.example.projectointegrador.controller.AlbumController;
 
 
 public class SearchInputFragment extends Fragment {
@@ -52,7 +52,21 @@ public class SearchInputFragment extends Fragment {
         rvArtists = view.findViewById(R.id.fragmentSearchInputRecyclerViewArtists);
 
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //metodo para obtener la query que introduce el usuario, no hace una mierda pq
+                //constantemente hago la consulta en el onQueryTextChange
+                return true;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //crear un controller de cada tipo que busque y muestre 2 resultados, luego en el
+                //onFinish del controller crear y setear adapters y layoutmanagers
+                return true;
+            }
+        });
 
 
         return view;

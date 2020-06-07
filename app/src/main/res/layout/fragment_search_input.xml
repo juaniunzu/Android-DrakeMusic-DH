@@ -4,26 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#9fff"
     tools:context=".view.SearchInputFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/fragmentSearchInputCardViewBuscar"
         android:layout_width="350dp"
-        android:layout_height="46dp"
+        android:layout_height="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/text_subtitles"
-        app:cardCornerRadius="23dp"
+        app:cardCornerRadius="25dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/fragmentSearchInputSearchView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:gravity="center_vertical"
-            android:hint="@string/tracks_artistas_albumes"/>
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/fragmentSearchInputSearchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="center_vertical"
+        app:iconifiedByDefault="false"
+        app:queryHint="@string/tracks_artistas_albumes"/>
 
     </androidx.cardview.widget.CardView>
 
