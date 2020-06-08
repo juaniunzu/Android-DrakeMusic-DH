@@ -81,6 +81,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.activitySearchFragmentContainer, fragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
@@ -117,7 +118,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
         bundle.putSerializable(FragmentTrackList.ALBUM,album);
         FragmentTrackList fragmentTrackList = new FragmentTrackList();
         fragmentTrackList.setArguments(bundle);
-        pegarFragmentAdd(fragmentTrackList);
+        setFragmentReplace(fragmentTrackList);
     }
 
     @Override
@@ -126,7 +127,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
         bundle.putSerializable(DetailArtistFragment.ARTIST, artist);
         DetailArtistFragment detailArtistFragment = new DetailArtistFragment();
         detailArtistFragment.setArguments(bundle);
-        pegarFragmentAdd(detailArtistFragment);
+        setFragmentReplace(detailArtistFragment);
     }
 
     @Override
@@ -145,7 +146,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
         bundle.putSerializable(FragmentTrackList.ALBUM,album);
         FragmentTrackList fragmentTrackList = new FragmentTrackList();
         fragmentTrackList.setArguments(bundle);
-        pegarFragmentAdd(fragmentTrackList);
+        setFragmentReplace(fragmentTrackList);
     }
 
     @Override
@@ -154,7 +155,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
         bundle.putSerializable(DetailArtistFragment.ARTIST, artist);
         DetailArtistFragment detailArtistFragment = new DetailArtistFragment();
         detailArtistFragment.setArguments(bundle);
-        pegarFragmentAdd(detailArtistFragment);
+        setFragmentReplace(detailArtistFragment);
     }
 
     @Override
@@ -169,16 +170,30 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
 
     @Override
     public void fragmentOnClickAlbumDesdeFragmentArtistDetail(Album album) {
-
+        Bundle datos = new Bundle();
+        datos.putSerializable(FragmentTrackList.ALBUM,album);
+        FragmentTrackList fragmentTrackList = new FragmentTrackList();
+        fragmentTrackList.setArguments(datos);
+        setFragmentReplace(fragmentTrackList);
     }
 
     @Override
     public void fragmentOnClickTrackDesdeFragmentArtistDetail(Track track, List<Track> trackList) {
-
+        Intent searchAPlayer = new Intent(SearchActivity.this, PlayerActivity.class);
+        Bundle datos = new Bundle();
+        datos.putSerializable("track", track);
+        datos.putSerializable("lista", (ArrayList) trackList);
+        searchAPlayer.putExtras(datos);
+        startActivity(searchAPlayer);
     }
 
     @Override
     public void onClickTrackFragmentTrackList(Track track, List<Track> trackList) {
-
+        Intent searchAPlayer = new Intent(SearchActivity.this, PlayerActivity.class);
+        Bundle datos = new Bundle();
+        datos.putSerializable("track", track);
+        datos.putSerializable("lista", (ArrayList) trackList);
+        searchAPlayer.putExtras(datos);
+        startActivity(searchAPlayer);
     }
 }
