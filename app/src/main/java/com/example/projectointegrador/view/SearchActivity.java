@@ -15,6 +15,9 @@ import com.example.projectointegrador.R;
 import com.example.projectointegrador.util.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import static com.example.projectointegrador.view.SearchDetailFragment.KEY_QUERY;
+import static com.example.projectointegrador.view.SearchDetailFragment.KEY_TYPE;
+
 public class SearchActivity extends AppCompatActivity implements SearchFragment.SearchFragmentListener, SearchInputFragment.SearchInputFragmentListener {
 
     BottomNavigationView bottomNavigationView;
@@ -26,6 +29,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
 
         setFragmentInicial(new SearchFragment());
 
+        //TODO USAR BINDING
         bottomNavigationView = findViewById(R.id.activitySearch_BottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bottomNavigationView_Search);
 
@@ -80,27 +84,19 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
         setFragmentReplace(searchInputFragment);
     }
 
-    @Override
-    public void onClickAlbumes(String query, String type) {
-        pegarSearchDetailFragment(query, type);
-    }
 
-    @Override
-    public void onClickArtistas(String query, String type) {
-        pegarSearchDetailFragment(query, type);
-    }
-
-    @Override
-    public void onClickTracks(String query, String type) {
-        pegarSearchDetailFragment(query,type);
-    }
 
     public void pegarSearchDetailFragment (String query, String type){
         Bundle bundle = new Bundle();
-        bundle.putString("query", query);
-        bundle.putString("type", type);
+        bundle.putString(KEY_QUERY, query);
+        bundle.putString(KEY_TYPE, type);
         Fragment fragment = new SearchDetailFragment();
         fragment.setArguments(bundle);
-        setFragmentReplace(fragment);
+        setFragmentInicial(fragment);
+    }
+
+    @Override
+    public void onClickFiltroVerTodo(String query, String type) {
+        pegarSearchDetailFragment(query,type);
     }
 }

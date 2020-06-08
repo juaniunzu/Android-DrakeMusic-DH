@@ -12,13 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.AlbumController;
 import com.example.projectointegrador.controller.ArtistController;
 import com.example.projectointegrador.controller.TrackController;
-import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.service.ResponseAlbum;
 import com.example.projectointegrador.service.ResponseArtist;
 import com.example.projectointegrador.service.ResponseTrack;
@@ -27,7 +27,9 @@ import com.example.projectointegrador.view.adapter.AlbumSearchAdapter;
 import com.example.projectointegrador.view.adapter.ArtistSearchAdapter;
 import com.example.projectointegrador.view.adapter.TrackSearchAdapter;
 
-import java.util.List;
+import static com.example.projectointegrador.view.SearchDetailFragment.TYPE_ALBUM;
+import static com.example.projectointegrador.view.SearchDetailFragment.TYPE_ARTIST;
+import static com.example.projectointegrador.view.SearchDetailFragment.TYPE_TRACK;
 
 
 public class SearchInputFragment extends Fragment {
@@ -65,6 +67,8 @@ public class SearchInputFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_search_input, container, false);
 
+
+        //TODO USAR BINDING!!!!!
         searchView = view.findViewById(R.id.fragmentSearchInputSearchView);
         tvTracks = view.findViewById(R.id.fragmentSearchInputTextViewTracks);
         tvAlbums = view.findViewById(R.id.fragmentSearchInputTextViewAlbums);
@@ -87,7 +91,7 @@ public class SearchInputFragment extends Fragment {
             public boolean onQueryTextSubmit(String query) {
                 //metodo para obtener la query que introduce el usuario, solo actualiza query
                 SearchInputFragment.this.query = query;
-                return true;
+                return false;
             }
 
             @Override
@@ -136,8 +140,8 @@ public class SearchInputFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (query.length() != 0){
-                    String type = "Artist";
-                    listener.onClickArtistas(query, type);
+                    String type = TYPE_ARTIST;
+                    listener.onClickFiltroVerTodo(query, type);
                 }
             }
         });
@@ -146,8 +150,8 @@ public class SearchInputFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (query.length() != 0){
-                    String type = "Album";
-                    listener.onClickAlbumes(query, type);
+                    String type = TYPE_ALBUM;
+                    listener.onClickFiltroVerTodo(query, type);
                 }
             }
         });
@@ -156,8 +160,8 @@ public class SearchInputFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (query.length() != 0){
-                    String type = "Track";
-                    listener.onClickTracks(query, type);
+                    String type = TYPE_TRACK;
+                    listener.onClickFiltroVerTodo(query, type);
                 }
             }
         });
@@ -166,8 +170,6 @@ public class SearchInputFragment extends Fragment {
     }
 
     public interface SearchInputFragmentListener {
-        void onClickAlbumes(String query, String type);
-        void onClickArtistas(String query, String type);
-        void onClickTracks(String query, String type);
+        void onClickFiltroVerTodo(String query, String type);
     }
 }
