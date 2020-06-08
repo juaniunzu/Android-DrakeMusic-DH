@@ -9,9 +9,11 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.projectointegrador.R;
+import com.example.projectointegrador.databinding.ActivitySearchBinding;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
 import com.example.projectointegrador.model.Track;
@@ -31,20 +33,22 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
                                                     SearchDetailFragment.SearchDetailFragmentListener,
         FragmentTrackList.FragmentTrackListListener, DetailArtistFragment.FragmentArtistDetailListener {
 
-    BottomNavigationView bottomNavigationView;
+
+    private ActivitySearchBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        binding = ActivitySearchBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         pegarFragmentAdd(new SearchFragment());
 
-        //TODO USAR BINDING
-        bottomNavigationView = findViewById(R.id.activitySearch_BottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.bottomNavigationView_Search);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        binding.activitySearchBottomNavigationView.setSelectedItemId(R.id.bottomNavigationView_Search);
+
+        binding.activitySearchBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {

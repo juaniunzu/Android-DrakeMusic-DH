@@ -7,18 +7,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
 
-import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.AlbumController;
 import com.example.projectointegrador.controller.ArtistController;
 import com.example.projectointegrador.controller.TrackController;
+import com.example.projectointegrador.databinding.FragmentSearchInputBinding;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
 import com.example.projectointegrador.model.Track;
@@ -42,16 +39,10 @@ public class SearchInputFragment extends Fragment implements
                                                     ArtistSearchAdapter.ArtistSearchAdapterListener,
                                                     TrackSearchAdapter.TrackSearchAdapterListener {
 
-    //declarar atributos editText (o searchview), recyclerview y los tres textview
-    private SearchView searchView;
-    private TextView tvTracks;
-    private TextView tvAlbums;
-    private TextView tvArtists;
-    private RecyclerView rvTracks;
-    private RecyclerView rvAlbums;
-    private RecyclerView rvArtists;
     private String query;
     private SearchInputFragmentListener listener;
+
+    private FragmentSearchInputBinding binding;
 
     public SearchInputFragment() {
         // Required empty public constructor
@@ -67,109 +58,99 @@ public class SearchInputFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //linkear los atributos y ponerle onClickListener a los tres textview,
-        //los tres listener hacen lo mismo: crean y pegan un SearchDetailFragment y le pasan
-        //la data de lo que está escrito en el editText (o searchview) como parametro en el constructor.
-        //Segun cual de los tres textview se clickee, el SearchDetailFragment creado tiene que rellenar su lista con una
-        //query del tipo correspondiente.
+        binding = FragmentSearchInputBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
-        View view = inflater.inflate(R.layout.fragment_search_input, container, false);
+        //por defecto, los recyclers no son visibles
+        binding.fragmentSearchInputTextViewTracks.setVisibility(View.GONE);
+        binding.fragmentSearchInputTextViewAlbums.setVisibility(View.GONE);
+        binding.fragmentSearchInputTextViewArtistas.setVisibility(View.GONE);
 
-
-        //TODO USAR BINDING!!!!!
-        searchView = view.findViewById(R.id.fragmentSearchInputSearchView);
-        tvTracks = view.findViewById(R.id.fragmentSearchInputTextViewTracks);
-        tvAlbums = view.findViewById(R.id.fragmentSearchInputTextViewAlbums);
-        tvArtists = view.findViewById(R.id.fragmentSearchInputTextViewArtistas);
-        rvTracks = view.findViewById(R.id.fragmentSearchInputRecyclerViewTracks);
-        rvAlbums = view.findViewById(R.id.fragmentSearchInputRecyclerViewAlbums);
-        rvArtists = view.findViewById(R.id.fragmentSearchInputRecyclerViewArtists);
-
-        tvTracks.setVisibility(View.GONE);
-        tvAlbums.setVisibility(View.GONE);
-        tvArtists.setVisibility(View.GONE);
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        // listener del search
+        binding.fragmentSearchInputSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             AlbumController albumController = new AlbumController();
             ArtistController artistController = new ArtistController();
             TrackController trackController = new TrackController();
 
+
+            //metodo para obtener la query que introduce el usuario, al presionar el boton
+            //buscar por el momento solo actualiza la query y cierra el teclado
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //metodo para obtener la query que introduce el usuario, solo actualiza query
                 SearchInputFragment.this.query = query;
                 return false;
             }
 
+            //metodo que devuelve un String cada vez que el user tipea. Hace visibles los Recyclers,
+            //y los actualiza con la nueva consulta basada en ese string
             @Override
             public boolean onQueryTextChange(String newText) {
-                //crear un controller de cada tipo que busque y muestre 2 resultados, luego en el
-                //onFinish del controller crear y setear adapters y layoutmanagers
                 query = newText;
-                tvAlbums.setVisibility(View.VISIBLE);
-                tvArtists.setVisibility(View.VISIBLE);
-                tvTracks.setVisibility(View.VISIBLE);
+                binding.fragmentSearchInputTextViewAlbums.setVisibility(View.VISIBLE);
+                binding.fragmentSearchInputTextViewArtistas.setVisibility(View.VISIBLE);
+                binding.fragmentSearchInputTextViewTracks.setVisibility(View.VISIBLE);
 
                     albumController.buscarAlbumes(getContext(), newText, new ResultListener<ResponseAlbum>() {
                         @Override
                         public void finish(ResponseAlbum resultado) {
                             AlbumSearchAdapter albumSearchAdapter = new AlbumSearchAdapter(resultado.getAlbumes(), false, SearchInputFragment.this);
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL, false);
-                            rvAlbums.setLayoutManager(linearLayoutManager);
-                            rvAlbums.setAdapter(albumSearchAdapter);
+                            binding.fragmentSearchInputRecyclerViewAlbums.setLayoutManager(linearLayoutManager);
+                            binding.fragmentSearchInputRecyclerViewAlbums.setAdapter(albumSearchAdapter);
                         }
                     });
 
-                    artistController.buscarArtistas(getContext(), searchView.getQuery().toString(), new ResultListener<ResponseArtist>() {
+                    artistController.buscarArtistas(getContext(), newText, new ResultListener<ResponseArtist>() {
                         @Override
                         public void finish(ResponseArtist resultado) {
                             ArtistSearchAdapter artistSearchAdapter = new ArtistSearchAdapter(resultado.getArtistas(), false, SearchInputFragment.this);
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
-                            rvArtists.setAdapter(artistSearchAdapter);
-                            rvArtists.setLayoutManager(linearLayoutManager);
+                            binding.fragmentSearchInputRecyclerViewArtists.setAdapter(artistSearchAdapter);
+                            binding.fragmentSearchInputRecyclerViewArtists.setLayoutManager(linearLayoutManager);
                         }
                     });
 
-                    trackController.buscarTracks(getContext(), searchView.getQuery().toString(), new ResultListener<ResponseTrack>() {
+                    trackController.buscarTracks(getContext(), newText, new ResultListener<ResponseTrack>() {
                         @Override
                         public void finish(ResponseTrack resultado) {
                             TrackSearchAdapter trackSearchAdapter = new TrackSearchAdapter(resultado.getTracks(), false, SearchInputFragment.this);
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                            rvTracks.setAdapter(trackSearchAdapter);
-                            rvTracks.setLayoutManager(linearLayoutManager);
+                            binding.fragmentSearchInputRecyclerViewTracks.setAdapter(trackSearchAdapter);
+                            binding.fragmentSearchInputRecyclerViewTracks.setLayoutManager(linearLayoutManager);
                         }
                     });
                 return true;
             }
         });
 
-        tvArtists.setOnClickListener(new View.OnClickListener() {
+        //listeners de los TV. Filtra la busqueda segun el textview clickeado y muestra una lista
+        // completa de resultados segun lo que escriba el user (pega un searchdetailfragment
+        // pasandole la query del searchview)
+
+        binding.fragmentSearchInputTextViewArtistas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (query.length() != 0){
-                    String type = TYPE_ARTIST;
-                    listener.onClickFiltroVerTodo(query, type);
+                    listener.onClickFiltroVerTodo(query, TYPE_ARTIST);
                 }
             }
         });
 
-        tvAlbums.setOnClickListener(new View.OnClickListener() {
+        binding.fragmentSearchInputTextViewAlbums.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (query.length() != 0){
-                    String type = TYPE_ALBUM;
-                    listener.onClickFiltroVerTodo(query, type);
+                    listener.onClickFiltroVerTodo(query, TYPE_ALBUM);
                 }
             }
         });
 
-        tvTracks.setOnClickListener(new View.OnClickListener() {
+        binding.fragmentSearchInputTextViewTracks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (query.length() != 0){
-                    String type = TYPE_TRACK;
-                    listener.onClickFiltroVerTodo(query, type);
+                    listener.onClickFiltroVerTodo(query, TYPE_TRACK);
                 }
             }
         });

@@ -17,6 +17,7 @@ import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.AlbumController;
 import com.example.projectointegrador.controller.ArtistController;
 import com.example.projectointegrador.controller.TrackController;
+import com.example.projectointegrador.databinding.FragmentSearchDetailBinding;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
 import com.example.projectointegrador.model.Track;
@@ -43,9 +44,9 @@ public class SearchDetailFragment extends Fragment implements AlbumSearchAdapter
     public static final String TYPE_ALBUM = "album";
     public static final String TYPE_TRACK = "track";
 
-    private TextView tv;
-    private RecyclerView rv;
     private SearchDetailFragmentListener listener;
+
+    private FragmentSearchDetailBinding binding;
 
     public SearchDetailFragment() {
         // Required empty public constructor
@@ -67,15 +68,14 @@ public class SearchDetailFragment extends Fragment implements AlbumSearchAdapter
         //a track, album o artista
         //segun en cual de los tres textview anteriores de haya clickeado
 
-        View view = inflater.inflate(R.layout.fragment_search_detail, container, false);
+        binding = FragmentSearchDetailBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
-        tv = view.findViewById(R.id.fragmentSearchDetailTextView);
-        rv = view.findViewById(R.id.fragmentSearchDetailRecyclerView);
 
         Bundle bundle = getArguments();
         String query = bundle.getString(KEY_QUERY);
 
-        tv.setText(String.format(getString(R.string.en_busqueda), query));
+        binding.fragmentSearchDetailTextView.setText(String.format(getString(R.string.en_busqueda), query));
 
         switch (bundle.getString(KEY_TYPE)){
 
@@ -86,8 +86,8 @@ public class SearchDetailFragment extends Fragment implements AlbumSearchAdapter
                     public void finish(ResponseAlbum resultado) {
                         AlbumSearchAdapter albumSearchAdapter = new AlbumSearchAdapter(resultado.getAlbumes(), true, SearchDetailFragment.this);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                        rv.setAdapter(albumSearchAdapter);
-                        rv.setLayoutManager(linearLayoutManager);
+                        binding.fragmentSearchDetailRecyclerView.setAdapter(albumSearchAdapter);
+                        binding.fragmentSearchDetailRecyclerView.setLayoutManager(linearLayoutManager);
                     }
                 });
                 break;
@@ -99,8 +99,8 @@ public class SearchDetailFragment extends Fragment implements AlbumSearchAdapter
                     public void finish(ResponseArtist resultado) {
                         ArtistSearchAdapter artistSearchAdapter = new ArtistSearchAdapter(resultado.getArtistas(), true, SearchDetailFragment.this);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                        rv.setAdapter(artistSearchAdapter);
-                        rv.setLayoutManager(linearLayoutManager);
+                        binding.fragmentSearchDetailRecyclerView.setAdapter(artistSearchAdapter);
+                        binding.fragmentSearchDetailRecyclerView.setLayoutManager(linearLayoutManager);
                     }
                 });
                 break;
@@ -111,8 +111,8 @@ public class SearchDetailFragment extends Fragment implements AlbumSearchAdapter
                     public void finish(ResponseTrack resultado) {
                         TrackSearchAdapter trackSearchAdapter = new TrackSearchAdapter(resultado.getTracks(), true, SearchDetailFragment.this);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                        rv.setAdapter(trackSearchAdapter);
-                        rv.setLayoutManager(linearLayoutManager);
+                        binding.fragmentSearchDetailRecyclerView.setAdapter(trackSearchAdapter);
+                        binding.fragmentSearchDetailRecyclerView.setLayoutManager(linearLayoutManager);
                     }
                 });
         }

@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.dao.SearchableDao;
+import com.example.projectointegrador.databinding.FragmentSearchBinding;
 import com.example.projectointegrador.util.Utils;
 import com.example.projectointegrador.view.adapter.SearchAdapter;
 
@@ -29,9 +30,9 @@ import java.util.List;
 public class SearchFragment extends Fragment implements SearchAdapter.SearchAdapterListener {
 
     private List<Utils.Searchable> searchableList;
-    private RecyclerView fragmentSearchRecyclerView;
     private SearchFragmentListener listener;
-    private CardView cardView;
+
+    private FragmentSearchBinding binding;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -42,35 +43,30 @@ public class SearchFragment extends Fragment implements SearchAdapter.SearchAdap
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
-
-        //Setear OnClickListener a este cardview que cree y pegue un SearchInputFragment
-        //TODO USAR BINDING!!!!
-        cardView = view.findViewById(R.id.fragmentSearchCardViewBuscar);
+        binding = FragmentSearchBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
         //esta lista por el momento se llena con datos hardcodeados, en un futuro tiene que recibir data de Firebase
         setBusquedasRecientesList(view);
 
-
-        cardView.setOnClickListener(new View.OnClickListener() {
+        //Crea y pega un SearchInputFragment
+        binding.fragmentSearchCardViewBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onClickSearchFragment();
             }
         });
 
-
         return view;
     }
 
     private void setBusquedasRecientesList(View view) {
         searchableList = SearchableDao.getSearchables();
-        fragmentSearchRecyclerView = view.findViewById(R.id.fragmentSearchRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         SearchAdapter searchAdapter = new SearchAdapter(searchableList, this);
 
-        fragmentSearchRecyclerView.setAdapter(searchAdapter);
-        fragmentSearchRecyclerView.setLayoutManager(linearLayoutManager);
+        binding.fragmentSearchRecyclerView.setAdapter(searchAdapter);
+        binding.fragmentSearchRecyclerView.setLayoutManager(linearLayoutManager);
     }
 
     @Override
