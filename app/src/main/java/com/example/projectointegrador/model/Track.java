@@ -12,13 +12,24 @@ public class Track implements Serializable, Utils.Searchable {
     private Integer duration;
     private Artist artist;
     private Album album;
+    private String type;
 
+    //constructor para hardcodeados . Borrar mas adelante
     public Track(Integer id, String title, Integer duration, Artist artist, Album album) {
         this.id = id;
         this.title = title;
         this.duration = duration;
         this.artist = artist;
         this.album = album;
+    }
+
+    public Track(Integer id, String title, Integer duration, Artist artist, Album album, String type) {
+        this.id = id;
+        this.title = title;
+        this.duration = duration;
+        this.artist = artist;
+        this.album = album;
+        this.type = type;
     }
 
     public Integer getId() {
@@ -59,6 +70,14 @@ public class Track implements Serializable, Utils.Searchable {
 
     public void setAlbum(Album album) {
         this.album = album;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override

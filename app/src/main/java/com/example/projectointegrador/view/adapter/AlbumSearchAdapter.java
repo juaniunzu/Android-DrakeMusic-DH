@@ -1,5 +1,6 @@
 package com.example.projectointegrador.view.adapter;
 
+import android.bluetooth.le.ScanSettings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +21,11 @@ import java.util.List;
 public class AlbumSearchAdapter extends RecyclerView.Adapter<AlbumSearchAdapter.ViewHolderAlbumSearch> {
 
     private List<Album> albumList;
+    private Boolean listacompleta;
 
-
-    public AlbumSearchAdapter(List<Album> albumList) {
+    public AlbumSearchAdapter(List<Album> albumList, Boolean listacompleta) {
         this.albumList = albumList;
+        this.listacompleta = listacompleta;
     }
 
     @NonNull
@@ -42,13 +44,17 @@ public class AlbumSearchAdapter extends RecyclerView.Adapter<AlbumSearchAdapter.
 
     @Override
     public int getItemCount() {
-        if (albumList.size() > 1){
+
+        if (albumList != null && listacompleta){
+            return albumList.size();
+        }
+        if (albumList != null && albumList.size() > 1){
             return 2;
         }
-        else if (albumList.size() < 1){
-            return 0;
+        else if (albumList != null && albumList.size() == 1){
+            return 1;
         }
-        else return 1;
+        else return 0;
     }
 
     public class ViewHolderAlbumSearch extends RecyclerView.ViewHolder{

@@ -15,7 +15,7 @@ import com.example.projectointegrador.R;
 import com.example.projectointegrador.util.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class SearchActivity extends AppCompatActivity implements SearchFragment.SearchFragmentListener {
+public class SearchActivity extends AppCompatActivity implements SearchFragment.SearchFragmentListener, SearchInputFragment.SearchInputFragmentListener {
 
     BottomNavigationView bottomNavigationView;
 
@@ -78,5 +78,29 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
     public void onClickSearchFragment() {
         SearchInputFragment searchInputFragment = new SearchInputFragment();
         setFragmentReplace(searchInputFragment);
+    }
+
+    @Override
+    public void onClickAlbumes(String query, String type) {
+        pegarSearchDetailFragment(query, type);
+    }
+
+    @Override
+    public void onClickArtistas(String query, String type) {
+        pegarSearchDetailFragment(query, type);
+    }
+
+    @Override
+    public void onClickTracks(String query, String type) {
+        pegarSearchDetailFragment(query,type);
+    }
+
+    public void pegarSearchDetailFragment (String query, String type){
+        Bundle bundle = new Bundle();
+        bundle.putString("query", query);
+        bundle.putString("type", type);
+        Fragment fragment = new SearchDetailFragment();
+        fragment.setArguments(bundle);
+        setFragmentReplace(fragment);
     }
 }

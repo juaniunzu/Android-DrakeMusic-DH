@@ -3,7 +3,6 @@ package com.example.projectointegrador.dao;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.service.AlbumService;
 import com.example.projectointegrador.service.ResponseAlbum;
-import com.example.projectointegrador.service.ResponseArtist;
 import com.example.projectointegrador.util.ResultListener;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class AlbumApiDao extends DaoHelper {
         albumService.obtenerTop10Albumes().enqueue(new Callback<ResponseAlbum>() {
             @Override
             public void onResponse(Call<ResponseAlbum> call, Response<ResponseAlbum> response) {
-                listenerDeController.finish(response.body().getArtistas());
+                listenerDeController.finish(response.body().getAlbumes());
             }
 
             @Override
@@ -36,7 +35,7 @@ public class AlbumApiDao extends DaoHelper {
         albumService.obtenerAlbumesDeUnArtista(idDelArtista).enqueue(new Callback<ResponseAlbum>() {
             @Override
             public void onResponse(Call<ResponseAlbum> call, Response<ResponseAlbum> response) {
-                listenerDeController.finish(response.body().getArtistas());
+                listenerDeController.finish(response.body().getAlbumes());
             }
 
             @Override
