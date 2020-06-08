@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
@@ -18,6 +19,7 @@ import com.example.projectointegrador.controller.TrackController;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.util.ResultListener;
+import com.example.projectointegrador.util.Utils;
 import com.example.projectointegrador.view.adapter.TrackListAdapter;
 
 import java.util.List;
@@ -32,6 +34,8 @@ public class FragmentTrackList extends Fragment implements TrackListAdapter.Trac
     private ImageView imageViewImagenDelAlbum;
     private RecyclerView recyclerViewListaDeTemas;
     private FragmentTrackListListener listener;
+    private TextView textViewNombreAlbum;
+    private TextView fragmentTrackListTextViewArtista;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,6 +47,14 @@ public class FragmentTrackList extends Fragment implements TrackListAdapter.Trac
 
         imageViewImagenDelAlbum = view.findViewById(R.id.fragmentTrackList_ImageViewImagenAlbum);
         recyclerViewListaDeTemas = view.findViewById(R.id.fragmentTrackList_RecyclerViewListaDeTracks);
+        View appBarLayout = view.findViewById(R.id.fragmentTrackListAppBarLayout);
+
+        Utils.setFragmentBackground(getContext(), appBarLayout, albumRecibido.getCover());
+
+        textViewNombreAlbum = view.findViewById(R.id.fragmentTrackListTextViewNombre);
+        textViewNombreAlbum.setText(albumRecibido.getTitle());
+        fragmentTrackListTextViewArtista = view.findViewById(R.id.fragmentTrackListTextViewArtista);
+        fragmentTrackListTextViewArtista.setText(albumRecibido.getArtist().getName());
 
         Glide.with(view)
                 .load(albumRecibido.getCover())

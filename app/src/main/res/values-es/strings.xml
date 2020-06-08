@@ -25,5 +25,6 @@
     <string name="registrarse">Registrarse</string>
     <string name="bienvenido_denuevo">Bienvenido de nuevo!</string>
     <string name="slogan">Toda tu música. Justo aquí, en un solo lugar.</string>
+    <string name="top_tracks">Top tracks del artista</string>
 
 </resources>

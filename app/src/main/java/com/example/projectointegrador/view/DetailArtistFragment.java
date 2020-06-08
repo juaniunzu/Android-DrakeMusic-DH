@@ -1,8 +1,12 @@
 package com.example.projectointegrador.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.AlbumController;
 import com.example.projectointegrador.controller.TrackController;
@@ -18,9 +24,11 @@ import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
 import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.util.ResultListener;
+import com.example.projectointegrador.util.Utils;
 import com.example.projectointegrador.view.adapter.AlbumAdapter;
 import com.example.projectointegrador.view.adapter.TrackListAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +40,8 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
     public static final String ARTIST = "artist";
     private List<Album> listaDeAlbumesDelArtista;
     private List<Track> listaDeTop5TracksDelArtista;
-
+    private Toolbar toolbar;
+    private ImageView imageViewToolBar;
     private RecyclerView recyclerViewListaDeAlbumes;
     private RecyclerView recyclerViewListaDeTop5Tracks;
 
@@ -45,12 +54,24 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_detail_artist, container, false);
+        final View view = inflater.inflate(R.layout.fragment_detail_artist, container, false);
+
+        toolbar = view.findViewById(R.id.fragmentDetailArtistToolbar);
+        imageViewToolBar = view.findViewById(R.id.fragmentDetailArtistCollapsingToolbarImageView);
+
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+
 
         Bundle datosRecibidos = getArguments();
         final Artist artistaRecibido = (Artist) datosRecibidos.getSerializable(ARTIST);
         recyclerViewListaDeAlbumes = view.findViewById(R.id.fragmentArtistDetail_RecyclerViewAlbumes);
         recyclerViewListaDeTop5Tracks = view.findViewById(R.id.fragmentArtistDetail_RecyclerViewTopTracks);
+
+        toolbar.setTitle(artistaRecibido.getName());
+        toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
 
 
         LinearLayoutManager linearLayoutManagerDeAlbumes = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
@@ -66,6 +87,8 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
                 AlbumAdapter albumAdapter = new AlbumAdapter(resultado, DetailArtistFragment.this);
                 recyclerViewListaDeAlbumes.setAdapter(albumAdapter);
                 listaDeAlbumesDelArtista = resultado;
+                Glide.with(getContext()).load(artistaRecibido.getPicture()).into(imageViewToolBar);
+                Utils.setFragmentBackground(getContext(), view, artistaRecibido.getPicture());
             }
         });
         recyclerViewListaDeAlbumes.setLayoutManager(linearLayoutManagerDeAlbumes);
@@ -74,12 +97,15 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
         trackController.getTop5TracksDeUnArtistaPorId(artistaRecibido.getId(), getContext(), new ResultListener<List<Track>>() {
             @Override
             public void finish(List<Track> resultado) {
-                TrackListAdapter trackListAdapter = new TrackListAdapter(resultado, DetailArtistFragment.this);
-                recyclerViewListaDeTop5Tracks.setAdapter(trackListAdapter);
-                listaDeTop5TracksDelArtista = resultado;
-                for (Track track : resultado) {
+                List<Track> listaParaAdapter;
+                listaParaAdapter = resultado;
+                for (Track track : listaParaAdapter) {
                     track.setArtist(artistaRecibido);
                 }
+                TrackListAdapter trackListAdapter = new TrackListAdapter(listaParaAdapter, DetailArtistFragment.this);
+                recyclerViewListaDeTop5Tracks.setAdapter(trackListAdapter);
+                listaDeTop5TracksDelArtista = resultado;
+
             }
         });
         recyclerViewListaDeTop5Tracks.setLayoutManager(linearLayoutManagerDeTop5Tracks);

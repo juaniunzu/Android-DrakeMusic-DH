@@ -25,5 +25,6 @@
     <string name="registrarse">Register</string>
     <string name="bienvenido_denuevo">Welcome again!</string>
     <string name="slogan">All your music. Right here, all in one place.</string>
+    <string name="top_tracks">Top tracks from artist</string>
 
 </resources>
