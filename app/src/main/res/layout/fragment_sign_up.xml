@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.SignUpFragment">
 
     <androidx.constraintlayout.widget.Guideline
@@ -38,8 +38,8 @@
         android:layout_marginTop="20dp"
         android:text="@string/bienvenido"
         android:textColor="#000"
-        android:textStyle="bold"
         android:textSize="24dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragmentSignup_ImageViewLogo" />
@@ -60,8 +60,8 @@
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="34dp"
-        android:paddingTop="17dp"
+        android:layout_marginTop="32dp"
+        android:paddingTop="16dp"
         android:paddingBottom="16dp"
         app:layout_constraintEnd_toEndOf="@id/fragmentSignupGuideline75"
         app:layout_constraintStart_toStartOf="@id/fragmentSignupGuideline75"
@@ -88,7 +88,9 @@
         android:textColorHint="@color/text_subtitles"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragmentSignup_textViewO">
+        app:layout_constraintTop_toBottomOf="@id/fragmentSignup_textViewO"
+        app:startIconDrawable="@drawable/ic_person_black_24dp"
+        app:startIconTint="@color/text_subtitles">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fragmentSignup_TextInputEditTextUsername"
@@ -106,7 +108,9 @@
         android:textColorHint="@color/text_subtitles"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragmentSignup_TextInputLayoutUsername">
+        app:layout_constraintTop_toBottomOf="@id/fragmentSignup_TextInputLayoutUsername"
+        app:startIconDrawable="@drawable/ic_lock_black_24dp"
+        app:startIconTint="@color/text_subtitles">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fragmentSignup_TextInputEditTextPassword"
@@ -123,13 +127,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:background="@color/accent"
+        android:background="@color/primary_elevation_12dp"
         android:text="@string/registrarse"
+        android:textColor="@color/accent"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragmentSignup_TextInputLayoutPassword" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
+import com.example.projectointegrador.databinding.ActivityLoginBinding;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -27,6 +29,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Arrays;
 
@@ -37,11 +40,18 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
     private static final int RC_SIGN_IN = 1;
     private GoogleSignInClient mGoogleSignInClient;
     private CallbackManager callbackManager;
+    private ActivityLoginBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
+
+
+        Glide.with(this).asGif().load("https://im6.ezgif.com/tmp/ezgif-6-1cdb0b8b0782.gif").into(binding.imagenFondo);
 
         pegarFragment(new LoginInicioFragment(this));
 
@@ -54,6 +64,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         callbackManager = CallbackManager.Factory.create();
+
 
     }
 

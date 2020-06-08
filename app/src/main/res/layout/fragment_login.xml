@@ -38,8 +38,8 @@
         android:layout_marginTop="20dp"
         android:text="@string/bienvenido_denuevo"
         android:textColor="#000"
-        android:textStyle="bold"
         android:textSize="24dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragmentLogin_ImageViewLogo" />
@@ -60,8 +60,8 @@
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="34dp"
-        android:paddingTop="17dp"
+        android:layout_marginTop="32dp"
+        android:paddingTop="16dp"
         android:paddingBottom="16dp"
         app:layout_constraintEnd_toEndOf="@id/fragmentLoginGuideline75"
         app:layout_constraintStart_toStartOf="@id/fragmentLoginGuideline75"
@@ -88,7 +88,9 @@
         android:textColorHint="@color/text_subtitles"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragmentLogin_textViewO">
+        app:layout_constraintTop_toBottomOf="@id/fragmentLogin_textViewO"
+        app:startIconDrawable="@drawable/ic_person_black_24dp"
+        app:startIconTint="@color/text_subtitles">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fragmentLogin_TextInputEditTextUsername"
@@ -106,7 +108,9 @@
         android:textColorHint="@color/text_subtitles"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragmentLogin_TextInputLayoutUsername">
+        app:layout_constraintTop_toBottomOf="@id/fragmentLogin_TextInputLayoutUsername"
+        app:startIconDrawable="@drawable/ic_lock_black_24dp"
+        app:startIconTint="@color/text_subtitles">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fragmentLogin_TextInputEditTextPassword"
@@ -123,8 +127,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:background="@color/accent"
+        android:background="@color/primary_elevation_12dp"
         android:text="@string/Iniciar_Sesion"
+        android:textColor="@color/accent"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -4,6 +4,9 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary</item>
         <item name="colorAccent">@color/accent</item>
+        <item name="colorControlNormal">@color/accent</item>
+        <item name="colorControlActivated">@color/accent</item>
+        <item name="colorControlHighlight">@color/accent</item>
     </style>
     <style name="title_home">
         <item name="android:layout_marginLeft">23dp</item>
@@ -45,6 +48,17 @@
         <item name="android:ellipsize">end</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/text_subtitles</item>
+    </style>
+
+    <style name="MyHintStyle">
+        <item name="colorControlNormal">@color/accent</item>
+        <item name="colorControlActivated">@color/accent</item>
+        <item name="colorControlHighlight">@color/accent</item>
+    </style>
+
+
+    <style name="HintStyle" parent="@style/MyHintStyle">
+        <item name="android:textColor">@color/accent</item>
     </style>
 
     <style name="celdahome_titulo_celda">
