@@ -3,6 +3,7 @@ package com.example.projectointegrador.service;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface AlbumService {
 
@@ -12,6 +13,6 @@ public interface AlbumService {
     @GET("artist/{idArtista}/albums")
     Call<ResponseAlbum> obtenerAlbumesDeUnArtista(@Path("idArtista") Integer idArtista);
 
-    @GET("search/album?q={busqueda}")
-    Call<ResponseAlbum> buscarAlbumes(@Path("busqueda") String busqueda);
+    @GET("search/album")
+    Call<ResponseAlbum> buscarAlbumes(@Query("q") String busqueda);
 }

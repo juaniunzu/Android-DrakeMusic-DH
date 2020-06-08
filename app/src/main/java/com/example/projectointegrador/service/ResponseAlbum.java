@@ -10,7 +10,7 @@ public class ResponseAlbum {
     public ResponseAlbum() {
     }
 
-    public List<Album> getArtistas(){
+    public List<Album> getAlbumes(){
         return data;
     }
 }
