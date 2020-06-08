@@ -45,6 +45,7 @@ public class SearchFragment extends Fragment implements SearchAdapter.SearchAdap
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         //Setear OnClickListener a este cardview que cree y pegue un SearchInputFragment
+        //TODO USAR BINDING!!!!
         cardView = view.findViewById(R.id.fragmentSearchCardViewBuscar);
 
         //esta lista por el momento se llena con datos hardcodeados, en un futuro tiene que recibir data de Firebase

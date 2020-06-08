@@ -10,7 +10,6 @@ import java.util.List;
 public abstract class ArtistDao {
     public static List<Artist> getArtists() {
         List<Artist> artistsADevolver = new ArrayList<>();
-
         artistsADevolver.add(new Artist(200,"Eminem", "eminem"));
         artistsADevolver.add(new Artist(202,"Iron Maiden", "iron_maiden"));
         artistsADevolver.add(new Artist(204,"La Renga", "la_renga"));

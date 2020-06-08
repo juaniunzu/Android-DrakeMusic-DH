@@ -16,15 +16,17 @@ public class Album implements Serializable, Utils.Searchable {
     private Integer genreId;
     private List<Genre> genres;
     private List<Track> tracks;
+    private String type;
 
     //constructor solo usado para crear lista hardcodeada de ultimas reproducciones. Borrar cuando se empiece a traer la data de otro lado
     public Album(Integer id, String title, String cover) {
         this.id = id;
         this.title = title;
         this.cover = cover;
+
     }
 
-    public Album(Integer id, String title, String cover, Artist artist, Integer genreId, List<Genre> genres, List<Track> tracks) {
+    public Album(Integer id, String title, String cover, Artist artist, Integer genreId, List<Genre> genres, List<Track> tracks, String type) {
         this.id = id;
         this.title = title;
         this.cover = cover;
@@ -32,6 +34,7 @@ public class Album implements Serializable, Utils.Searchable {
         this.genreId = genreId;
         this.genres = genres;
         this.tracks = tracks;
+        this.type = type;
     }
 
     public List<Track> getTracks() {
@@ -83,6 +86,22 @@ public class Album implements Serializable, Utils.Searchable {
 
     public void setCover(String cover) {
         this.cover = cover;
+    }
+
+    public Integer getGenreId() {
+        return genreId;
+    }
+
+    public void setGenreId(Integer genreId) {
+        this.genreId = genreId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override

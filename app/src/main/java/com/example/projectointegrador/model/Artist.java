@@ -8,11 +8,20 @@ public class Artist implements Serializable, Utils.Searchable {
     private Integer id;
     private String name;
     private String picture;
+    private String type;
 
-    public Artist(Integer id, String name,String picture) {
+    //constructor para hardcodeados . Borrar mas adelante
+    public Artist(Integer id, String name, String picture) {
         this.id = id;
         this.name = name;
         this.picture = picture;
+    }
+
+    public Artist(Integer id, String name, String picture, String type) {
+        this.id = id;
+        this.name = name;
+        this.picture = picture;
+        this.type = type;
     }
 
     public Artist(String name) {
@@ -41,6 +50,14 @@ public class Artist implements Serializable, Utils.Searchable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
