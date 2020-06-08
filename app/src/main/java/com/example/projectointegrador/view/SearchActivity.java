@@ -53,7 +53,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
                         startActivity(searchAMain);
                         break;
                     case R.id.bottomNavigationView_Search:
-                        pegarFragmentAdd(new SearchFragment());
+                        setFragmentReplace(new SearchFragment());
                         break;
                     case R.id.bottomNavigationView_Favorites:
                         Toast.makeText(SearchActivity.this, "En Construccion.", Toast.LENGTH_SHORT).show();
