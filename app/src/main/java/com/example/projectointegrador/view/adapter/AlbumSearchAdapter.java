@@ -22,10 +22,12 @@ public class AlbumSearchAdapter extends RecyclerView.Adapter<AlbumSearchAdapter.
 
     private List<Album> albumList;
     private Boolean listacompleta;
+    private AlbumSearchAdapterListener albumSearchAdapterListener;
 
-    public AlbumSearchAdapter(List<Album> albumList, Boolean listacompleta) {
+    public AlbumSearchAdapter(List<Album> albumList, Boolean listacompleta, AlbumSearchAdapterListener albumSearchAdapterListener) {
         this.albumList = albumList;
         this.listacompleta = listacompleta;
+        this.albumSearchAdapterListener = albumSearchAdapterListener;
     }
 
     @NonNull
@@ -68,6 +70,13 @@ public class AlbumSearchAdapter extends RecyclerView.Adapter<AlbumSearchAdapter.
             iv = itemView.findViewById(R.id.celdaSearchInputAlbumImageView);
             tvtitulo = itemView.findViewById(R.id.celdaSearchInputAlbumTextViewTitulo);
             tvartista = itemView.findViewById(R.id.celdaSearchInputAlbumTextViewArtista);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Album album = albumList.get(getAdapterPosition());
+                    albumSearchAdapterListener.onClickAlbumSearchAdapter(album);
+                }
+            });
         }
 
         public void onBind(Album album) {
@@ -75,5 +84,9 @@ public class AlbumSearchAdapter extends RecyclerView.Adapter<AlbumSearchAdapter.
             tvtitulo.setText(album.getTitle());
             tvartista.setText(album.getArtist().getName());
         }
+    }
+
+    public interface AlbumSearchAdapterListener{
+        void onClickAlbumSearchAdapter (Album album);
     }
 }

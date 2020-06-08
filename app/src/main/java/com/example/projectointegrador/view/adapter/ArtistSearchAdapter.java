@@ -21,10 +21,12 @@ public class ArtistSearchAdapter extends RecyclerView.Adapter<ArtistSearchAdapte
 
     private List<Artist> artistList;
     private Boolean listacompleta;
+    private ArtistSearchAdapterListener artistSearchAdapterListener;
 
-    public ArtistSearchAdapter(List<Artist> artistList, Boolean listacompleta) {
+    public ArtistSearchAdapter(List<Artist> artistList, Boolean listacompleta, ArtistSearchAdapterListener artistSearchAdapterListener) {
         this.artistList = artistList;
         this.listacompleta = listacompleta;
+        this.artistSearchAdapterListener = artistSearchAdapterListener;
     }
 
     @NonNull
@@ -64,11 +66,22 @@ public class ArtistSearchAdapter extends RecyclerView.Adapter<ArtistSearchAdapte
             super(itemView);
             iv = itemView.findViewById(R.id.celdaSearchInputArtistaImageView);
             tv = itemView.findViewById(R.id.celdaSearchInputArtistaTextView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Artist artist = artistList.get(getAdapterPosition());
+                    artistSearchAdapterListener.onClickArtistSearchAdapter(artist);
+                }
+            });
         }
 
         public void onBind(Artist artist) {
             Glide.with(itemView.getContext()).load(artist.getPicture()).into(iv);
             tv.setText(artist.getName());
         }
+    }
+
+    public interface ArtistSearchAdapterListener{
+        void onClickArtistSearchAdapter (Artist artist);
     }
 }

@@ -25,9 +25,13 @@ import java.util.List;
 
 public class PlayerActivity extends AppCompatActivity {
 
+    public static final String KEY_TRACK = "track";
+    public static final String KEY_LISTA = "lista";
+
     private ViewPager viewPager;
     private Toolbar toolbar;
     private ActivityPlayerBinding binding;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +53,8 @@ public class PlayerActivity extends AppCompatActivity {
 
         Intent desdeMain = getIntent();
         Bundle datosDesdeMain = desdeMain.getExtras();
-        Track trackClickeado = (Track) datosDesdeMain.getSerializable("track");
-        ArrayList<Track> trackArrayList = (ArrayList<Track>) datosDesdeMain.getSerializable("lista");
+        Track trackClickeado = (Track) datosDesdeMain.getSerializable(KEY_TRACK);
+        ArrayList<Track> trackArrayList = (ArrayList<Track>) datosDesdeMain.getSerializable(KEY_LISTA);
         List<Fragment> listaFragments = generarFragments(trackArrayList);
 
         Integer indice = trackArrayList.indexOf(trackClickeado);

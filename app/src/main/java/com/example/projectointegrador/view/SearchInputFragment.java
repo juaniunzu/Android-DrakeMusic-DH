@@ -19,6 +19,9 @@ import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.AlbumController;
 import com.example.projectointegrador.controller.ArtistController;
 import com.example.projectointegrador.controller.TrackController;
+import com.example.projectointegrador.model.Album;
+import com.example.projectointegrador.model.Artist;
+import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.service.ResponseAlbum;
 import com.example.projectointegrador.service.ResponseArtist;
 import com.example.projectointegrador.service.ResponseTrack;
@@ -27,12 +30,17 @@ import com.example.projectointegrador.view.adapter.AlbumSearchAdapter;
 import com.example.projectointegrador.view.adapter.ArtistSearchAdapter;
 import com.example.projectointegrador.view.adapter.TrackSearchAdapter;
 
+import java.util.List;
+
 import static com.example.projectointegrador.view.SearchDetailFragment.TYPE_ALBUM;
 import static com.example.projectointegrador.view.SearchDetailFragment.TYPE_ARTIST;
 import static com.example.projectointegrador.view.SearchDetailFragment.TYPE_TRACK;
 
 
-public class SearchInputFragment extends Fragment {
+public class SearchInputFragment extends Fragment implements
+                                                    AlbumSearchAdapter.AlbumSearchAdapterListener,
+                                                    ArtistSearchAdapter.ArtistSearchAdapterListener,
+                                                    TrackSearchAdapter.TrackSearchAdapterListener {
 
     //declarar atributos editText (o searchview), recyclerview y los tres textview
     private SearchView searchView;
@@ -106,7 +114,7 @@ public class SearchInputFragment extends Fragment {
                     albumController.buscarAlbumes(getContext(), newText, new ResultListener<ResponseAlbum>() {
                         @Override
                         public void finish(ResponseAlbum resultado) {
-                            AlbumSearchAdapter albumSearchAdapter = new AlbumSearchAdapter(resultado.getAlbumes(), false);
+                            AlbumSearchAdapter albumSearchAdapter = new AlbumSearchAdapter(resultado.getAlbumes(), false, SearchInputFragment.this);
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL, false);
                             rvAlbums.setLayoutManager(linearLayoutManager);
                             rvAlbums.setAdapter(albumSearchAdapter);
@@ -116,7 +124,7 @@ public class SearchInputFragment extends Fragment {
                     artistController.buscarArtistas(getContext(), searchView.getQuery().toString(), new ResultListener<ResponseArtist>() {
                         @Override
                         public void finish(ResponseArtist resultado) {
-                            ArtistSearchAdapter artistSearchAdapter = new ArtistSearchAdapter(resultado.getArtistas(), false);
+                            ArtistSearchAdapter artistSearchAdapter = new ArtistSearchAdapter(resultado.getArtistas(), false, SearchInputFragment.this);
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
                             rvArtists.setAdapter(artistSearchAdapter);
                             rvArtists.setLayoutManager(linearLayoutManager);
@@ -126,7 +134,7 @@ public class SearchInputFragment extends Fragment {
                     trackController.buscarTracks(getContext(), searchView.getQuery().toString(), new ResultListener<ResponseTrack>() {
                         @Override
                         public void finish(ResponseTrack resultado) {
-                            TrackSearchAdapter trackSearchAdapter = new TrackSearchAdapter(resultado.getTracks(), false);
+                            TrackSearchAdapter trackSearchAdapter = new TrackSearchAdapter(resultado.getTracks(), false, SearchInputFragment.this);
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                             rvTracks.setAdapter(trackSearchAdapter);
                             rvTracks.setLayoutManager(linearLayoutManager);
@@ -169,7 +177,25 @@ public class SearchInputFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onClickAlbumSearchAdapter(Album album) {
+        listener.onClickAlbumSearchInputFragment(album);
+    }
+
+    @Override
+    public void onClickArtistSearchAdapter(Artist artist) {
+        listener.onClickArtistSearchInputFragment(artist);
+    }
+
+    @Override
+    public void onClickTrackSearchAdapter(Track track, List<Track> trackList) {
+        listener.onClickTrackSearchInputFragment(track, trackList);
+    }
+
     public interface SearchInputFragmentListener {
         void onClickFiltroVerTodo(String query, String type);
+        void onClickAlbumSearchInputFragment (Album album);
+        void onClickArtistSearchInputFragment (Artist artist);
+        void onClickTrackSearchInputFragment (Track track, List<Track> trackList);
     }
 }

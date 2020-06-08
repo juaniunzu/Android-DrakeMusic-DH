@@ -19,10 +19,12 @@ public class TrackSearchAdapter extends RecyclerView.Adapter<TrackSearchAdapter.
 
     private List<Track> trackList;
     private Boolean listacompleta;
+    private TrackSearchAdapterListener trackSearchAdapterListener;
 
-    public TrackSearchAdapter(List<Track> trackList, Boolean listacompleta) {
+    public TrackSearchAdapter(List<Track> trackList, Boolean listacompleta, TrackSearchAdapterListener trackSearchAdapterListener) {
         this.trackList = trackList;
         this.listacompleta = listacompleta;
+        this.trackSearchAdapterListener = trackSearchAdapterListener;
     }
 
     @NonNull
@@ -66,6 +68,13 @@ public class TrackSearchAdapter extends RecyclerView.Adapter<TrackSearchAdapter.
             tvnombre = itemView.findViewById(R.id.celdaSearchInputTrackTextViewTitulo);
             tvalbum = itemView.findViewById(R.id.celdaSearchInputTrackTextViewAlbum);
             tvartista = itemView.findViewById(R.id.celdaSearchInputTrackTextViewArtista);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Track track = trackList.get(getAdapterPosition());
+                    trackSearchAdapterListener.onClickTrackSearchAdapter(track,trackList);
+                }
+            });
         }
 
         public void onBind(Track track) {
@@ -74,5 +83,9 @@ public class TrackSearchAdapter extends RecyclerView.Adapter<TrackSearchAdapter.
             tvalbum.setText(track.getAlbum().getTitle());
             tvartista.setText(track.getArtist().getName());
         }
+    }
+
+    public interface TrackSearchAdapterListener{
+        void onClickTrackSearchAdapter (Track track, List<Track> trackList);
     }
 }
