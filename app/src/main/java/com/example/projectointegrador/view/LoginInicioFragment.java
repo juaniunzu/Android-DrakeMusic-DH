@@ -2,6 +2,8 @@ package com.example.projectointegrador.view;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -10,9 +12,13 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.databinding.FragmentLoginInicioBinding;
-import com.tomer.fadingtextview.FadingTextView;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,7 +43,11 @@ public class LoginInicioFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         binding = FragmentLoginInicioBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
+        final View view = binding.getRoot();
+
+
+
+
 
 
         AlphaAnimation fadeInSlogan = new AlphaAnimation(0.0f, 1.0f);
