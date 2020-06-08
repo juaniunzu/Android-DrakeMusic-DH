@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
@@ -40,11 +41,11 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
     public static final String ARTIST = "artist";
     private List<Album> listaDeAlbumesDelArtista;
     private List<Track> listaDeTop5TracksDelArtista;
-    private Toolbar toolbar;
+    private View appBar;
     private ImageView imageViewToolBar;
     private RecyclerView recyclerViewListaDeAlbumes;
     private RecyclerView recyclerViewListaDeTop5Tracks;
-
+    private TextView fragmentDetailArtistTextViewNombre;
     private FragmentArtistDetailListener listener;
 
     public DetailArtistFragment() {
@@ -56,13 +57,10 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_detail_artist, container, false);
 
-        toolbar = view.findViewById(R.id.fragmentDetailArtistToolbar);
+
         imageViewToolBar = view.findViewById(R.id.fragmentDetailArtistCollapsingToolbarImageView);
-
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
+        appBar = view.findViewById(R.id.fragmentDetailArtistAppBar);
+        fragmentDetailArtistTextViewNombre = view.findViewById(R.id.fragmentDetailArtistTextViewNombre);
 
 
         Bundle datosRecibidos = getArguments();
@@ -70,9 +68,8 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
         recyclerViewListaDeAlbumes = view.findViewById(R.id.fragmentArtistDetail_RecyclerViewAlbumes);
         recyclerViewListaDeTop5Tracks = view.findViewById(R.id.fragmentArtistDetail_RecyclerViewTopTracks);
 
-        toolbar.setTitle(artistaRecibido.getName());
-        toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
-
+        Utils.setFragmentBackground(getContext(), appBar, artistaRecibido.getPicture());
+        fragmentDetailArtistTextViewNombre.setText(artistaRecibido.getName());
 
         LinearLayoutManager linearLayoutManagerDeAlbumes = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
         LinearLayoutManager linearLayoutManagerDeTop5Tracks = new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false);
@@ -88,7 +85,7 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
                 recyclerViewListaDeAlbumes.setAdapter(albumAdapter);
                 listaDeAlbumesDelArtista = resultado;
                 Glide.with(getContext()).load(artistaRecibido.getPicture()).into(imageViewToolBar);
-                Utils.setFragmentBackground(getContext(), view, artistaRecibido.getPicture());
+
             }
         });
         recyclerViewListaDeAlbumes.setLayoutManager(linearLayoutManagerDeAlbumes);
