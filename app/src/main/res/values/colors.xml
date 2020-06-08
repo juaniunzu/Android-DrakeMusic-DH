@@ -10,4 +10,5 @@
     <color name="text_title_home">#BFFFFFFF</color>
     <color name="text_subtitles">#99FFFFFF</color>
     <color name="text_subtitle_black">#99000000</color>
+    <color name="colorControlNormal">#99FFFFFF</color>
 </resources>

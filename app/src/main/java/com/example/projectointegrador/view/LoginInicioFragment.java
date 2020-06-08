@@ -7,9 +7,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 
+import com.example.projectointegrador.R;
 import com.example.projectointegrador.databinding.FragmentLoginInicioBinding;
+import com.tomer.fadingtextview.FadingTextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +38,23 @@ public class LoginInicioFragment extends Fragment {
 
         binding = FragmentLoginInicioBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+
+
+        AlphaAnimation fadeInSlogan = new AlphaAnimation(0.0f, 1.0f);
+        binding.fragmentLoginInicioSlogan.startAnimation(fadeInSlogan);
+        fadeInSlogan.setDuration(1500);
+        fadeInSlogan.setFillAfter(true);
+        AlphaAnimation fadeInBotonIniciarSesion = new AlphaAnimation(0.0f, 1.0f);
+        AlphaAnimation fadeInBotonRegistrarse = new AlphaAnimation(0.0f, 1.0f);
+        fadeInBotonIniciarSesion.setDuration(2000);
+        fadeInBotonRegistrarse.setDuration(3000);
+        fadeInBotonIniciarSesion.setFillAfter(true);
+        fadeInBotonRegistrarse.setFillAfter(true);
+        binding.fragmentLoginInicioButtonLogin.startAnimation(fadeInBotonIniciarSesion);
+        binding.fragmentLoginInicioButtonRegister.startAnimation(fadeInBotonRegistrarse);
+
+
+
 
         binding.fragmentLoginInicioButtonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
