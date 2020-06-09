@@ -89,6 +89,21 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
         fragmentTransaction.commit();
     }
 
+    private void setFragmentReplaceNoBackStack(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.activitySearchFragmentContainer, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void pegarFragmentAddBackStack(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.activitySearchFragmentContainer, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
     @Override
     public void onClickSearchFragment(Utils.Searchable searchable) {
 
@@ -108,7 +123,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
         bundle.putString(KEY_TYPE, type);
         SearchDetailFragment searchDetailFragment = new SearchDetailFragment();
         searchDetailFragment.setArguments(bundle);
-        pegarFragmentAdd(searchDetailFragment);
+        pegarFragmentAddBackStack(searchDetailFragment);
     }
 
     @Override
