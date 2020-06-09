@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primary">#000000</color>
-    <color name="primary_elevation">#121212</color>
+    <color name="primary_elevation">#B4121212</color>
     <color name="primary_elevation_12dp">#26121212</color>
     <color name="accent_elevation_app">#14F9AA33</color>
     <color name="accent">#F9AA33</color>
@@ -11,4 +11,5 @@
     <color name="text_subtitles">#99FFFFFF</color>
     <color name="text_subtitle_black">#99000000</color>
     <color name="colorControlNormal">#99FFFFFF</color>
+    <color name="backgroundLogin">#7AFFFCFC</color>
 </resources>
