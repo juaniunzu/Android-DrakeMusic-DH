@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context=".view.LoginActivity">
 
+
     <ImageView
         android:id="@+id/imagenFondo"
         android:layout_width="match_parent"

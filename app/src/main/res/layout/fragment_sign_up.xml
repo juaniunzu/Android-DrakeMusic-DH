@@ -7,13 +7,13 @@
     tools:context=".view.SignUpFragment">
 
     <View
-        android:layout_height="420dp"
         android:layout_width="0dp"
+        android:layout_height="420dp"
         android:background="@color/backgroundLogin"
-        app:layout_constraintTop_toTopOf="@id/fragmentSignupTextView"
         app:layout_constraintBottom_toBottomOf="@id/fragmentSignup_ButtonRegistrarse"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVertical2"
         app:layout_constraintStart_toStartOf="@id/guidelineVertical1"
-        app:layout_constraintEnd_toEndOf="@id/guidelineVertical2"/>
+        app:layout_constraintTop_toTopOf="@id/fragmentSignupTextView" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineVertical1"
@@ -48,7 +48,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="40dp"
-        android:src="@drawable/iron_maiden"
+        android:src="@drawable/ic_drakemusic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/bienvenido"
-        android:textColor="#000"
+        android:textColor="#fff"
         android:textSize="24dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -120,7 +120,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/Usuario"
-            android:textColor="@color/text_subtitles" />
+            android:textColor="@color/text_subtitles"
+            android:textColorHint="#000" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -140,20 +141,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/Contraseña"
-            android:textColor="@color/text_subtitles" />
+            android:textColor="@color/text_subtitles"
+            android:textColorHint="#000" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/fragmentSignup_ButtonRegistrarse"
-        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:background="@color/primary_elevation"
+        android:backgroundTint="@color/accent"
+        android:elevation="5dp"
         android:text="@string/registrarse"
-        android:textColor="@color/accent"
-        android:textSize="15sp"
+        android:textColor="#000"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragmentSignup_TextInputLayoutPassword" />

@@ -5,11 +5,12 @@
     <color name="primary_elevation_12dp">#26121212</color>
     <color name="accent_elevation_app">#14F9AA33</color>
     <color name="accent">#F9AA33</color>
+    <color name="accent_transparent">#40F9AA33</color>
     <color name="divider">#BDBDBD</color>
     <color name="background_title_celda">#424242</color>
     <color name="text_title_home">#BFFFFFFF</color>
     <color name="text_subtitles">#99FFFFFF</color>
     <color name="text_subtitle_black">#99000000</color>
     <color name="colorControlNormal">#99FFFFFF</color>
-    <color name="backgroundLogin">#7AFFFCFC</color>
+    <color name="backgroundLogin">#8B000000</color>
 </resources>
