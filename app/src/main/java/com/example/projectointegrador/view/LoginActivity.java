@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
 
 
 
-        Glide.with(this).asGif().load("https://im6.ezgif.com/tmp/ezgif-6-1cdb0b8b0782.gif").into(binding.imagenFondo);
+        Glide.with(this).asGif().load("http://s7.gifyu.com/images/gifFondoLogin.gif").into(binding.imagenFondo);
 
         pegarFragmentInicial(new LoginInicioFragment(this));
 

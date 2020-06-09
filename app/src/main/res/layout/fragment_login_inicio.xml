@@ -25,7 +25,7 @@
         android:layout_marginTop="80dp"
         android:gravity="center"
         android:text="@string/slogan"
-        android:textColor="@color/primary_elevation"
+        android:textColor="@color/primary"
         android:textSize="30dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
