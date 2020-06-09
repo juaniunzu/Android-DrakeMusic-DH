@@ -6,6 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".view.LoginFragment">
 
+    <View
+        android:layout_height="420dp"
+        android:layout_width="0dp"
+        android:background="@color/backgroundLogin"
+        app:layout_constraintTop_toTopOf="@id/fragmentLoginTextView"
+        app:layout_constraintBottom_toBottomOf="@id/fragmentLogin_ButtonIniciarSesion"
+        app:layout_constraintStart_toStartOf="@id/guidelineVertical1"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVertical2"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertical1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.02" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertical2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.98" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/fragmentLoginGuideline25"
         android:layout_width="match_parent"
@@ -127,7 +150,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:background="@color/primary_elevation_12dp"
+        android:background="@color/primary_elevation"
         android:text="@string/Iniciar_Sesion"
         android:textColor="@color/accent"
         android:textSize="15sp"
