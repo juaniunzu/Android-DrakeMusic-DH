@@ -123,7 +123,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
         bundle.putString(KEY_TYPE, type);
         SearchDetailFragment searchDetailFragment = new SearchDetailFragment();
         searchDetailFragment.setArguments(bundle);
-        pegarFragmentAddBackStack(searchDetailFragment);
+        setFragmentReplace(searchDetailFragment);
     }
 
     @Override
