@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
 
         Glide.with(this).asGif().load("https://im6.ezgif.com/tmp/ezgif-6-1cdb0b8b0782.gif").into(binding.imagenFondo);
 
-        pegarFragment(new LoginInicioFragment(this));
+        pegarFragmentInicial(new LoginInicioFragment(this));
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -67,7 +67,12 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
 
 
     }
-
+    private void pegarFragmentInicial(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.activityLogin_fragmentContainer, fragment);
+        fragmentTransaction.commit();
+    }
     private void pegarFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
