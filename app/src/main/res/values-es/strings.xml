@@ -16,9 +16,9 @@
     <string name="Usuario">Usuario</string>
     <string name="Contraseña">Contraseña</string>
     <string name="Iniciar_Sesion">Iniciar Sesion</string>
-    <string name="ver_artistas">Ver todos los artistas</string>
-    <string name="ver_tracks">Ver todos los tracks</string>
-    <string name="ver_albumes">Ver todos los álbumes</string>
+    <string name="ver_artistas">Ver todos los artistas        ➔</string>
+    <string name="ver_tracks">Ver todos los tracks        ➔</string>
+    <string name="ver_albumes">Ver todos los álbumes        ➔</string>
     <string name="en_busqueda">\" %s \" en búsqueda</string>
     <string name="bienvenido">Bienvenido!</string>
     <string name="o">o</string>
