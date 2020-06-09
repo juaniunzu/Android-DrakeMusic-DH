@@ -82,11 +82,6 @@ public class PlayerFragment extends Fragment {
 
     private void findViews() {
         fragmentPlayerImageView = binding.fragmentPlayerImageView;
-        fragmentPlayerButtonNext = binding.fragmentPlayerButtonNext;
-        fragmentPlayerButtonPlay = binding.fragmentPlayerButtonPlay;
-        fragmentPlayerButtonPrevious = binding.fragmentPlayerButtonPrevious;
-        fragmentPlayerButtonRepeat = binding.fragmentPlayerButtonRepeat;
-        fragmentPlayerButtonShuffle = binding.fragmentPlayerButtonShuffle;
         fragmentPlayerButtonAddFavorite = binding.fragmentPlayerButtonAddFavorite;
         fragmentPlayerTextViewArtista = binding.fragmentPlayerTextViewArtista;
         fragmentPlayerTextViewNombre = binding.fragmentPlayerTextViewNombre;
