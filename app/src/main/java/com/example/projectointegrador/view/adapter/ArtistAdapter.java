@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.model.Artist;
+import com.example.projectointegrador.util.Utils;
 
 import java.util.List;
 
@@ -69,12 +70,12 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistaVie
             //int id = itemView.getContext().getResources().getIdentifier("drawable/" + artist.getPicture(), null, itemView.getContext().getPackageName());
             //imageViewImagenArtist.setImageResource(id);
 
-            RequestOptions requestOptions = new RequestOptions()
-                    .placeholder(R.drawable.charizard_tomando_cafe);
+
             Glide.with(itemView)
-                    .setDefaultRequestOptions(requestOptions)
+                    .setDefaultRequestOptions(Utils.requestOptionsCircularProgressBar(itemView.getContext()))
                     .load(artist.getPicture())
                     .into(imageViewImagenArtist);
+
             textViewNombreArtist.setText(artist.getName());
         }
     }

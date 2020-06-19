@@ -70,6 +70,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         }
         public void onBind(Utils.Searchable searchable){
             Glide.with(itemView.getContext())
+                    .setDefaultRequestOptions(Utils.requestOptionsCircularProgressBar(itemView.getContext()))
                     .load(searchable.informarImagen())
                     .into(celdaSearchImageView);
             celdaSearchTextViewTitulo.setText(searchable.informarTitulo());

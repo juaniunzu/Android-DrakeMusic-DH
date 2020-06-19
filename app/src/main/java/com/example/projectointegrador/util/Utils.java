@@ -10,8 +10,10 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.palette.graphics.Palette;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
@@ -52,5 +54,17 @@ public class Utils {
             }
         });
     }
-
+    /**
+    Cuando se agrega un placeholder a un glide con estas Request Options, el placeholder sera un circularProgressDrawable.
+     */
+    public static RequestOptions requestOptionsCircularProgressBar(Context context){
+        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(context);
+        circularProgressDrawable.setStrokeWidth(5f);
+        circularProgressDrawable.setCenterRadius(30f);
+        circularProgressDrawable.start();
+        RequestOptions requestOptions = new RequestOptions()
+                .placeholder(circularProgressDrawable);
+        return requestOptions;
+    }
 }
+

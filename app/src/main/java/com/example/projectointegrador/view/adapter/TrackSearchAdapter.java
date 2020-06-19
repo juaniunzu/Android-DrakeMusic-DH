@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.model.Track;
+import com.example.projectointegrador.util.Utils;
 
 import java.util.List;
 
@@ -78,7 +79,10 @@ public class TrackSearchAdapter extends RecyclerView.Adapter<TrackSearchAdapter.
         }
 
         public void onBind(Track track) {
-            Glide.with(itemView.getContext()).load(track.getAlbum().getCover()).into(iv);
+            Glide.with(itemView.getContext())
+                    .setDefaultRequestOptions(Utils.requestOptionsCircularProgressBar(itemView.getContext()))
+                    .load(track.getAlbum().getCover())
+                    .into(iv);
             tvnombre.setText(track.getTitle());
             tvalbum.setText(track.getAlbum().getTitle());
             tvartista.setText(track.getArtist().getName());

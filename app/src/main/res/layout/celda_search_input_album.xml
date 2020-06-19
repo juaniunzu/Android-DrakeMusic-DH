@@ -10,6 +10,7 @@
         android:id="@+id/celdaSearchInputAlbumImageView"
         android:layout_width="70dp"
         android:layout_height="70dp"
+        android:background="@color/text_subtitles"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="20dp"/>

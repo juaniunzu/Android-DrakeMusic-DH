@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.model.Album;
+import com.example.projectointegrador.util.Utils;
 
 import org.w3c.dom.Text;
 
@@ -80,7 +81,12 @@ public class AlbumSearchAdapter extends RecyclerView.Adapter<AlbumSearchAdapter.
         }
 
         public void onBind(Album album) {
-            Glide.with(itemView.getContext()).load(album.getCover()).into(iv);
+
+            Glide.with(itemView.getContext())
+                    .setDefaultRequestOptions(Utils.requestOptionsCircularProgressBar(itemView.getContext()))
+                    .load(album.getCover())
+                    .into(iv);
+
             tvtitulo.setText(album.getTitle());
             tvartista.setText(album.getArtist().getName());
         }

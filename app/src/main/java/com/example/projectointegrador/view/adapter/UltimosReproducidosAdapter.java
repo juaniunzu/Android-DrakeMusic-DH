@@ -70,7 +70,7 @@ public class UltimosReproducidosAdapter extends RecyclerView.Adapter<UltimosRepr
         }
 
         public void darValores(Track track) {
-            // Forma de obtener el id con solo el nombre del drawabale (Magia negra). Esto hace que no Rompa los datos Hardcodeados.
+            // Forma de obtener el id con solo el nombre del drawabale. Esto hace que no Rompa los datos Hardcodeados.
             int id = itemView.getContext().getResources().getIdentifier("drawable/" + track.getAlbum().getCover(), null, itemView.getContext().getPackageName());
             imageViewAlbumDelTrack.setImageResource(id);
             textViewNombreDelTrack.setText(track.getTitle());

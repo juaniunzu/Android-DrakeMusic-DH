@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.model.Track;
+import com.example.projectointegrador.util.Utils;
 
 import java.util.List;
 
@@ -72,10 +73,8 @@ public class RecomendadoAdapter extends RecyclerView.Adapter<RecomendadoAdapter.
         }
 
         public void darValores(Track track) {
-            RequestOptions requestOptions = new RequestOptions()
-                        .placeholder(R.drawable.charizard_tomando_cafe);
             Glide.with(itemView)
-                    .setDefaultRequestOptions(requestOptions)
+                    .setDefaultRequestOptions(Utils.requestOptionsCircularProgressBar(itemView.getContext()))
                     .load(track.getAlbum().getCover())
                     .into(imageViewImagenAlbumDelTrack);
             //imageViewImagenAlbumDelTrack.setImageResource(R.drawable.charizard_tomando_cafe);

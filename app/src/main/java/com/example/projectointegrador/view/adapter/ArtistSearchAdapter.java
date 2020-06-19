@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.model.Artist;
+import com.example.projectointegrador.util.Utils;
 
 import org.w3c.dom.Text;
 
@@ -76,7 +77,10 @@ public class ArtistSearchAdapter extends RecyclerView.Adapter<ArtistSearchAdapte
         }
 
         public void onBind(Artist artist) {
-            Glide.with(itemView.getContext()).load(artist.getPicture()).into(iv);
+            Glide.with(itemView.getContext())
+                    .setDefaultRequestOptions(Utils.requestOptionsCircularProgressBar(itemView.getContext()))
+                    .load(artist.getPicture())
+                    .into(iv);
             tv.setText(artist.getName());
         }
     }
