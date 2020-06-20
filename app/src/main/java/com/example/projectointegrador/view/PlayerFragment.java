@@ -10,7 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
+
 import com.bumptech.glide.Glide;
 import com.example.projectointegrador.databinding.FragmentPlayerBinding;
 import com.example.projectointegrador.model.Track;
@@ -28,17 +31,16 @@ public class PlayerFragment extends Fragment {
     private FragmentPlayerBinding binding;
     private ImageView fragmentPlayerImageView;
     private ImageView fragmentPlayerButtonNext;
-    private ImageView fragmentPlayerButtonPlay;
+    private ToggleButton fragmentPlayerButtonPlay;
     private ImageView fragmentPlayerButtonPrevious;
-    private ImageView fragmentPlayerButtonRepeat;
-    private ImageView fragmentPlayerButtonShuffle;
-    private ImageView fragmentPlayerButtonPause;
+    private ToggleButton fragmentPlayerButtonRepeat;
+    private ToggleButton fragmentPlayerButtonShuffle;
     private ImageView fragmentPlayerButtonAddFavorite;
     private TextView fragmentPlayerTextViewArtista;
     private TextView fragmentPlayerTextViewNombre;
-    private Bitmap bitmap;
     private PlayerFragmentListener listener;
     private Track trackRecibido;
+    private SeekBar seekBar;
 
 
 
@@ -77,19 +79,12 @@ public class PlayerFragment extends Fragment {
 
         setFragmentBackground(getContext(), view, trackRecibido.getAlbum().getCover());
 
-        fragmentPlayerButtonPlay.setVisibility(View.GONE);
+        //fragmentPlayerButtonPlay.setVisibility(View.GONE);
 
         fragmentPlayerButtonPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickPlay(fragmentPlayerButtonPlay, fragmentPlayerButtonPause);
-            }
-        });
-
-        fragmentPlayerButtonPause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onClickPause(fragmentPlayerButtonPause, fragmentPlayerButtonPlay);
+                listener.onClickPlay(fragmentPlayerButtonPlay);
             }
         });
 
@@ -129,7 +124,6 @@ public class PlayerFragment extends Fragment {
         });
 
 
-
         return view;
     }
 
@@ -148,11 +142,11 @@ public class PlayerFragment extends Fragment {
     }
 
     private void findViews() {
+        seekBar = binding.fragmentPlayerSeekbar;
         fragmentPlayerImageView = binding.fragmentPlayerImageView;
         fragmentPlayerButtonAddFavorite = binding.fragmentPlayerButtonAddFavorite;
         fragmentPlayerTextViewArtista = binding.fragmentPlayerTextViewArtista;
         fragmentPlayerTextViewNombre = binding.fragmentPlayerTextViewNombre;
-        fragmentPlayerButtonPause = binding.fragmentPlayerButtonPause;
         fragmentPlayerButtonPlay = binding.fragmentPlayerButtonPlay;
         fragmentPlayerButtonNext = binding.fragmentPlayerButtonNext;
         fragmentPlayerButtonPrevious = binding.fragmentPlayerButtonPrevious;
@@ -167,12 +161,11 @@ public class PlayerFragment extends Fragment {
     }
 
     public interface PlayerFragmentListener{
-        void onClickPlay(ImageView botonPlay, ImageView botonPause);
-        void onClickPause(ImageView botonPause, ImageView botonPlay);
+        void onClickPlay(ToggleButton boton);
         void onClickNext();
         void onClickPrevious();
-        void onClickShuffle(ImageView boton);
-        void onClickRepeat(ImageView boton);
+        void onClickShuffle(ToggleButton boton);
+        void onClickRepeat(ToggleButton boton);
         void onClickAddFavorite(ImageView boton);
     }
 }
