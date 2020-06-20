@@ -37,11 +37,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -65,7 +69,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        getHashkey();
+        //getHashkey();
 
 
         Glide.with(this).asGif().load("http://s7.gifyu.com/images/gifFondoLogin.gif").into(binding.imagenFondo);
@@ -109,22 +113,23 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
         super.onStart();
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-
-        //Actualizar la UI
-        updateUIGoogle(account);
-        updateUIFacebook(isLoggedInOnFacebook());
+//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+//
+//        //Actualizar la UI
+//        updateUIGoogle(account);
+//        updateUIFacebook(isLoggedInOnFacebook());
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUIFirebase(currentUser);
     }
-
+    //Recibe un user de firebase, facebook, o google y pasa a la main
     private void updateUIFirebase(FirebaseUser currentUser) {
         if (currentUser != null){
             pasarALaMainActivityMatandoActividadActual();
         }
     }
 
+    //login mail y contrasena
     private void loginFirebaseUser(String email, String password){
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -149,6 +154,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
                 });
     }
 
+    //register mail y contrasena
     private void createFirebaseUser(String email, String password){
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -173,18 +179,18 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
 
     }
 
-    private void updateUIGoogle(GoogleSignInAccount account) {
-        if (account != null) {
-            //Si estas Logueado con Google hace esto.
-            pasarALaMainActivityMatandoActividadActual();
-        }
-    }
-
-    private void updateUIFacebook(Boolean isLoggedInOnFacebook) {
-        if (isLoggedInOnFacebook) {
-            pasarALaMainActivityMatandoActividadActual();
-        }
-    }
+//    private void updateUIGoogle(GoogleSignInAccount account) {
+//        if (account != null) {
+//            //Si estas Logueado con Google hace esto.
+//            pasarALaMainActivityMatandoActividadActual();
+//        }
+//    }
+//
+//    private void updateUIFacebook(Boolean isLoggedInOnFacebook) {
+//        if (isLoggedInOnFacebook) {
+//            pasarALaMainActivityMatandoActividadActual();
+//        }
+//    }
 
     private void pasarALaMainActivityMatandoActividadActual() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -200,10 +206,10 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
 
     }
 
-    private boolean isLoggedInOnFacebook() {
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        return accessToken != null;
-    }
+//    private boolean isLoggedInOnFacebook() {
+//        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+//        return accessToken != null;
+//    }
 
 
     @Override
@@ -223,14 +229,38 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
             // Signed in successfully, show authenticated UI.
-            updateUIGoogle(account);
+            firebaseAuthWithGoogle(account.getIdToken());
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w("GOOGLE", "signInResult:failed code=" + e.getStatusCode());
-            updateUIGoogle(null);
+            //updateUIGoogle(null);
         }
     }
+
+    private void firebaseAuthWithGoogle(String idToken) {
+            AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+            mAuth.signInWithCredential(credential)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "signInWithCredential:success");
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                updateUIFirebase(user);
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "signInWithCredential:failure", task.getException());
+                                Toast.makeText(LoginActivity.this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
+                                updateUIFirebase(null);
+                            }
+
+                            // ...
+                        }
+                    });
+        }
+
 
     @Override
     public void onClickLoginInicioBotonIniciarSesion() {
@@ -258,38 +288,69 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
     public void onClickLoginFragmentBotonLoginConFacebook(LoginButton loginButton) {
 
         loginButton.setReadPermissions(Arrays.asList(EMAIL));
-
+        loginButton.setReadPermissions("email", "public_profile");
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                pasarALaMainActivityMatandoActividadActual();
+                Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
             @Override
             public void onCancel() {
-                // App code
+                Log.d(TAG, "facebook:onCancel");
             }
 
             @Override
             public void onError(FacebookException exception) {
-                // App code
+                Log.d(TAG, "facebook:onError", exception);
             }
         });
     }
+
+    private void handleFacebookAccessToken(AccessToken token) {
+        Log.d(TAG, "handleFacebookAccessToken:" + token);
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUIFirebase(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUIFirebase(null);
+                        }
+
+                        // ...
+                    }
+                });
+    }
+
 
 
     @Override
     public void onClickSignUpFragmentBotonSignUpGoogle(SignInButton button) {
         //editar, esto es crear cuenta con google por 1era vez
-        pasarALaMainActivityMatandoActividadActual();
+        //pasarALaMainActivityMatandoActividadActual();
+        signIn();
     }
 
     @Override
     public void onClickSignUpFragmentBotonSignUpFacebook(LoginButton button) {
         //editar, esto es crear cuenta con facebook por 1era vez
-        pasarALaMainActivityMatandoActividadActual();
+        //pasarALaMainActivityMatandoActividadActual();
+        onClickLoginFragmentBotonLoginConFacebook(button);
     }
 
+    //chequeos de mail y contraseña firebase
     @Override
     public void onClickSignUpFragmentBotonRegistrarse(String username, String password) {
         if (username.contains(" ") && !username.contains("@") && (!username.contains(".com") || !username.contains(".net") || !username.contains(".org"))) {
@@ -304,20 +365,20 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
     }
 
     //    Metodo para conseguir la hashkey.
-    public void getHashkey() {
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.example.projectointegrador",
-                    PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-
-        } catch (NoSuchAlgorithmException e) {
-
-        }
-    }
+//    public void getHashkey() {
+//        try {
+//            PackageInfo info = getPackageManager().getPackageInfo(
+//                    "com.example.projectointegrador",
+//                    PackageManager.GET_SIGNATURES);
+//            for (Signature signature : info.signatures) {
+//                MessageDigest md = MessageDigest.getInstance("SHA");
+//                md.update(signature.toByteArray());
+//                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+//            }
+//        } catch (PackageManager.NameNotFoundException e) {
+//
+//        } catch (NoSuchAlgorithmException e) {
+//
+//        }
+//    }
 }
