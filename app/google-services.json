@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "88469903863",
+    "firebase_url": "https://drakemusic-15722.firebaseio.com",
+    "project_id": "drakemusic-15722",
+    "storage_bucket": "drakemusic-15722.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88469903863:android:ee1fe5559ec7472fb4b6f2",
+        "android_client_info": {
+          "package_name": "com.example.projectointegrador"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "88469903863-an6bjolt4mlfe294kkpap2npv35ukj1f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9hVM9R3RUOXyBiF3m-N-1g65--d3vFkQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "88469903863-an6bjolt4mlfe294kkpap2npv35ukj1f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
