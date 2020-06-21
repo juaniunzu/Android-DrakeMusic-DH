@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
         setContentView(view);
         //getHashkey();
 
-        Glide.with(this).asGif().load("http://s7.gifyu.com/images/gifFondoLogin.gif").into(binding.imagenFondo);
+        Glide.with(this).asGif().load(R.drawable.giffondologin).into(binding.imagenFondo);
 
         pegarFragmentInicial(new LoginInicioFragment(this));
 
