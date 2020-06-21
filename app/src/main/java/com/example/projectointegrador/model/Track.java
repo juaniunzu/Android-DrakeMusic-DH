@@ -1,5 +1,7 @@
 package com.example.projectointegrador.model;
 
+import android.net.Uri;
+
 import androidx.annotation.Nullable;
 
 import com.example.projectointegrador.util.Utils;
@@ -13,6 +15,7 @@ public class Track implements Serializable, Utils.Searchable {
     private Artist artist;
     private Album album;
     private String type;
+    private String preview;
 
     //constructor para hardcodeados . Borrar mas adelante
     public Track(Integer id, String title, Integer duration, Artist artist, Album album) {
@@ -23,13 +26,25 @@ public class Track implements Serializable, Utils.Searchable {
         this.album = album;
     }
 
-    public Track(Integer id, String title, Integer duration, Artist artist, Album album, String type) {
+    public Track(Integer id, String title, Integer duration, Artist artist, Album album, String type, String preview) {
         this.id = id;
         this.title = title;
         this.duration = duration;
         this.artist = artist;
         this.album = album;
         this.type = type;
+        this.preview = preview;
+    }
+
+    public Track() {
+    }
+
+    public String getPreview() {
+        return preview;
+    }
+
+    public void setPreview(String preview) {
+        this.preview = preview;
     }
 
     public Integer getId() {
