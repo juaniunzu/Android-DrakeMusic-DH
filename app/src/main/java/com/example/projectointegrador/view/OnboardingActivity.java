@@ -5,10 +5,14 @@ import androidx.core.widget.TextViewCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.projectointegrador.R;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Html;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class OnboardingActivity extends AppCompatActivity {
 
@@ -59,7 +63,16 @@ public class OnboardingActivity extends AppCompatActivity {
     ViewPager.OnPageChangeListener viewListener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+            if(position == 3){
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(OnboardingActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                }, 2000);
+            }
         }
 
         @Override

@@ -126,7 +126,6 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
     private void updateUIFirebaseNuevoUsuario(FirebaseUser currentUser){
         //170 y 176
         if (currentUser != null){
-            Toast.makeText(this, "Bienvenido!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, OnboardingActivity.class);
             startActivity(intent);
         }
@@ -231,7 +230,12 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "signInWithCredential:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                updateUIFirebase(user);
+                                boolean newUser = task.getResult().getAdditionalUserInfo().isNewUser();
+                                if(newUser){
+                                    updateUIFirebaseNuevoUsuario(user);
+                                } else {
+                                    updateUIFirebase(user);
+                                }
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -303,7 +307,12 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUIFirebase(user);
+                            boolean newUser = task.getResult().getAdditionalUserInfo().isNewUser();
+                            if(newUser){
+                                updateUIFirebaseNuevoUsuario(user);
+                            } else {
+                                updateUIFirebase(user);
+                            }
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -311,7 +320,6 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
                                     Toast.LENGTH_SHORT).show();
                             updateUIFirebase(null);
                         }
-
                     }
                 });
     }
