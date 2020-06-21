@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
@@ -47,6 +48,7 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
     private RecyclerView recyclerViewListaDeTop5Tracks;
     private TextView fragmentDetailArtistTextViewNombre;
     private FragmentArtistDetailListener listener;
+    private ToggleButton toggleAddFav;
 
     public DetailArtistFragment() {
     }
@@ -61,6 +63,7 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
         imageViewToolBar = view.findViewById(R.id.fragmentDetailArtistCollapsingToolbarImageView);
         appBar = view.findViewById(R.id.fragmentDetailArtistAppBar);
         fragmentDetailArtistTextViewNombre = view.findViewById(R.id.fragmentDetailArtistTextViewNombre);
+        toggleAddFav = view.findViewById(R.id.fragmentDetailArtistButtonAgregarFavoritos);
 
 
         Bundle datosRecibidos = getArguments();
@@ -107,6 +110,13 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
         });
         recyclerViewListaDeTop5Tracks.setLayoutManager(linearLayoutManagerDeTop5Tracks);
 
+        toggleAddFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickAddArtistFavFragmentArtistDetail(artistaRecibido);
+            }
+        });
+
         return view;
     }
 
@@ -129,6 +139,7 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
     public interface FragmentArtistDetailListener{
         void fragmentOnClickAlbumDesdeFragmentArtistDetail(Album album);
         void fragmentOnClickTrackDesdeFragmentArtistDetail(Track track, List<Track> trackList);
+        void onClickAddArtistFavFragmentArtistDetail(Artist artist);
     }
 
     @Override

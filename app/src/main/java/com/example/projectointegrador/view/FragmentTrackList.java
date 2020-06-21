@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
@@ -36,6 +37,7 @@ public class FragmentTrackList extends Fragment implements TrackListAdapter.Trac
     private FragmentTrackListListener listener;
     private TextView textViewNombreAlbum;
     private TextView fragmentTrackListTextViewArtista;
+    private ToggleButton toggleAddFav;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +53,7 @@ public class FragmentTrackList extends Fragment implements TrackListAdapter.Trac
 
         Utils.setFragmentBackground(getContext(), appBarLayout, albumRecibido.getCover());
 
+        toggleAddFav = view.findViewById(R.id.fragmentTrackListButtonAgregarAFavoritos);
         textViewNombreAlbum = view.findViewById(R.id.fragmentTrackListTextViewNombre);
         textViewNombreAlbum.setText(albumRecibido.getTitle());
         fragmentTrackListTextViewArtista = view.findViewById(R.id.fragmentTrackListTextViewArtista);
@@ -75,6 +78,13 @@ public class FragmentTrackList extends Fragment implements TrackListAdapter.Trac
             }
         });
         recyclerViewListaDeTemas.setLayoutManager(linearLayoutManagerDeLosTracks);
+
+        toggleAddFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickAddAlbumFavFragmentTrackList(albumRecibido);
+            }
+        });
         return view;
     }
 
@@ -89,6 +99,7 @@ public class FragmentTrackList extends Fragment implements TrackListAdapter.Trac
 
     public interface FragmentTrackListListener{
         void onClickTrackFragmentTrackList(Track track, List<Track> trackList);
+        void onClickAddAlbumFavFragmentTrackList(Album album);
     }
 
     public void onAttach(Context context) {

@@ -13,12 +13,17 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.projectointegrador.R;
+import com.example.projectointegrador.controller.AlbumController;
+import com.example.projectointegrador.controller.ArtistController;
 import com.example.projectointegrador.databinding.ActivitySearchBinding;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
 import com.example.projectointegrador.model.Track;
+import com.example.projectointegrador.util.ResultListener;
 import com.example.projectointegrador.util.Utils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +40,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
 
 
     private ActivitySearchBinding binding;
+    private FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +51,8 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
 
         pegarFragmentAdd(new SearchFragment());
 
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         binding.activitySearchBottomNavigationView.setSelectedItemId(R.id.bottomNavigationView_Search);
 
@@ -207,6 +215,17 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
     }
 
     @Override
+    public void onClickAddArtistFavFragmentArtistDetail(Artist artist) {
+        ArtistController artistController = new ArtistController();
+        artistController.agregarArtistAFavoritos(artist, firebaseUser, new ResultListener<Artist>() {
+            @Override
+            public void finish(Artist resultado) {
+                Toast.makeText(SearchActivity.this, "Agregaste el Artista a Favoritos!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
     public void onClickTrackFragmentTrackList(Track track, List<Track> trackList) {
         Intent searchAPlayer = new Intent(SearchActivity.this, PlayerActivity.class);
         Bundle datos = new Bundle();
@@ -214,5 +233,16 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
         datos.putSerializable("lista", (ArrayList) trackList);
         searchAPlayer.putExtras(datos);
         startActivity(searchAPlayer);
+    }
+
+    @Override
+    public void onClickAddAlbumFavFragmentTrackList(Album album) {
+        AlbumController albumController = new AlbumController();
+        albumController.agregarAlbumAFavoritos(album, firebaseUser, new ResultListener<Album>() {
+            @Override
+            public void finish(Album resultado) {
+                Toast.makeText(SearchActivity.this, "Agregaste el Album a Favoritos!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
