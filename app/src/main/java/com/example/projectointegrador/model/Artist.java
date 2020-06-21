@@ -10,6 +10,9 @@ public class Artist implements Serializable, Utils.Searchable {
     private String picture;
     private String type;
 
+    public Artist() {
+    }
+
     //constructor para hardcodeados . Borrar mas adelante
     public Artist(Integer id, String name, String picture) {
         this.id = id;

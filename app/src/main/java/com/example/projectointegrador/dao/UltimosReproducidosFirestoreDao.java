@@ -9,8 +9,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.core.OrderBy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,8 @@ public class UltimosReproducidosFirestoreDao {
         db.collection(COLECC_ULTIMOS_REP)
                 .document(firebaseUser.getUid())
                 .collection(MIS_ULT_REPRODUCIDOS)
+                .orderBy("date", Query.Direction.DESCENDING)
+                .limit(10)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
