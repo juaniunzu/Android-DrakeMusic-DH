@@ -20,9 +20,6 @@ import com.example.projectointegrador.databinding.FragmentPerfilBinding;
  */
 public class PerfilFragment extends Fragment {
 
-
-
-
     private ImageView fotoPerfil;
     private TextView nombreUsuario;
     private LinearLayout favoritos;

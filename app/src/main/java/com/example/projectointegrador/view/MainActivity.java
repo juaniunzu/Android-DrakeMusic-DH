@@ -30,7 +30,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements HomeFragment.FragmentHomeListener,
                                                                 DetailArtistFragment.FragmentArtistDetailListener,
-                                                                FragmentTrackList.FragmentTrackListListener {
+                                                                FragmentTrackList.FragmentTrackListListener, AlbumesFavoritosFragment.AlbumesFavoritosFragmentListener {
 
     private DrawerLayout drawerLayout;
     private BottomNavigationView bottomNavigationView;
@@ -59,8 +59,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
                         startActivity(mainASearch);
                         break;
                     case R.id.bottomNavigationView_Favorites:
-                        Toast.makeText(MainActivity.this, "En Construccion.", Toast.LENGTH_SHORT).show();
-                        logout();
+                        //Toast.makeText(MainActivity.this, "En Construccion.", Toast.LENGTH_SHORT).show();
+                        //logout();
+                        pegarFragment(new FavoritosFragment());
                         break;
                 }
                 return true;
@@ -199,4 +200,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     }
 
 
+    @Override
+    public void onClickAlbum() {
+        //
+    }
 }
