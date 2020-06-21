@@ -80,6 +80,10 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
                 recyclerViewRecomendados.setAdapter(recomendadoAdapter);
             }
         });
+
+        recyclerViewUltimasReproducciones.setVisibility(View.GONE);
+        textViewUltimosRep.setVisibility(View.GONE);
+
         trackController.getUltimosReproducidos(firebaseUser, new ResultListener<List<Track>>() {
             @Override
             public void finish(List<Track> resultado) {
@@ -88,12 +92,9 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
                     recyclerViewUltimasReproducciones.setAdapter(ultimosReproducidosAdapter);
                     LinearLayoutManager linearLayoutManagerUltimasReproducciones= new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
                     recyclerViewUltimasReproducciones.setLayoutManager(linearLayoutManagerUltimasReproducciones);
+                    recyclerViewUltimasReproducciones.setVisibility(View.VISIBLE);
+                    textViewUltimosRep.setVisibility(View.VISIBLE);
                 }
-                else {
-                    textViewUltimosRep.setText(R.string.encontramusica);
-                    recyclerViewUltimasReproducciones.setVisibility(View.GONE);
-                }
-
             }
         });
         ArtistController artistController = new ArtistController();
