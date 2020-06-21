@@ -44,8 +44,8 @@
                 android:id="@+id/fragmentTrackListTextViewNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:breakStrategy="balanced"
+                android:gravity="center"
                 android:text="Nombre Album"
                 android:textColor="#fff"
                 android:textSize="24dp"
@@ -55,11 +55,20 @@
                 android:id="@+id/fragmentTrackListTextViewArtista"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:breakStrategy="balanced"
+                android:gravity="center"
                 android:text="Nombre Artista"
                 android:textColor="@color/divider"
-                android:textSize="20dp" />
+                android:textSize="20dp" />  
+
+            <ToggleButton
+                android:id="@+id/fragmentTrackListButtonAgregarAFavoritos"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textOff="@string/agregar_a_fav"
+                android:textOn="@string/en_fav" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fragmentTrackList_RecyclerViewListaDeTracks"

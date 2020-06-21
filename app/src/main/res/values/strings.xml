@@ -27,6 +27,8 @@
     <string name="bienvenido_denuevo">Bienvenido de nuevo!</string>
     <string name="slogan">Toda tu música. Justo aquí, en un solo lugar.</string>
     <string name="top_tracks">Top Tracks del artista</string>
+    <string name="agregar_a_fav">Agregar a favoritos</string>
+    <string name="en_fav">En favoritos</string>
     <string name="encontramusica">Encontra tu musica, nosotros te la guardamos!</string>
 
 </resources>
