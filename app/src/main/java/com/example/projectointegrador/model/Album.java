@@ -18,6 +18,9 @@ public class Album implements Serializable, Utils.Searchable {
     private List<Track> tracks;
     private String type;
 
+    public Album() {
+    }
+
     //constructor solo usado para crear lista hardcodeada de ultimas reproducciones. Borrar cuando se empiece a traer la data de otro lado
     public Album(Integer id, String title, String cover) {
         this.id = id;
@@ -53,8 +56,6 @@ public class Album implements Serializable, Utils.Searchable {
         this.genres = genres;
     }
 
-    public Album() {
-    }
 
     public Artist getArtist() {
         return artist;

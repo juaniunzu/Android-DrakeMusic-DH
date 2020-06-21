@@ -12,6 +12,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/fragmentHome_TextViewRecomendados"
             style="@style/title_home"
             android:text="@string/recomendados" />
 
@@ -22,6 +23,7 @@
             android:layout_marginBottom="20dp" />
 
         <TextView
+            android:id="@+id/fragmentHome_TextViewUltimasReproducidas"
             style="@style/title_home"
             android:text="@string/ultimas_reproducciones" />
 
@@ -32,6 +34,7 @@
             android:layout_marginBottom="20dp" />
 
         <TextView
+            android:id="@+id/fragmentHome_TextViewArtistas"
             style="@style/title_home"
             android:text="@string/artistas" />
 
@@ -42,6 +45,7 @@
             android:layout_marginBottom="20dp" />
 
         <TextView
+            android:id="@+id/fragmentHome_TextViewAlbumes"
             style="@style/title_home"
             android:text="@string/albumes" />
 

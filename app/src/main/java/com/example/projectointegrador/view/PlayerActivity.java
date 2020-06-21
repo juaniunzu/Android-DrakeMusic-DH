@@ -17,6 +17,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -26,8 +27,13 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.projectointegrador.R;
+import com.example.projectointegrador.controller.TrackController;
 import com.example.projectointegrador.databinding.ActivityPlayerBinding;
 import com.example.projectointegrador.model.Track;
+import com.example.projectointegrador.util.ResultListener;
+import com.example.projectointegrador.view.adapter.TrackSearchAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,6 +53,9 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     private Runnable runnable;
     private Handler handler;
     private SeekBar seekBar;
+    private FirebaseUser firebaseUser;
+    private FirebaseAuth firebaseAuth;
+
 
 
     @Override
@@ -61,6 +70,8 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         toolbar = binding.activityPlayerToolbar;
 
         setSupportActionBar(toolbar);
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
@@ -89,6 +100,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         prepararTrackParaReproduccion(viewPager.getCurrentItem());
         audioPlayer.start();
+        agregarTrackAUltimosReproducidos(trackArrayList.get(viewPager.getCurrentItem()));
 
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -108,6 +120,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                     audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                     prepararTrackParaReproduccion(position);
                     audioPlayer.start();
+                    agregarTrackAUltimosReproducidos(trackArrayList.get(position));
                 }
 
             }
@@ -223,7 +236,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
 
     @Override
-    public void onClickAddFavorite(ImageView boton) {
+    public void onClickAddFavorite() {
 
     }
 
@@ -231,5 +244,15 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     protected void onDestroy() {
         super.onDestroy();
         audioPlayer.release();
+    }
+
+    private void agregarTrackAUltimosReproducidos(Track track){
+        TrackController trackController = new TrackController();
+        trackController.agregarTrackAUltimosReproducidos(track, firebaseUser, new ResultListener<Track>() {
+            @Override
+            public void finish(Track resultado) {
+                Toast.makeText(PlayerActivity.this, "Track agregado", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

@@ -91,7 +91,7 @@ public class PlayerFragment extends Fragment {
         fragmentPlayerButtonAddFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickAddFavorite(fragmentPlayerButtonAddFavorite);
+                listener.onClickAddFavorite();
             }
         });
 
@@ -166,6 +166,6 @@ public class PlayerFragment extends Fragment {
         void onClickPrevious();
         void onClickShuffle(ToggleButton boton);
         void onClickRepeat(ToggleButton boton);
-        void onClickAddFavorite(ImageView boton);
+        void onClickAddFavorite();
     }
 }
