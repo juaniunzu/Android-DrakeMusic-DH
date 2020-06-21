@@ -49,9 +49,9 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        listaDeAlbums = AlbumDao.getAlbums();
-        listaDeArtistas = ArtistDao.getArtists();
-        listaDeRecomendados = TrackDao.getRecomendados();
+//        listaDeAlbums = AlbumDao.getAlbums();
+//        listaDeArtistas = ArtistDao.getArtists();
+//        listaDeRecomendados = TrackDao.getRecomendados();
         listaDeUltimasReproducciones = TrackDao.getUltimosReproducidos();
         setFindViewByIds(view);
 
@@ -64,6 +64,8 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
         //ArtistAdapter artistAdapter = new ArtistAdapter(listaDeArtistas);
         //RecomendadoAdapter recomendadoAdapter = new RecomendadoAdapter(listaDeRecomendados,this);
         UltimosReproducidosAdapter ultimosReproducidosAdapter = new UltimosReproducidosAdapter(listaDeUltimasReproducciones,this);
+
+
 
         TrackController trackController = new TrackController();
         trackController.getTracks(getContext(), new ResultListener<List<Track>>() {
