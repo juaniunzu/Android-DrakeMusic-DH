@@ -23,6 +23,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -173,6 +174,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         //Logout de CaraLibro
         LoginManager.getInstance().logOut();
 
+        //LOGOUT BASE FUEGO
+        FirebaseAuth.getInstance().signOut();
+
         //Logout de Google. Si, es bastante mas grande.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -188,7 +192,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
                         finish();
                     }
                 }
+
+
     );
+
     }
 
 
