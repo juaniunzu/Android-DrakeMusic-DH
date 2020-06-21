@@ -111,13 +111,6 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
     @Override
     protected void onStart() {
         super.onStart();
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
-//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-//
-//        //Actualizar la UI
-//        updateUIGoogle(account);
-//        updateUIFacebook(isLoggedInOnFacebook());
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUIFirebase(currentUser);
@@ -125,6 +118,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
     //Recibe un user de firebase, facebook, o google y pasa a la main
     private void updateUIFirebase(FirebaseUser currentUser) {
         if (currentUser != null){
+            Toast.makeText(this, "Bienvenido!", Toast.LENGTH_SHORT).show();
             pasarALaMainActivityMatandoActividadActual();
         }
     }
@@ -179,19 +173,6 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
 
     }
 
-//    private void updateUIGoogle(GoogleSignInAccount account) {
-//        if (account != null) {
-//            //Si estas Logueado con Google hace esto.
-//            pasarALaMainActivityMatandoActividadActual();
-//        }
-//    }
-//
-//    private void updateUIFacebook(Boolean isLoggedInOnFacebook) {
-//        if (isLoggedInOnFacebook) {
-//            pasarALaMainActivityMatandoActividadActual();
-//        }
-//    }
-
     private void pasarALaMainActivityMatandoActividadActual() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
@@ -202,14 +183,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
 
-        // LoginManager.getInstance().logOut();
-
     }
-
-//    private boolean isLoggedInOnFacebook() {
-//        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-//        return accessToken != null;
-//    }
 
 
     @Override
@@ -329,7 +303,6 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
                             updateUIFirebase(null);
                         }
 
-                        // ...
                     }
                 });
     }
@@ -338,15 +311,11 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
 
     @Override
     public void onClickSignUpFragmentBotonSignUpGoogle(SignInButton button) {
-        //editar, esto es crear cuenta con google por 1era vez
-        //pasarALaMainActivityMatandoActividadActual();
         signIn();
     }
 
     @Override
     public void onClickSignUpFragmentBotonSignUpFacebook(LoginButton button) {
-        //editar, esto es crear cuenta con facebook por 1era vez
-        //pasarALaMainActivityMatandoActividadActual();
         onClickLoginFragmentBotonLoginConFacebook(button);
     }
 
