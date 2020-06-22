@@ -26,14 +26,13 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FavoritosFragment extends Fragment implements TracksFavoritosFragment.TracksFavoritosFragmentListener, AlbumesFavoritosFragment.AlbumesFavoritosFragmentListener, ArtistasFavoritosFragment.ArtistasFavoritosFragmentListener {
+public class FavoritosFragment extends Fragment {
 
     private ViewPager viewPager;
     private FragmentFavoritosBinding binding;
     private TextView albumes;
     private TextView artistas;
     private TextView tracks;
-    private FavoritosFragmentListener favoritosFragmentListener;
 
     public FavoritosFragment() {
         // Required empty public constructor
@@ -48,7 +47,7 @@ public class FavoritosFragment extends Fragment implements TracksFavoritosFragme
 
         findViews();
 
-        favoritosFragmentListener = (FavoritosFragmentListener) super.getContext();
+        //favoritosFragmentListener = (FavoritosFragmentListener) super.getContext();
 
         FragmentManager fragmentManager = getFragmentManager();
 
@@ -112,24 +111,5 @@ public class FavoritosFragment extends Fragment implements TracksFavoritosFragme
         tracks = binding.fragmentFavoritosTextViewTracks;
     }
 
-    @Override
-    public void onClickTracksFavFragment(Track track, List<Track> trackList) {
-        favoritosFragmentListener.onClickTracksFavoritosFragmentFF(track, trackList);
-    }
 
-    @Override
-    public void onClickAlbumFavFragment(Album album) {
-        favoritosFragmentListener.onClickAlbumFavoritosFragmentFF(album);
-    }
-
-    @Override
-    public void onClickArtistasFavFragment(Artist artist) {
-        favoritosFragmentListener.onClickArtistFavoritosFragmentFF(artist);
-    }
-
-    public interface FavoritosFragmentListener{
-        void onClickTracksFavoritosFragmentFF(Track track, List<Track> trackList);
-        void onClickAlbumFavoritosFragmentFF(Album album);
-        void onClickArtistFavoritosFragmentFF(Artist artist);
-    }
 }

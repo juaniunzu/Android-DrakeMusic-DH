@@ -35,7 +35,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements HomeFragment.FragmentHomeListener,
                                                                 DetailArtistFragment.FragmentArtistDetailListener,
                                                                 FragmentTrackList.FragmentTrackListListener,
-        FavoritosFragment.FavoritosFragmentListener {
+                                                TracksFavoritosFragment.TracksFavoritosFragmentListener,
+        ArtistasFavoritosFragment.ArtistasFavoritosFragmentListener,
+        AlbumesFavoritosFragment.AlbumesFavoritosFragmentListener {
 
     private DrawerLayout drawerLayout;
     private BottomNavigationView bottomNavigationView;
@@ -230,10 +232,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     );
 
     }
-
-
+    
     @Override
-    public void onClickTracksFavoritosFragmentFF(Track track, List<Track> trackList) {
+    public void onClickTracksFavFragment(Track track, List<Track> trackList) {
         Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
         Bundle datos = new Bundle();
         datos.putSerializable("track", track);
@@ -243,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     }
 
     @Override
-    public void onClickAlbumFavoritosFragmentFF(Album album) {
+    public void onClickAlbumFavFragment(Album album) {
         Bundle datos = new Bundle();
         datos.putSerializable(FragmentTrackList.ALBUM,album);
         FragmentTrackList fragmentTrackList = new FragmentTrackList();
@@ -252,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     }
 
     @Override
-    public void onClickArtistFavoritosFragmentFF(Artist artist) {
+    public void onClickArtistasFavFragment(Artist artist) {
         Bundle datos = new Bundle();
         datos.putSerializable(DetailArtistFragment.ARTIST,artist);
         DetailArtistFragment detailArtistFragment = new DetailArtistFragment();

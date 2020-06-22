@@ -39,6 +39,12 @@ public class ArtistasFavoritosFragment extends Fragment implements ArtistSearchA
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.artistasFavoritosFragmentListener = (ArtistasFavoritosFragmentListener) context;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -48,7 +54,7 @@ public class ArtistasFavoritosFragment extends Fragment implements ArtistSearchA
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        artistasFavoritosFragmentListener = (ArtistasFavoritosFragmentListener) super.getContext();
+        //artistasFavoritosFragmentListener = (ArtistasFavoritosFragmentListener) super.getContext();
 
         ArtistController artistController = new ArtistController();
         artistController.getArtistListFavoritos(firebaseUser, new ResultListener<List<Artist>>() {

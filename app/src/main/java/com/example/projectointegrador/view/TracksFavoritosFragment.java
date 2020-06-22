@@ -37,6 +37,11 @@ public class TracksFavoritosFragment extends Fragment implements TrackSearchAdap
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.listener = (TracksFavoritosFragmentListener) context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,7 +53,7 @@ public class TracksFavoritosFragment extends Fragment implements TrackSearchAdap
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        listener = (TracksFavoritosFragmentListener) super.getContext();
+        //listener = (TracksFavoritosFragmentListener) super.getContext();
 
         TrackController trackController = new TrackController();
         trackController.getTrackListFavoritos(firebaseUser, new ResultListener<List<Track>>() {
