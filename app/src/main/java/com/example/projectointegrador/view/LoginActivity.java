@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.GlideBuilder;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.databinding.ActivityLoginBinding;
 import com.facebook.AccessToken;
@@ -71,8 +72,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
         setContentView(view);
         //getHashkey();
 
-
-        Glide.with(this).asGif().load("http://s7.gifyu.com/images/gifFondoLogin.gif").into(binding.imagenFondo);
+        Glide.with(this).asGif().load(R.drawable.giffondologin).into(binding.imagenFondo);
 
         pegarFragmentInicial(new LoginInicioFragment(this));
 

@@ -4,10 +4,12 @@ import android.content.Context;
 
 import com.example.projectointegrador.dao.AlbumApiDao;
 import com.example.projectointegrador.dao.AlbumDao;
+import com.example.projectointegrador.dao.AlbumFirestoreDao;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.service.ResponseAlbum;
 import com.example.projectointegrador.util.ResultListener;
 import com.example.projectointegrador.util.Utils;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
@@ -51,5 +53,25 @@ public class AlbumController {
                 }
             });
         }
+    }
+
+    public void agregarAlbumAFavoritos(Album album, FirebaseUser firebaseUser, final ResultListener<Album> listener){
+        AlbumFirestoreDao albumFirestoreDao = new AlbumFirestoreDao();
+        albumFirestoreDao.agregarAlbumAFavoritos(album, firebaseUser, new ResultListener<Album>() {
+            @Override
+            public void finish(Album resultado) {
+                listener.finish(resultado);
+            }
+        });
+    }
+
+    public void getAlbumListFavoritos(FirebaseUser firebaseUser, final ResultListener<List<Album>> listener){
+        AlbumFirestoreDao albumFirestoreDao = new AlbumFirestoreDao();
+        albumFirestoreDao.getAlbumListFavoritos(firebaseUser, new ResultListener<List<Album>>() {
+            @Override
+            public void finish(List<Album> resultado) {
+                listener.finish(resultado);
+            }
+        });
     }
 }

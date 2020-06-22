@@ -1,56 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="10dp"
     tools:context=".view.HomeFragment">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#000"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/fragmentHome_TextViewRecomendados"
             style="@style/title_home"
-            android:text="@string/recomendados" />
+            android:text="@string/recomendados"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/fragmentHome_ImageViewPerfil"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_settings_white_24dp"
+            app:layout_constraintBottom_toBottomOf="@id/fragmentHome_TextViewRecomendados"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/fragmentHome_TextViewRecomendados" />
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fargmentHome_RecyclerDeRecomendados"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp" />
+            android:layout_marginBottom="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragmentHome_TextViewRecomendados" />
 
         <TextView
+            android:id="@+id/fragmentHome_TextViewUltimasReproducidas"
             style="@style/title_home"
-            android:text="@string/ultimas_reproducciones" />
+            android:text="@string/ultimas_reproducciones"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fargmentHome_RecyclerDeRecomendados" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fargmentHome_RecyclerDeUltimasReproducciones"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp" />
+            android:layout_marginBottom="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragmentHome_TextViewUltimasReproducidas" />
 
         <TextView
+            android:id="@+id/fragmentHome_TextViewArtistas"
             style="@style/title_home"
-            android:text="@string/artistas" />
+            android:text="@string/artistas"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fargmentHome_RecyclerDeUltimasReproducciones" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fargmentHome_RecyclerDeArtistas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp" />
+            android:layout_marginBottom="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragmentHome_TextViewArtistas" />
 
         <TextView
+            android:id="@+id/fragmentHome_TextViewAlbumes"
             style="@style/title_home"
-            android:text="@string/albumes" />
+            android:layout_marginTop="20dp"
+            android:text="@string/albumes"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fargmentHome_RecyclerDeArtistas" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fargmentHome_RecyclerDeAlbumes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp" />
+            android:layout_marginBottom="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragmentHome_TextViewAlbumes" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

@@ -10,7 +10,7 @@
         android:id="@+id/fragmentPlayerImageView"
         android:layout_width="320dp"
         android:layout_height="320dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="60dp"
         android:src="@drawable/iron_maiden"
         app:layout_constraintBottom_toTopOf="@id/fragmentPlayerTextViewNombre"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,9 +49,7 @@
         android:textColor="#fff"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="@id/fragmentPlayerImageView"
-        app:layout_constraintTop_toBottomOf="@id/fragmentPlayerTextViewNombre"
-
-        />
+        app:layout_constraintTop_toBottomOf="@id/fragmentPlayerTextViewNombre" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline70"
@@ -62,12 +60,25 @@
 
     </androidx.constraintlayout.widget.Guideline>
 
+    <SeekBar
+        android:id="@+id/fragmentPlayerSeekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toTopOf="@id/guideline70"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragmentPlayerTextViewArtista" />
 
-    <ImageView
+
+    <ToggleButton
         android:id="@+id/fragmentPlayerButtonPlay"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/ic_play_circle_filled_black_24dp"
+        android:background="@drawable/ic_pause_circle_filled_black_24dp"
+        android:textOff=""
+        android:textOn=""
         app:layout_constraintBottom_toTopOf="@id/guideline80"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -93,21 +104,25 @@
         app:layout_constraintStart_toEndOf="@id/fragmentPlayerButtonPlay"
         app:layout_constraintTop_toBottomOf="@id/guideline70" />
 
-    <ImageView
+    <ToggleButton
         android:id="@+id/fragmentPlayerButtonShuffle"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/ic_shuffle_black_24dp"
+        android:textOn=""
+        android:textOff=""
+        android:background="@drawable/ic_shuffle_black_24dp"
         app:layout_constraintBottom_toTopOf="@id/guideline80"
         app:layout_constraintEnd_toStartOf="@+id/fragmentPlayerButtonPrevious"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline70" />
 
-    <ImageView
+    <ToggleButton
         android:id="@+id/fragmentPlayerButtonRepeat"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/ic_repeat_black_24dp"
+        android:background="@drawable/ic_repeat_black_24dp"
+        android:textOff=""
+        android:textOn=""
         app:layout_constraintBottom_toTopOf="@id/guideline80"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/fragmentPlayerButtonNext"

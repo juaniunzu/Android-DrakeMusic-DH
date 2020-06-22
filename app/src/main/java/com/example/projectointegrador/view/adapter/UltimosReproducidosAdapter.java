@@ -9,8 +9,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.model.Track;
+import com.example.projectointegrador.util.Utils;
 
 import java.util.List;
 
@@ -71,9 +73,14 @@ public class UltimosReproducidosAdapter extends RecyclerView.Adapter<UltimosRepr
 
         public void darValores(Track track) {
             // Forma de obtener el id con solo el nombre del drawabale. Esto hace que no Rompa los datos Hardcodeados.
-            int id = itemView.getContext().getResources().getIdentifier("drawable/" + track.getAlbum().getCover(), null, itemView.getContext().getPackageName());
-            imageViewAlbumDelTrack.setImageResource(id);
+            //int id = itemView.getContext().getResources().getIdentifier("drawable/" + track.getAlbum().getCover(), null, itemView.getContext().getPackageName());
+            Glide.with(itemView)
+                    .setDefaultRequestOptions(Utils.requestOptionsCircularProgressBar(itemView.getContext()))
+                    .load(track.getAlbum().getCover())
+                    .into(imageViewAlbumDelTrack);
             textViewNombreDelTrack.setText(track.getTitle());
+            textViewNombreDelArtista.setText(track.getArtist().getName());
+            textViewNombreDelAlbum.setText(track.getAlbum().getTitle());
 
         }
     }

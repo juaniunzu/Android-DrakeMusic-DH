@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.AlbumController;
@@ -26,6 +28,8 @@ import com.example.projectointegrador.view.adapter.AlbumAdapter;
 import com.example.projectointegrador.view.adapter.ArtistAdapter;
 import com.example.projectointegrador.view.adapter.RecomendadoAdapter;
 import com.example.projectointegrador.view.adapter.UltimosReproducidosAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
@@ -44,26 +48,24 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
     private List<Artist> listaDeArtistas;
     private RecyclerView recyclerViewArtists;
     private FragmentHomeListener listener;
+    private FirebaseUser firebaseUser;
+    private TextView textViewUltimosRep;
+    private ImageView settings;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        listaDeAlbums = AlbumDao.getAlbums();
-        listaDeArtistas = ArtistDao.getArtists();
-        listaDeRecomendados = TrackDao.getRecomendados();
+
         listaDeUltimasReproducciones = TrackDao.getUltimosReproducidos();
         setFindViewByIds(view);
 
         LinearLayoutManager linearLayoutManagerAlbum = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
         LinearLayoutManager linearLayoutManagerRecomendado = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
-        LinearLayoutManager linearLayoutManagerUltimasReproducciones= new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
         LinearLayoutManager linearLayoutManagerArtist = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
 
-        //AlbumAdapter albumAdapter = new AlbumAdapter(listaDeAlbums);
-        //ArtistAdapter artistAdapter = new ArtistAdapter(listaDeArtistas);
-        //RecomendadoAdapter recomendadoAdapter = new RecomendadoAdapter(listaDeRecomendados,this);
-        UltimosReproducidosAdapter ultimosReproducidosAdapter = new UltimosReproducidosAdapter(listaDeUltimasReproducciones,this);
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         TrackController trackController = new TrackController();
         trackController.getTracks(getContext(), new ResultListener<List<Track>>() {
@@ -71,6 +73,23 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
             public void finish(List<Track> resultado) {
                 RecomendadoAdapter recomendadoAdapter = new RecomendadoAdapter(resultado,HomeFragment.this);
                 recyclerViewRecomendados.setAdapter(recomendadoAdapter);
+            }
+        });
+
+        recyclerViewUltimasReproducciones.setVisibility(View.GONE);
+        textViewUltimosRep.setVisibility(View.GONE);
+
+        trackController.getUltimosReproducidos(firebaseUser, new ResultListener<List<Track>>() {
+            @Override
+            public void finish(List<Track> resultado) {
+                if (resultado.size() != 0){
+                    UltimosReproducidosAdapter ultimosReproducidosAdapter = new UltimosReproducidosAdapter(resultado,HomeFragment.this);
+                    recyclerViewUltimasReproducciones.setAdapter(ultimosReproducidosAdapter);
+                    LinearLayoutManager linearLayoutManagerUltimasReproducciones= new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
+                    recyclerViewUltimasReproducciones.setLayoutManager(linearLayoutManagerUltimasReproducciones);
+                    recyclerViewUltimasReproducciones.setVisibility(View.VISIBLE);
+                    textViewUltimosRep.setVisibility(View.VISIBLE);
+                }
             }
         });
         ArtistController artistController = new ArtistController();
@@ -93,22 +112,25 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
 
         recyclerViewArtists.setLayoutManager(linearLayoutManagerArtist);
         recyclerViewRecomendados.setLayoutManager(linearLayoutManagerRecomendado);
-        recyclerViewUltimasReproducciones.setLayoutManager(linearLayoutManagerUltimasReproducciones);
         recyclerViewAlbums.setLayoutManager(linearLayoutManagerAlbum);
 
-        //recyclerViewAlbums.setAdapter(albumAdapter);
-        recyclerViewUltimasReproducciones.setAdapter(ultimosReproducidosAdapter);
-        //recyclerViewRecomendados.setAdapter(recomendadoAdapter);
-        //recyclerViewArtists.setAdapter(artistAdapter);
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickSettingsHomeFragment();
+            }
+        });
 
         return view;
     }
 
     private void setFindViewByIds(View view) {
+        textViewUltimosRep = view.findViewById(R.id.fragmentHome_TextViewUltimasReproducidas);
         recyclerViewAlbums = view.findViewById(R.id.fargmentHome_RecyclerDeAlbumes);
         recyclerViewArtists = view.findViewById(R.id.fargmentHome_RecyclerDeArtistas);
         recyclerViewRecomendados = view.findViewById(R.id.fargmentHome_RecyclerDeRecomendados);
         recyclerViewUltimasReproducciones = view.findViewById(R.id.fargmentHome_RecyclerDeUltimasReproducciones);
+        settings = view.findViewById(R.id.fragmentHome_ImageViewPerfil);
     }
 
     @Override
@@ -140,6 +162,7 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
         void onClickUltimosReproducidosDesdeHomeFragment(Track track, List<Track> trackList);
         void onClickArtistaDesdeHomeFragment(Artist artist);
         void onClickAlbumDesdeHomeFragment(Album album);
+        void onClickSettingsHomeFragment();
     }
 
     @Override

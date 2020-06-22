@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    tools:context=".view.PerfilFragment">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/fragmentPerfilCardView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="25dp"
+        app:cardCornerRadius="30dp"
+        android:background="#00FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/fragmentPerfilImageViewUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_drakemusic"
+            android:background="#00FFFFFF"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/fragmentPerfilTextViewNombreUsuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="Nombre usuario"
+        android:textColor="@color/text_subtitles"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/fragmentPerfilCardView"
+        app:layout_constraintStart_toEndOf="@id/fragmentPerfilCardView"
+        app:layout_constraintTop_toTopOf="@id/fragmentPerfilCardView" />
+
+    <View
+        android:id="@+id/viewSeparador1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:background="#AEAEAE"
+        app:layout_constraintStart_toStartOf="@id/fragmentPerfilCardView"
+        app:layout_constraintTop_toBottomOf="@id/fragmentPerfilCardView" />
+
+    <LinearLayout
+        android:id="@+id/fragmentPerfilLinearLayoutFavoritos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/viewSeparador1">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="25dp"
+            android:src="@drawable/ic_star_white_24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="25dp"
+            android:gravity="center"
+            android:text="@string/favoritos"
+            android:textColor="@color/text_subtitles" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/viewSeparador2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:background="#AEAEAE"
+        app:layout_constraintStart_toStartOf="@id/fragmentPerfilLinearLayoutFavoritos"
+        app:layout_constraintTop_toBottomOf="@id/fragmentPerfilLinearLayoutFavoritos" />
+
+    <LinearLayout
+        android:id="@+id/fragmentPerfilLinearLayoutCerrarSesion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/viewSeparador2">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="25dp"
+            android:src="@drawable/ic_power_settings_new_accent_24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="25dp"
+            android:gravity="center"
+            android:text="@string/cerrar_sesion"
+            android:textColor="@color/text_subtitles" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

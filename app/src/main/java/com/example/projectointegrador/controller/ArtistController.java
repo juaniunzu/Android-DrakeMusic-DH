@@ -2,12 +2,15 @@ package com.example.projectointegrador.controller;
 
 import android.content.Context;
 
+
 import com.example.projectointegrador.dao.ArtistApiDao;
 import com.example.projectointegrador.dao.ArtistDao;
+import com.example.projectointegrador.dao.ArtistFirestoreDao;
 import com.example.projectointegrador.model.Artist;
 import com.example.projectointegrador.service.ResponseArtist;
 import com.example.projectointegrador.util.ResultListener;
 import com.example.projectointegrador.util.Utils;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
@@ -38,6 +41,26 @@ public class ArtistController {
                 }
             });
         }
+    }
+
+    public void agregarArtistAFavoritos(Artist artist, FirebaseUser firebaseUser, final ResultListener<Artist> listener){
+        ArtistFirestoreDao artistFirestoreDao = new ArtistFirestoreDao();
+        artistFirestoreDao.agregarArtistAFavoritos(artist, firebaseUser, new ResultListener<Artist>() {
+            @Override
+            public void finish(Artist resultado) {
+                listener.finish(resultado);
+            }
+        });
+    }
+
+    public void getArtistListFavoritos(FirebaseUser firebaseUser, final ResultListener<List<Artist>> listener){
+        ArtistFirestoreDao artistFirestoreDao = new ArtistFirestoreDao();
+        artistFirestoreDao.getArtistListFavoritos(firebaseUser, new ResultListener<List<Artist>>() {
+            @Override
+            public void finish(List<Artist> resultado) {
+                listener.finish(resultado);
+            }
+        });
     }
 
 
