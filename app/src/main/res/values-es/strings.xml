@@ -28,5 +28,7 @@
     <string name="top_tracks">Top tracks del artista</string>
     <string name="agregar_a_fav">Agregar a favoritos</string>
     <string name="en_fav">En favoritos</string>
+    <string name="encontramusica">Encontra tu musica, nosotros te la guardamos!</string>
+    <string name="cerrar_sesion">Cerrar sesión</string>
 
 </resources>

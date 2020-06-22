@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.projectointegrador.R;
@@ -49,25 +50,19 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
     private FragmentHomeListener listener;
     private FirebaseUser firebaseUser;
     private TextView textViewUltimosRep;
+    private ImageView settings;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-//        listaDeAlbums = AlbumDao.getAlbums();
-//        listaDeArtistas = ArtistDao.getArtists();
-//        listaDeRecomendados = TrackDao.getRecomendados();
+
         listaDeUltimasReproducciones = TrackDao.getUltimosReproducidos();
         setFindViewByIds(view);
 
         LinearLayoutManager linearLayoutManagerAlbum = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
         LinearLayoutManager linearLayoutManagerRecomendado = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
         LinearLayoutManager linearLayoutManagerArtist = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
-
-        //AlbumAdapter albumAdapter = new AlbumAdapter(listaDeAlbums);
-        //ArtistAdapter artistAdapter = new ArtistAdapter(listaDeArtistas);
-        //RecomendadoAdapter recomendadoAdapter = new RecomendadoAdapter(listaDeRecomendados,this);
-        //UltimosReproducidosAdapter ultimosReproducidosAdapter = new UltimosReproducidosAdapter(listaDeUltimasReproducciones,this);
 
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -119,10 +114,12 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
         recyclerViewRecomendados.setLayoutManager(linearLayoutManagerRecomendado);
         recyclerViewAlbums.setLayoutManager(linearLayoutManagerAlbum);
 
-        //recyclerViewAlbums.setAdapter(albumAdapter);
-        //recyclerViewUltimasReproducciones.setAdapter;
-        //recyclerViewRecomendados.setAdapter(recomendadoAdapter);
-        //recyclerViewArtists.setAdapter(artistAdapter);
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClickSettingsHomeFragment();
+            }
+        });
 
         return view;
     }
@@ -133,6 +130,7 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
         recyclerViewArtists = view.findViewById(R.id.fargmentHome_RecyclerDeArtistas);
         recyclerViewRecomendados = view.findViewById(R.id.fargmentHome_RecyclerDeRecomendados);
         recyclerViewUltimasReproducciones = view.findViewById(R.id.fargmentHome_RecyclerDeUltimasReproducciones);
+        settings = view.findViewById(R.id.fragmentHome_ImageViewPerfil);
     }
 
     @Override
@@ -164,6 +162,7 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
         void onClickUltimosReproducidosDesdeHomeFragment(Track track, List<Track> trackList);
         void onClickArtistaDesdeHomeFragment(Artist artist);
         void onClickAlbumDesdeHomeFragment(Album album);
+        void onClickSettingsHomeFragment();
     }
 
     @Override

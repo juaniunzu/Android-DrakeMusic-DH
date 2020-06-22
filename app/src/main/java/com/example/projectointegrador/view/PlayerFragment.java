@@ -70,6 +70,8 @@ public class PlayerFragment extends Fragment {
 
         findViews();
 
+        listener.seekBar(seekBar);
+
         final View view = binding.getRoot();
 
         Bundle desdeMain = getArguments();
@@ -167,5 +169,6 @@ public class PlayerFragment extends Fragment {
         void onClickShuffle(ToggleButton boton);
         void onClickRepeat(ToggleButton boton);
         void onClickAddTrackFavorite(Track track);
+        void seekBar(SeekBar seekBar);
     }
 }

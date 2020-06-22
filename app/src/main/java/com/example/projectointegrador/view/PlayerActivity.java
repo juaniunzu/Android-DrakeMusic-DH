@@ -216,10 +216,14 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                 });
             }
         } else {
-            viewPager.setCurrentItem(viewPager.getCurrentItem());
             boton.setBackground(getDrawable(R.drawable.ic_shuffle_black_24dp));
+            audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    viewPager.setCurrentItem(viewPager.getCurrentItem());
+                }
+            });
         }
-
 
     }
 
@@ -245,6 +249,11 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         });
     }
 
+
+    @Override
+    public void seekBar(SeekBar seekBar) {
+        //programar seekbar
+    }
 
     @Override
     protected void onDestroy() {
