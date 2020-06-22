@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     @Override
     //perfil fragment
     public void onClickFavoritos() {
-        Toast.makeText(this, "Ir a favoritos", Toast.LENGTH_SHORT).show();
+        addFragment(new FavoritosFragment());
     }
 
     @Override
