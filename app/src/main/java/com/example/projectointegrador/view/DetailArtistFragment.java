@@ -80,12 +80,12 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
         artistFirestoreDao.searchArtistFavoritos(artistaRecibido, firebaseUser, new ResultListener<List<Artist>>() {
             @Override
             public void finish(List<Artist> resultado) {
-                if (resultado == null){
-                    toggleAddFav.setTextOff("Agregar a Favoritos");
-                }
-                else{
+                if (resultado.contains(artistaRecibido)){
                     toggleAddFav.setTextOn("En favoritos");
                     //agregar funcion para sacar de favoritos
+                }
+                else{
+                    toggleAddFav.setTextOff("Agregar a Favoritos");
                 }
             }
         });

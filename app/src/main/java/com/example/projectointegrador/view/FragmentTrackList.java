@@ -71,11 +71,11 @@ public class FragmentTrackList extends Fragment implements TrackListAdapter.Trac
         albumController.searchAlbumFavoritos(albumRecibido, firebaseUser, new ResultListener<List<Album>>() {
             @Override
             public void finish(List<Album> resultado) {
-                if (resultado == null){
-                    toggleAddFav.setTextOff("Agregar a Favoritos");
+                if (resultado.contains(albumRecibido)){
+                    toggleAddFav.setTextOn("En favoritos");
                 }
                 else {
-                    toggleAddFav.setTextOn("En favoritos");
+                    toggleAddFav.setTextOff("Agregar a Favoritos");
                 }
             }
         });

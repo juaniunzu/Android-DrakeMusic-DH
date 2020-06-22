@@ -94,11 +94,11 @@ public class PlayerFragment extends Fragment {
         trackController.searchTrackFavoritos(trackRecibido, firebaseUser, new ResultListener<List<Track>>() {
             @Override
             public void finish(List<Track> resultado) {
-                if (resultado == null){
-                    fragmentPlayerButtonAddFavorite.setImageResource(R.drawable.ic_star_white_empty_24dp);
+                if (resultado.contains(trackRecibido)){
+                    fragmentPlayerButtonAddFavorite.setImageResource(R.drawable.ic_star_accent_24dp);
                 }
                 else {
-                    fragmentPlayerButtonAddFavorite.setImageResource(R.drawable.ic_star_accent_24dp);
+                    fragmentPlayerButtonAddFavorite.setImageResource(R.drawable.ic_star_white_empty_24dp);
                 }
             }
         });
