@@ -17,6 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <TextView
         android:id="@+id/fragmentFavoritosTextViewAlbumes"
         style="@style/celdahome_album_artista_celda"

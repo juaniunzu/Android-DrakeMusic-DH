@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
                                                                 FragmentTrackList.FragmentTrackListListener,
                                                 TracksFavoritosFragment.TracksFavoritosFragmentListener,
         ArtistasFavoritosFragment.ArtistasFavoritosFragmentListener,
-        AlbumesFavoritosFragment.AlbumesFavoritosFragmentListener {
+        AlbumesFavoritosFragment.AlbumesFavoritosFragmentListener, PerfilFragment.PerfilFragmentListener {
 
     private DrawerLayout drawerLayout;
     private BottomNavigationView bottomNavigationView;
@@ -62,16 +62,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.bottomNavigationView_Menu:
-                        pegarFragment(new HomeFragment());
+                        addFragment(new HomeFragment());
                         break;
                     case R.id.bottomNavigationView_Search:
                         Intent mainASearch = new Intent(MainActivity.this, SearchActivity.class);
                         startActivity(mainASearch);
                         break;
                     case R.id.bottomNavigationView_Favorites:
-                        //Toast.makeText(MainActivity.this, "En Construccion.", Toast.LENGTH_SHORT).show();
-                        //logout();
-                        pegarFragment(new FavoritosFragment());
+                        replaceFragment(new FavoritosFragment());
                         break;
                 }
                 return true;
@@ -117,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         datos.putSerializable(DetailArtistFragment.ARTIST,artist);
         DetailArtistFragment detailArtistFragment = new DetailArtistFragment();
         detailArtistFragment.setArguments(datos);
-        pegarFragment(detailArtistFragment);
+        replaceFragment(detailArtistFragment);
     }
 
     @Override
@@ -126,7 +124,12 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         datos.putSerializable(FragmentTrackList.ALBUM, album);
         FragmentTrackList fragmentTrackList = new FragmentTrackList();
         fragmentTrackList.setArguments(datos);
-        pegarFragment(fragmentTrackList);
+        replaceFragment(fragmentTrackList);
+    }
+
+    @Override
+    public void onClickSettingsHomeFragment() {
+        replaceFragment(new PerfilFragment(this));
     }
 
     @Override
@@ -135,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         datos.putSerializable(FragmentTrackList.ALBUM,album);
         FragmentTrackList fragmentTrackList = new FragmentTrackList();
         fragmentTrackList.setArguments(datos);
-        pegarFragment(fragmentTrackList);
+        replaceFragment(fragmentTrackList);
     }
 
     @Override
@@ -193,10 +196,18 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         fragmentTransaction.commit();
     }
 
-    private void pegarFragment(Fragment fragment) {
+    private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.activityMain_contenedorDeFragments, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    private void addFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.activityMain_contenedorDeFragments, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
@@ -249,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         datos.putSerializable(FragmentTrackList.ALBUM,album);
         FragmentTrackList fragmentTrackList = new FragmentTrackList();
         fragmentTrackList.setArguments(datos);
-        pegarFragment(fragmentTrackList);
+        replaceFragment(fragmentTrackList);
     }
 
     @Override
@@ -258,6 +269,19 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         datos.putSerializable(DetailArtistFragment.ARTIST,artist);
         DetailArtistFragment detailArtistFragment = new DetailArtistFragment();
         detailArtistFragment.setArguments(datos);
-        pegarFragment(detailArtistFragment);
+        replaceFragment(detailArtistFragment);
+    }
+
+    @Override
+    //perfil fragment
+    public void onClickFavoritos() {
+        Toast.makeText(this, "Ir a favoritos", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    //perfil fragment
+    public void onClickCerrarSesion() {
+        Toast.makeText(this, "Has cerrado sesion! esperamos verte pronto", Toast.LENGTH_SHORT).show();
+        logout();
     }
 }

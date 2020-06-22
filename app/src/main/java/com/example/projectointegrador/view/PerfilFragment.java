@@ -1,7 +1,9 @@
 package com.example.projectointegrador.view;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -74,4 +76,9 @@ public class PerfilFragment extends Fragment {
         void onClickCerrarSesion();
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.listener = (PerfilFragmentListener) context;
+    }
 }

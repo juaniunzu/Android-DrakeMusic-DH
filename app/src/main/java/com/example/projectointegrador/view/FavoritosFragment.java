@@ -12,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.projectointegrador.R;
@@ -47,7 +48,7 @@ public class FavoritosFragment extends Fragment {
 
         findViews();
 
-        //favoritosFragmentListener = (FavoritosFragmentListener) super.getContext();
+
 
         FragmentManager fragmentManager = getFragmentManager();
 
@@ -110,6 +111,7 @@ public class FavoritosFragment extends Fragment {
         artistas = binding.fragmentFavoritosTextViewArtistas;
         tracks = binding.fragmentFavoritosTextViewTracks;
     }
+
 
 
 }
