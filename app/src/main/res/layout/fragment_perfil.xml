@@ -9,12 +9,12 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/fragmentPerfilCardView"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="15dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="25dp"
         android:layout_marginTop="25dp"
-        app:cardCornerRadius="30dp"
-        android:background="#00FFFFFF"
+        android:backgroundTint="@color/colorControlNormal"
+        app:cardCornerRadius="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -22,8 +22,7 @@
             android:id="@+id/fragmentPerfilImageViewUsuario"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_drakemusic"
-            android:background="#00FFFFFF"/>
+            android:src="@drawable/ic_person_black_24dp" />
 
     </androidx.cardview.widget.CardView>
 

@@ -14,8 +14,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.databinding.FragmentPerfilBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +31,7 @@ public class PerfilFragment extends Fragment {
     private LinearLayout cerrarSesion;
     private FragmentPerfilBinding binding;
     private PerfilFragmentListener listener;
+    private FirebaseUser currentUser;
 
     public PerfilFragment() {
         // Required empty public constructor
@@ -46,6 +50,8 @@ public class PerfilFragment extends Fragment {
 
         findViews();
 
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
         favoritos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,6 +66,10 @@ public class PerfilFragment extends Fragment {
             }
         });
 
+        nombreUsuario.setText(currentUser.getEmail());
+        if(currentUser.getPhotoUrl() != null){
+            Glide.with(getContext()).load(currentUser.getPhotoUrl()).into(fotoPerfil);
+        }
 
         return view;
     }
