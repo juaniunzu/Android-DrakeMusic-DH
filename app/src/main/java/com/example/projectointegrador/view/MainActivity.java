@@ -13,9 +13,12 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.projectointegrador.R;
+import com.example.projectointegrador.controller.AlbumController;
+import com.example.projectointegrador.controller.ArtistController;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
 import com.example.projectointegrador.model.Track;
+import com.example.projectointegrador.util.ResultListener;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -24,6 +27,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
     private DrawerLayout drawerLayout;
     private BottomNavigationView bottomNavigationView;
+    private FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
         HomeFragment homeFragment = new HomeFragment();
         setFragmentInicial(homeFragment);
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         bottomNavigationView.setSelectedItemId(R.id.bottomNavigationView_Menu);
 
@@ -137,7 +144,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         mainAPlayer.putExtras(datos);
         startActivity(mainAPlayer);
     }
-    
+
+
+
 
     //click a un track desde adentro del detalle de un album
     @Override
@@ -148,6 +157,28 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         datos.putSerializable("lista", (ArrayList) trackList);
         mainAPlayer.putExtras(datos);
         startActivity(mainAPlayer);
+    }
+
+    @Override
+    public void onClickAddAlbumFavFragmentTrackList(Album album) {
+        AlbumController albumController = new AlbumController();
+        albumController.agregarAlbumAFavoritos(album, firebaseUser, new ResultListener<Album>() {
+            @Override
+            public void finish(Album resultado) {
+                Toast.makeText(MainActivity.this, "Agregaste el Album a Favoritos!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onClickAddArtistFavFragmentArtistDetail(Artist artist) {
+        ArtistController artistController = new ArtistController();
+        artistController.agregarArtistAFavoritos(artist, firebaseUser, new ResultListener<Artist>() {
+            @Override
+            public void finish(Artist resultado) {
+                Toast.makeText(MainActivity.this, "Agregaste el Artista a Favoritos!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

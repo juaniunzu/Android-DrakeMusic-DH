@@ -238,11 +238,17 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         }
     }
 
-
     @Override
-    public void onClickAddFavorite() {
-
+    public void onClickAddTrackFavorite(Track track) {
+        TrackController trackController = new TrackController();
+        trackController.agregarTrackAFavoritos(track, firebaseUser, new ResultListener<Track>() {
+            @Override
+            public void finish(Track resultado) {
+                Toast.makeText(PlayerActivity.this, "Track agregado a Favoritos!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
 
     @Override
     public void seekBar(SeekBar seekBar) {

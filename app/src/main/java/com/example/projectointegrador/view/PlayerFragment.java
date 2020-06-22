@@ -93,7 +93,7 @@ public class PlayerFragment extends Fragment {
         fragmentPlayerButtonAddFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickAddFavorite();
+                listener.onClickAddTrackFavorite(trackRecibido);
             }
         });
 
@@ -168,6 +168,7 @@ public class PlayerFragment extends Fragment {
         void onClickPrevious();
         void onClickShuffle(ToggleButton boton);
         void onClickRepeat(ToggleButton boton);
+        void onClickAddTrackFavorite(Track track);
         void onClickAddFavorite();
         void seekBar(SeekBar seekBar);
     }
