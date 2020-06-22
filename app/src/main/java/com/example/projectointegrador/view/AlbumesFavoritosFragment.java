@@ -56,9 +56,8 @@ public class AlbumesFavoritosFragment extends Fragment implements AlbumSearchAda
             public void finish(List<Album> resultado) {
                 AlbumSearchAdapter adapter = new AlbumSearchAdapter(resultado, true, AlbumesFavoritosFragment.this);
                 LinearLayoutManager llm = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(llm);
+                binding.fragmentAlbumesFavoritosRV.setAdapter(adapter);
+                binding.fragmentAlbumesFavoritosRV.setLayoutManager(llm);
             }
         });
 
@@ -70,17 +69,12 @@ public class AlbumesFavoritosFragment extends Fragment implements AlbumSearchAda
 
     @Override
     public void onClickAlbumSearchAdapter(Album album) {
-
+        listener.onClickAlbumFavFragment(album);
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        this.listener = (AlbumesFavoritosFragmentListener) context;
-    }
 
     public interface AlbumesFavoritosFragmentListener{
-        void onClickAlbum();
+        void onClickAlbumFavFragment(Album album);
     }
 
 }

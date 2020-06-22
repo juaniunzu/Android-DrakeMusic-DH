@@ -34,7 +34,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements HomeFragment.FragmentHomeListener,
                                                                 DetailArtistFragment.FragmentArtistDetailListener,
-                                                                FragmentTrackList.FragmentTrackListListener, AlbumesFavoritosFragment.AlbumesFavoritosFragmentListener {
+                                                                FragmentTrackList.FragmentTrackListListener,
+        FavoritosFragment.FavoritosFragmentListener {
 
     private DrawerLayout drawerLayout;
     private BottomNavigationView bottomNavigationView;
@@ -232,7 +233,30 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
 
     @Override
-    public void onClickAlbum() {
-        //
+    public void onClickTracksFavoritosFragmentFF(Track track, List<Track> trackList) {
+        Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
+        Bundle datos = new Bundle();
+        datos.putSerializable("track", track);
+        datos.putSerializable("lista", (ArrayList) trackList);
+        mainAPlayer.putExtras(datos);
+        startActivity(mainAPlayer);
+    }
+
+    @Override
+    public void onClickAlbumFavoritosFragmentFF(Album album) {
+        Bundle datos = new Bundle();
+        datos.putSerializable(FragmentTrackList.ALBUM,album);
+        FragmentTrackList fragmentTrackList = new FragmentTrackList();
+        fragmentTrackList.setArguments(datos);
+        pegarFragment(fragmentTrackList);
+    }
+
+    @Override
+    public void onClickArtistFavoritosFragmentFF(Artist artist) {
+        Bundle datos = new Bundle();
+        datos.putSerializable(DetailArtistFragment.ARTIST,artist);
+        DetailArtistFragment detailArtistFragment = new DetailArtistFragment();
+        detailArtistFragment.setArguments(datos);
+        pegarFragment(detailArtistFragment);
     }
 }
