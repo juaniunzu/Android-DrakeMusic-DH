@@ -28,19 +28,13 @@ import static com.example.projectointegrador.util.Utils.setFragmentBackground;
 public class PlayerFragment extends Fragment {
 
     public static final String KEY_DETAIL_TRACK = "track";
-    private FragmentPlayerBinding binding;
     private ImageView fragmentPlayerImageView;
-    private ImageView fragmentPlayerButtonNext;
-    private ToggleButton fragmentPlayerButtonPlay;
-    private ImageView fragmentPlayerButtonPrevious;
-    private ToggleButton fragmentPlayerButtonRepeat;
-    private ToggleButton fragmentPlayerButtonShuffle;
     private ImageView fragmentPlayerButtonAddFavorite;
     private TextView fragmentPlayerTextViewArtista;
     private TextView fragmentPlayerTextViewNombre;
     private PlayerFragmentListener listener;
     private Track trackRecibido;
-    private SeekBar seekBar;
+    private FragmentPlayerBinding binding;
 
 
 
@@ -70,8 +64,6 @@ public class PlayerFragment extends Fragment {
 
         findViews();
 
-        listener.seekBar(seekBar);
-
         final View view = binding.getRoot();
 
         Bundle desdeMain = getArguments();
@@ -81,47 +73,10 @@ public class PlayerFragment extends Fragment {
 
         setFragmentBackground(getContext(), view, trackRecibido.getAlbum().getCover());
 
-        //fragmentPlayerButtonPlay.setVisibility(View.GONE);
-
-        fragmentPlayerButtonPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onClickPlay(fragmentPlayerButtonPlay);
-            }
-        });
-
         fragmentPlayerButtonAddFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickAddTrackFavorite(trackRecibido);
-            }
-        });
-
-        fragmentPlayerButtonRepeat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onClickRepeat(fragmentPlayerButtonRepeat);
-            }
-        });
-
-        fragmentPlayerButtonNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onClickNext();
-            }
-        });
-
-        fragmentPlayerButtonPrevious.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onClickPrevious();
-            }
-        });
-
-        fragmentPlayerButtonShuffle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onClickShuffle(fragmentPlayerButtonShuffle);
+                listener.onClickAddTrackFavorite(trackRecibido, fragmentPlayerButtonAddFavorite);
             }
         });
 
@@ -144,16 +99,11 @@ public class PlayerFragment extends Fragment {
     }
 
     private void findViews() {
-        seekBar = binding.fragmentPlayerSeekbar;
+
         fragmentPlayerImageView = binding.fragmentPlayerImageView;
         fragmentPlayerButtonAddFavorite = binding.fragmentPlayerButtonAddFavorite;
         fragmentPlayerTextViewArtista = binding.fragmentPlayerTextViewArtista;
         fragmentPlayerTextViewNombre = binding.fragmentPlayerTextViewNombre;
-        fragmentPlayerButtonPlay = binding.fragmentPlayerButtonPlay;
-        fragmentPlayerButtonNext = binding.fragmentPlayerButtonNext;
-        fragmentPlayerButtonPrevious = binding.fragmentPlayerButtonPrevious;
-        fragmentPlayerButtonRepeat = binding.fragmentPlayerButtonRepeat;
-        fragmentPlayerButtonShuffle = binding.fragmentPlayerButtonShuffle;
     }
 
     @Override
@@ -163,12 +113,6 @@ public class PlayerFragment extends Fragment {
     }
 
     public interface PlayerFragmentListener{
-        void onClickPlay(ToggleButton boton);
-        void onClickNext();
-        void onClickPrevious();
-        void onClickShuffle(ToggleButton boton);
-        void onClickRepeat(ToggleButton boton);
-        void onClickAddTrackFavorite(Track track);
-        void seekBar(SeekBar seekBar);
+        void onClickAddTrackFavorite(Track track, ImageView boton);
     }
 }
