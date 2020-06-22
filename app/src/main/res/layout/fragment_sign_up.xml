@@ -120,6 +120,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/Usuario"
+            android:inputType="textEmailAddress"
             android:textColor="@color/text_subtitles"
             android:textColorHint="#000" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -141,6 +142,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/Contraseña"
+            android:inputType="textPassword"
             android:textColor="@color/text_subtitles"
             android:textColorHint="#000" />
     </com.google.android.material.textfield.TextInputLayout>
