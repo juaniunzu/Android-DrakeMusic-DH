@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".view.PlayerFragment">
 
     <ImageView
@@ -36,7 +36,6 @@
         android:layout_height="30dp"
         android:layout_marginTop="25dp"
         android:src="@drawable/ic_star_white_empty_24dp"
-        android:tint="#fff"
         app:layout_constraintEnd_toEndOf="@id/fragmentPlayerImageView"
         app:layout_constraintTop_toBottomOf="@id/fragmentPlayerImageView" />
 
@@ -51,90 +50,6 @@
         app:layout_constraintStart_toStartOf="@id/fragmentPlayerImageView"
         app:layout_constraintTop_toBottomOf="@id/fragmentPlayerTextViewNombre" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline70"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.85">
 
-    </androidx.constraintlayout.widget.Guideline>
-
-    <SeekBar
-        android:id="@+id/fragmentPlayerSeekbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintBottom_toTopOf="@id/guideline70"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragmentPlayerTextViewArtista" />
-
-
-    <ToggleButton
-        android:id="@+id/fragmentPlayerButtonPlay"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/ic_pause_circle_filled_black_24dp"
-        android:textOff=""
-        android:textOn=""
-        app:layout_constraintBottom_toTopOf="@id/guideline80"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline70" />
-
-    <ImageView
-        android:id="@+id/fragmentPlayerButtonPrevious"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_skip_previous_black_24dp"
-        app:layout_constraintBottom_toTopOf="@id/guideline80"
-        app:layout_constraintEnd_toStartOf="@id/fragmentPlayerButtonPlay"
-        app:layout_constraintStart_toEndOf="@id/fragmentPlayerButtonShuffle"
-        app:layout_constraintTop_toBottomOf="@id/guideline70" />
-
-    <ImageView
-        android:id="@+id/fragmentPlayerButtonNext"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_skip_next_black_24dp"
-        app:layout_constraintBottom_toTopOf="@id/guideline80"
-        app:layout_constraintEnd_toStartOf="@id/fragmentPlayerButtonRepeat"
-        app:layout_constraintStart_toEndOf="@id/fragmentPlayerButtonPlay"
-        app:layout_constraintTop_toBottomOf="@id/guideline70" />
-
-    <ToggleButton
-        android:id="@+id/fragmentPlayerButtonShuffle"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:textOn=""
-        android:textOff=""
-        android:background="@drawable/ic_shuffle_black_24dp"
-        app:layout_constraintBottom_toTopOf="@id/guideline80"
-        app:layout_constraintEnd_toStartOf="@+id/fragmentPlayerButtonPrevious"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline70" />
-
-    <ToggleButton
-        android:id="@+id/fragmentPlayerButtonRepeat"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/ic_repeat_black_24dp"
-        android:textOff=""
-        android:textOn=""
-        app:layout_constraintBottom_toTopOf="@id/guideline80"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/fragmentPlayerButtonNext"
-        app:layout_constraintTop_toBottomOf="@id/guideline70" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline80"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.95">
-
-    </androidx.constraintlayout.widget.Guideline>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

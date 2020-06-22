@@ -47,14 +47,21 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
     private ViewPager viewPager;
     private Toolbar toolbar;
-    private MediaPlayer audioPlayer;
     private ArrayList<Track> trackArrayList;
-    private ActivityPlayerBinding binding;
+    private FirebaseUser firebaseUser;
+    private FirebaseAuth firebaseAuth;
+    private MediaPlayer audioPlayer;
     private Runnable runnable;
     private Handler handler;
     private SeekBar seekBar;
-    private FirebaseUser firebaseUser;
-    private FirebaseAuth firebaseAuth;
+    private ImageView buttonNext;
+    private ToggleButton buttonPlay;
+    private ImageView buttonPrevious;
+    private ToggleButton buttonRepeat;
+    private ToggleButton buttonShuffle;
+    private ActivityPlayerBinding binding;
+
+
 
 
 
@@ -66,8 +73,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         setContentView(view);
 
 
-        viewPager = binding.activityPlayerViewPager;
-        toolbar = binding.activityPlayerToolbar;
+        setViews();
 
         setSupportActionBar(toolbar);
 
@@ -93,13 +99,9 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
         viewPager.setCurrentItem(indice);
 
-        handler = new Handler();
 
+        setReproductor();
 
-        audioPlayer = new MediaPlayer();
-        audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        prepararTrackParaReproduccion(viewPager.getCurrentItem());
-        audioPlayer.start();
         agregarTrackAUltimosReproducidos(trackArrayList.get(viewPager.getCurrentItem()));
 
 
@@ -131,8 +133,146 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             }
         });
 
+        setListenersBotonesReproductor();
 
+    }
 
+    private void setListenersBotonesReproductor() {
+        buttonPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!buttonPlay.isChecked()){
+                    if(audioPlayer == null){
+                        audioPlayer = new MediaPlayer();
+                        audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                        prepararTrackParaReproduccion(viewPager.getCurrentItem());
+                    }
+                    audioPlayer.start();
+                    changeSeekbar();
+                    buttonPlay.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
+                } else {
+                    audioPlayer.pause();
+                    buttonPlay.setBackground(getDrawable(R.drawable.ic_play_circle_filled_black_24dp));
+                }
+            }
+        });
+
+        buttonNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int fragmentActual = viewPager.getCurrentItem();
+                viewPager.setCurrentItem(fragmentActual + 1);
+            }
+        });
+
+        buttonPrevious.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int fragmentActual = viewPager.getCurrentItem();
+                viewPager.setCurrentItem(fragmentActual - 1);
+            }
+        });
+
+        buttonShuffle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(buttonShuffle.isChecked()){
+                    buttonShuffle.setBackground(getDrawable(R.drawable.ic_shuffle_accent_24dp));
+                    final int cantTemas = trackArrayList.size();
+                    for (int i = 0; i < cantTemas; i++) {
+                        audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mp) {
+                                Random r = new Random();
+                                int indiceTemaNuevo = r.nextInt(cantTemas);
+                                viewPager.setCurrentItem(indiceTemaNuevo);
+                            }
+                        });
+                    }
+                } else {
+                    buttonShuffle.setBackground(getDrawable(R.drawable.ic_shuffle_black_24dp));
+                    audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            viewPager.setCurrentItem(viewPager.getCurrentItem());
+                        }
+                    });
+                }
+            }
+        });
+
+        buttonRepeat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(buttonRepeat.isChecked()){
+                    audioPlayer.setLooping(true);
+                    buttonRepeat.setBackground(getDrawable(R.drawable.ic_repeat_accent_24dp));
+                } else {
+                    audioPlayer.setLooping(false);
+                    buttonRepeat.setBackground(getDrawable(R.drawable.ic_repeat_black_24dp));
+                }
+            }
+        });
+    }
+
+    private void setReproductor() {
+        audioPlayer = new MediaPlayer();
+        audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        prepararTrackParaReproduccion(viewPager.getCurrentItem());
+
+        handler = new Handler();
+
+        audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                seekBar.setMax(mp.getDuration());
+                mp.start();
+                changeSeekbar();
+            }
+        });
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(fromUser){
+                    audioPlayer.seekTo(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+
+    private void changeSeekbar() {
+        seekBar.setProgress(audioPlayer.getCurrentPosition());
+        if(audioPlayer.isPlaying()){
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    changeSeekbar();
+                }
+            };
+            handler.postDelayed(runnable, 100);
+        }
+    }
+
+    private void setViews() {
+        viewPager = binding.activityPlayerViewPager;
+        toolbar = binding.activityPlayerToolbar;
+        seekBar = binding.activityPlayerSeekbar;
+        buttonNext = binding.activityPlayerButtonNext;
+        buttonPlay = binding.activityPlayerButtonPlay;
+        buttonPrevious = binding.activityPlayerButtonPrevious;
+        buttonRepeat = binding.activityPlayerButtonRepeat;
+        buttonShuffle = binding.activityPlayerButtonShuffle;
     }
 
     private void prepararTrackParaReproduccion(Integer ordenTrackEnLista){
@@ -172,74 +312,8 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     }
 
     @Override
-    public void onClickPlay(ToggleButton boton) {
-        if(!boton.isChecked()){
-            if(audioPlayer == null){
-                audioPlayer = new MediaPlayer();
-                audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                prepararTrackParaReproduccion(viewPager.getCurrentItem());
-            }
-            audioPlayer.start();
-            boton.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
-        } else {
-            audioPlayer.pause();
-            boton.setBackground(getDrawable(R.drawable.ic_play_circle_filled_black_24dp));
-        }
-    }
-
-    @Override
-    public void onClickNext() {
-        int fragmentActual = viewPager.getCurrentItem();
-        viewPager.setCurrentItem(fragmentActual + 1);
-    }
-
-    @Override
-    public void onClickPrevious() {
-        int fragmentActual = viewPager.getCurrentItem();
-        viewPager.setCurrentItem(fragmentActual - 1);
-    }
-
-    @Override
-    public void onClickShuffle(ToggleButton boton) {
-
-        if(boton.isChecked()){
-            boton.setBackground(getDrawable(R.drawable.ic_shuffle_accent_24dp));
-            final int cantTemas = trackArrayList.size();
-            for (int i = 0; i < cantTemas; i++) {
-                audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-                        Random r = new Random();
-                        int indiceTemaNuevo = r.nextInt(cantTemas);
-                        viewPager.setCurrentItem(indiceTemaNuevo);
-                    }
-                });
-            }
-        } else {
-            boton.setBackground(getDrawable(R.drawable.ic_shuffle_black_24dp));
-            audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    viewPager.setCurrentItem(viewPager.getCurrentItem());
-                }
-            });
-        }
-
-    }
-
-    @Override
-    public void onClickRepeat(ToggleButton boton) {
-        if(boton.isChecked()){
-            audioPlayer.setLooping(true);
-            boton.setBackground(getDrawable(R.drawable.ic_repeat_accent_24dp));
-        } else {
-            audioPlayer.setLooping(false);
-            boton.setBackground(getDrawable(R.drawable.ic_repeat_black_24dp));
-        }
-    }
-
-    @Override
-    public void onClickAddTrackFavorite(Track track) {
+    public void onClickAddTrackFavorite(Track track, ImageView boton) {
+        boton.setImageResource(R.drawable.ic_star_accent_24dp);
         TrackController trackController = new TrackController();
         trackController.agregarTrackAFavoritos(track, firebaseUser, new ResultListener<Track>() {
             @Override
@@ -247,12 +321,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                 Toast.makeText(PlayerActivity.this, "Track agregado a Favoritos!", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-
-    @Override
-    public void seekBar(SeekBar seekBar) {
-        //programar seekbar
     }
 
     @Override

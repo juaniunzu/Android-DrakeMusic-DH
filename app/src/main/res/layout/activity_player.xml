@@ -2,11 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activityPlayerFragmentContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary"
-    tools:context=".view.PlayerActivity"
-    android:id="@+id/activityPlayerFragmentContainer">
+    tools:context=".view.PlayerActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/activityPlayerToolbar"
@@ -20,9 +20,106 @@
         android:id="@+id/activityPlayerViewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/guideline60"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activityPlayerToolbar" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline60"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline70"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85">
+
+    </androidx.constraintlayout.widget.Guideline>
+
+    <SeekBar
+        android:id="@+id/activityPlayerSeekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:progressBackgroundTint="@color/accent"
+        android:thumbTint="@color/accent"
+        android:progressTint="@color/accent"
+        app:layout_constraintBottom_toTopOf="@id/guideline70"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activityPlayerViewPager" />
+
+
+    <ToggleButton
+        android:id="@+id/activityPlayerButtonPlay"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/ic_pause_circle_filled_black_24dp"
+        android:textOff=""
+        android:textOn=""
+        app:layout_constraintBottom_toTopOf="@id/guideline80"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline70" />
+
+    <ImageView
+        android:id="@+id/activityPlayerButtonPrevious"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_skip_previous_black_24dp"
+        app:layout_constraintBottom_toTopOf="@id/guideline80"
+        app:layout_constraintEnd_toStartOf="@id/activityPlayerButtonPlay"
+        app:layout_constraintStart_toEndOf="@id/activityPlayerButtonShuffle"
+        app:layout_constraintTop_toBottomOf="@id/guideline70" />
+
+    <ImageView
+        android:id="@+id/activityPlayerButtonNext"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_skip_next_black_24dp"
+        app:layout_constraintBottom_toTopOf="@id/guideline80"
+        app:layout_constraintEnd_toStartOf="@id/activityPlayerButtonRepeat"
+        app:layout_constraintStart_toEndOf="@id/activityPlayerButtonPlay"
+        app:layout_constraintTop_toBottomOf="@id/guideline70" />
+
+    <ToggleButton
+        android:id="@+id/activityPlayerButtonShuffle"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_shuffle_black_24dp"
+        android:textOff=""
+        android:textOn=""
+        app:layout_constraintBottom_toTopOf="@id/guideline80"
+        app:layout_constraintEnd_toStartOf="@+id/activityPlayerButtonPrevious"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline70" />
+
+    <ToggleButton
+        android:id="@+id/activityPlayerButtonRepeat"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_repeat_black_24dp"
+        android:textOff=""
+        android:textOn=""
+        app:layout_constraintBottom_toTopOf="@id/guideline80"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/activityPlayerButtonNext"
+        app:layout_constraintTop_toBottomOf="@id/guideline70" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline80"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.95">
+
+    </androidx.constraintlayout.widget.Guideline>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
