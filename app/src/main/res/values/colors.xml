@@ -13,4 +13,5 @@
     <color name="text_subtitle_black">#99000000</color>
     <color name="colorControlNormal">#99FFFFFF</color>
     <color name="backgroundLogin">#8B000000</color>
+    <color name="grey">#686868</color>
 </resources>
