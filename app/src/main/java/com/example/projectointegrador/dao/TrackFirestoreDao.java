@@ -61,4 +61,25 @@ public class TrackFirestoreDao {
                 });
     }
 
+    public void searchTrackFavoritos(Track track, FirebaseUser firebaseUser, final ResultListener<List<Track>> listener){
+        db.collection(COLECC_TRACKS)
+                .document(firebaseUser.getUid())
+                .collection(MIS_TRACKS)
+                .whereEqualTo("id", track.getId())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            List<Track> trackList = new ArrayList<>();
+                            for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                                Track tracksearch = queryDocumentSnapshot.toObject(Track.class);
+                                trackList.add(tracksearch);
+                            }
+                            listener.finish(trackList);
+                        }
+                    }
+                });
+    }
+
 }

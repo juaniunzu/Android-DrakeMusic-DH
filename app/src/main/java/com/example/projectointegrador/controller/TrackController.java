@@ -110,4 +110,14 @@ public class TrackController {
         });
     }
 
+    public void searchTrackFavoritos(Track track, FirebaseUser firebaseUser, final ResultListener<List<Track>> listener){
+        TrackFirestoreDao trackFirestoreDao = new TrackFirestoreDao();
+        trackFirestoreDao.searchTrackFavoritos(track, firebaseUser, new ResultListener<List<Track>>() {
+            @Override
+            public void finish(List<Track> resultado) {
+                listener.finish(resultado);
+            }
+        });
+    }
+
 }

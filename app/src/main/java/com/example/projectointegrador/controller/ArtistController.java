@@ -25,14 +25,14 @@ public class ArtistController {
                     listenerDeLaVista.finish(resultado);
                 }
             });
-        }else{
+        } else {
             listenerDeLaVista.finish(ArtistDao.getArtists());
         }
     }
 
-    public void buscarArtistas(Context context, String busqueda, final ResultListener<ResponseArtist> listener){
+    public void buscarArtistas(Context context, String busqueda, final ResultListener<ResponseArtist> listener) {
         boolean hayInternet = Utils.hayInternet(context);
-        if (hayInternet){
+        if (hayInternet) {
             ArtistApiDao artistApiDao = new ArtistApiDao();
             artistApiDao.buscarArtistas(busqueda, new ResultListener<ResponseArtist>() {
                 @Override
@@ -43,7 +43,7 @@ public class ArtistController {
         }
     }
 
-    public void agregarArtistAFavoritos(Artist artist, FirebaseUser firebaseUser, final ResultListener<Artist> listener){
+    public void agregarArtistAFavoritos(Artist artist, FirebaseUser firebaseUser, final ResultListener<Artist> listener) {
         ArtistFirestoreDao artistFirestoreDao = new ArtistFirestoreDao();
         artistFirestoreDao.agregarArtistAFavoritos(artist, firebaseUser, new ResultListener<Artist>() {
             @Override
@@ -53,9 +53,19 @@ public class ArtistController {
         });
     }
 
-    public void getArtistListFavoritos(FirebaseUser firebaseUser, final ResultListener<List<Artist>> listener){
+    public void getArtistListFavoritos(FirebaseUser firebaseUser, final ResultListener<List<Artist>> listener) {
         ArtistFirestoreDao artistFirestoreDao = new ArtistFirestoreDao();
         artistFirestoreDao.getArtistListFavoritos(firebaseUser, new ResultListener<List<Artist>>() {
+            @Override
+            public void finish(List<Artist> resultado) {
+                listener.finish(resultado);
+            }
+        });
+    }
+
+    public void searchArtistFavoritos(Artist artist, FirebaseUser firebaseUser, final ResultListener<List<Artist>> listener){
+        ArtistFirestoreDao artistFirestoreDao = new ArtistFirestoreDao();
+        artistFirestoreDao.searchArtistFavoritos(artist, firebaseUser, new ResultListener<List<Artist>>() {
             @Override
             public void finish(List<Artist> resultado) {
                 listener.finish(resultado);

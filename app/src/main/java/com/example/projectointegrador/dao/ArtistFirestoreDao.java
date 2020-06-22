@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
+import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.util.ResultListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,7 +28,7 @@ public class ArtistFirestoreDao {
         this.db = FirebaseFirestore.getInstance();
     }
 
-    public void agregarArtistAFavoritos(final Artist artist, FirebaseUser firebaseUser, final ResultListener<Artist> listener){
+    public void agregarArtistAFavoritos(final Artist artist, FirebaseUser firebaseUser, final ResultListener<Artist> listener) {
         db.collection(COLECC_ARTISTAS)
                 .document(firebaseUser.getUid())
                 .collection(MIS_ARTISTAS)
@@ -41,7 +42,7 @@ public class ArtistFirestoreDao {
                 });
     }
 
-    public void getArtistListFavoritos(FirebaseUser firebaseUser, final ResultListener<List<Artist>> listener){
+    public void getArtistListFavoritos(FirebaseUser firebaseUser, final ResultListener<List<Artist>> listener) {
         db.collection(COLECC_ARTISTAS)
                 .document(firebaseUser.getUid())
                 .collection(MIS_ARTISTAS)
@@ -49,7 +50,7 @@ public class ArtistFirestoreDao {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             List<Artist> artistList = new ArrayList<>();
                             for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
                                 Artist artist = queryDocumentSnapshot.toObject(Artist.class);
@@ -59,6 +60,28 @@ public class ArtistFirestoreDao {
                         }
                     }
                 });
+    }
+
+    public void searchArtistFavoritos(Artist artist, FirebaseUser firebaseUser, final ResultListener<List<Artist>> listener) {
+        db.collection(COLECC_ARTISTAS)
+                .document(firebaseUser.getUid())
+                .collection(MIS_ARTISTAS)
+                .whereEqualTo("id", artist.getId())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Artist> artistList = new ArrayList<>();
+                            for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                                Artist artistsearch = queryDocumentSnapshot.toObject(Artist.class);
+                                artistList.add(artistsearch);
+                            }
+                            listener.finish(artistList);
+                        }
+                    }
+                });
+
     }
 
 }

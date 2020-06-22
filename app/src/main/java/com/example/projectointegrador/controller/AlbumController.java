@@ -74,4 +74,14 @@ public class AlbumController {
             }
         });
     }
+
+    public void searchAlbumFavoritos(Album album, FirebaseUser firebaseUser, final ResultListener<List<Album>> listener){
+        AlbumFirestoreDao albumFirestoreDao = new AlbumFirestoreDao();
+        albumFirestoreDao.searchAlbumFavoritos(album, firebaseUser, new ResultListener<List<Album>>() {
+            @Override
+            public void finish(List<Album> resultado) {
+                listener.finish(resultado);
+            }
+        });
+    }
 }

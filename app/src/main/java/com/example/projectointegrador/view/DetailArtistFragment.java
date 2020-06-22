@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.AlbumController;
 import com.example.projectointegrador.controller.TrackController;
+import com.example.projectointegrador.dao.ArtistFirestoreDao;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
 import com.example.projectointegrador.model.Track;
@@ -29,6 +30,8 @@ import com.example.projectointegrador.util.ResultListener;
 import com.example.projectointegrador.util.Utils;
 import com.example.projectointegrador.view.adapter.AlbumAdapter;
 import com.example.projectointegrador.view.adapter.TrackListAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +52,7 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
     private TextView fragmentDetailArtistTextViewNombre;
     private FragmentArtistDetailListener listener;
     private ToggleButton toggleAddFav;
+    private FirebaseUser firebaseUser;
 
     public DetailArtistFragment() {
     }
@@ -65,11 +69,26 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
         fragmentDetailArtistTextViewNombre = view.findViewById(R.id.fragmentDetailArtistTextViewNombre);
         toggleAddFav = view.findViewById(R.id.fragmentDetailArtistButtonAgregarFavoritos);
 
-
         Bundle datosRecibidos = getArguments();
         final Artist artistaRecibido = (Artist) datosRecibidos.getSerializable(ARTIST);
         recyclerViewListaDeAlbumes = view.findViewById(R.id.fragmentArtistDetail_RecyclerViewAlbumes);
         recyclerViewListaDeTop5Tracks = view.findViewById(R.id.fragmentArtistDetail_RecyclerViewTopTracks);
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        ArtistFirestoreDao artistFirestoreDao = new ArtistFirestoreDao();
+        artistFirestoreDao.searchArtistFavoritos(artistaRecibido, firebaseUser, new ResultListener<List<Artist>>() {
+            @Override
+            public void finish(List<Artist> resultado) {
+                if (resultado == null){
+                    toggleAddFav.setTextOff("Agregar a Favoritos");
+                }
+                else{
+                    toggleAddFav.setTextOn("En favoritos");
+                    //agregar funcion para sacar de favoritos
+                }
+            }
+        });
 
         Utils.setFragmentBackground(getContext(), appBar, artistaRecibido.getPicture());
         fragmentDetailArtistTextViewNombre.setText(artistaRecibido.getName());
