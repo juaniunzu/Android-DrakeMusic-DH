@@ -81,11 +81,11 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
             @Override
             public void finish(List<Artist> resultado) {
                 if (resultado.contains(artistaRecibido)){
-                    toggleAddFav.setTextOn("En favoritos");
+                    toggleAddFav.setText(R.string.en_fav);
                     //agregar funcion para sacar de favoritos
                 }
                 else{
-                    toggleAddFav.setTextOff("Agregar a Favoritos");
+                    toggleAddFav.setText(R.string.agregar_a_fav);
                 }
             }
         });
