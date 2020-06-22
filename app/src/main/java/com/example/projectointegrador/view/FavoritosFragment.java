@@ -1,7 +1,9 @@
 package com.example.projectointegrador.view;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
@@ -37,10 +39,6 @@ public class FavoritosFragment extends Fragment implements TracksFavoritosFragme
         // Required empty public constructor
     }
 
-    public FavoritosFragment(FavoritosFragmentListener favoritosFragmentListener) {
-        this.favoritosFragmentListener = favoritosFragmentListener;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,15 +48,18 @@ public class FavoritosFragment extends Fragment implements TracksFavoritosFragme
 
         findViews();
 
+        favoritosFragmentListener = (FavoritosFragmentListener) super.getContext();
+
         FragmentManager fragmentManager = getFragmentManager();
 
         List<Fragment> fragments = new ArrayList<>();
-        AlbumesFavoritosFragment albumesFavoritosFragment = new AlbumesFavoritosFragment(FavoritosFragment.this);
-        TracksFavoritosFragment tracksFavoritosFragment = new TracksFavoritosFragment(FavoritosFragment.this);
-        ArtistasFavoritosFragment artistasFavoritosFragment = new ArtistasFavoritosFragment(this);
+        AlbumesFavoritosFragment albumesFavoritosFragment = new AlbumesFavoritosFragment();
+        TracksFavoritosFragment tracksFavoritosFragment = new TracksFavoritosFragment();
+        ArtistasFavoritosFragment artistasFavoritosFragment = new ArtistasFavoritosFragment();
         fragments.add(albumesFavoritosFragment);
-        fragments.add(tracksFavoritosFragment);
         fragments.add(artistasFavoritosFragment);
+        fragments.add(tracksFavoritosFragment);
+        albumes.setTextColor(getResources().getColor(R.color.accent));
 
 
         ViewPagerFavoritosAdapter viewPagerFavoritosAdapter = new ViewPagerFavoritosAdapter(fragmentManager, fragments);

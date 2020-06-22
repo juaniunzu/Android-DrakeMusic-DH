@@ -38,13 +38,11 @@ public class AlbumesFavoritosFragment extends Fragment implements AlbumSearchAda
         // Required empty public constructor
     }
 
-    public AlbumesFavoritosFragment(AlbumesFavoritosFragmentListener listener) {
-        this.listener = listener;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        listener = (AlbumesFavoritosFragmentListener) super.getContext();
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         binding = FragmentAlbumesFavoritosBinding.inflate(inflater, container, false);
@@ -76,5 +74,4 @@ public class AlbumesFavoritosFragment extends Fragment implements AlbumSearchAda
     public interface AlbumesFavoritosFragmentListener{
         void onClickAlbumFavFragment(Album album);
     }
-
 }

@@ -1,7 +1,9 @@
 package com.example.projectointegrador.view;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,10 +38,6 @@ public class ArtistasFavoritosFragment extends Fragment implements ArtistSearchA
         // Required empty public constructor
     }
 
-    public ArtistasFavoritosFragment(ArtistasFavoritosFragmentListener artistasFavoritosFragmentListener) {
-        this.artistasFavoritosFragmentListener = artistasFavoritosFragmentListener;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,6 +47,8 @@ public class ArtistasFavoritosFragment extends Fragment implements ArtistSearchA
         // Inflate the layout for this fragment
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        artistasFavoritosFragmentListener = (ArtistasFavoritosFragmentListener) super.getContext();
 
         ArtistController artistController = new ArtistController();
         artistController.getArtistListFavoritos(firebaseUser, new ResultListener<List<Artist>>() {

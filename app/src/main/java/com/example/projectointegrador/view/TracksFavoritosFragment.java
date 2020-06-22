@@ -1,7 +1,9 @@
 package com.example.projectointegrador.view;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,10 +37,6 @@ public class TracksFavoritosFragment extends Fragment implements TrackSearchAdap
         // Required empty public constructor
     }
 
-    public TracksFavoritosFragment(TracksFavoritosFragmentListener listener) {
-        this.listener = listener;
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,6 +47,8 @@ public class TracksFavoritosFragment extends Fragment implements TrackSearchAdap
         // Inflate the layout for this fragment
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        listener = (TracksFavoritosFragmentListener) super.getContext();
 
         TrackController trackController = new TrackController();
         trackController.getTrackListFavoritos(firebaseUser, new ResultListener<List<Track>>() {

@@ -169,7 +169,6 @@ public class PlayerFragment extends Fragment {
         void onClickShuffle(ToggleButton boton);
         void onClickRepeat(ToggleButton boton);
         void onClickAddTrackFavorite(Track track);
-        void onClickAddFavorite();
         void seekBar(SeekBar seekBar);
     }
 }
