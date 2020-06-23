@@ -112,6 +112,8 @@ public class FavoritosFragment extends Fragment {
         tracks = binding.fragmentFavoritosTextViewTracks;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "3";
+    }
 }

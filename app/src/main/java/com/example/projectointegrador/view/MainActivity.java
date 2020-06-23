@@ -34,6 +34,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import static androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
 import static com.example.projectointegrador.view.PlayerActivity.KEY_LISTA;
 import static com.example.projectointegrador.view.PlayerActivity.KEY_TRACK;
 import static com.example.projectointegrador.view.SearchDetailFragment.KEY_QUERY;
@@ -53,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     private DrawerLayout drawerLayout;
     private BottomNavigationView bottomNavigationView;
     private FirebaseUser firebaseUser;
+    public static final String FRAGMENT_HOME = "1";
+    public static final String FRAGMENT_BOTTOM = "2";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,13 +77,13 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.bottomNavigationView_Menu:
-                        addFragment(new HomeFragment());
+                        agregarFragmentNavegacion(new HomeFragment(), FRAGMENT_BOTTOM);
                         break;
                     case R.id.bottomNavigationView_Search:
-                        addFragment(new SearchFragment());
+                        agregarFragmentNavegacion(new SearchFragment(), FRAGMENT_BOTTOM);
                         break;
                     case R.id.bottomNavigationView_Favorites:
-                        replaceFragment(new FavoritosFragment());
+                        agregarFragmentNavegacion(new FavoritosFragment(), FRAGMENT_BOTTOM);
                         break;
                 }
                 return true;
@@ -246,6 +250,34 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+
+    private void agregarFragmentNavegacion(Fragment fragment, String id){
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.activityMain_contenedorDeFragments, fragment);
+        final int count = fragmentManager.getBackStackEntryCount();
+
+        if( id.equals(FRAGMENT_BOTTOM) ) {
+            fragmentTransaction.addToBackStack(id);
+        }
+
+        fragmentTransaction.commit();
+
+        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                // If the stack decreases it means I clicked the back button
+                if( fragmentManager.getBackStackEntryCount() <= count){
+                    // pop all the fragment and remove the listener
+                    fragmentManager.popBackStack(FRAGMENT_BOTTOM, POP_BACK_STACK_INCLUSIVE);
+                    fragmentManager.removeOnBackStackChangedListener(this);
+                    // set the home button selected
+                    bottomNavigationView.getMenu().getItem(0).setChecked(true);
+                }
+            }
+        });
+    }
+
 
 
     /**
