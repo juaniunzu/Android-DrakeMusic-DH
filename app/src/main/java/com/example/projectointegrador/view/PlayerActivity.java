@@ -318,6 +318,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     }
 
     @Override
+
     public void onClickAddTrackFavorite(final Track track, CheckBox checkBox) {
         final TrackController trackController = new TrackController();
         trackController.searchTrackFavoritos(track, firebaseUser, new ResultListener<List<Track>>() {
@@ -341,6 +342,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                 }
             }
         });
+
     }
 
     @Override

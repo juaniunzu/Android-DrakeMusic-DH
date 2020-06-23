@@ -71,7 +71,7 @@ public class OnboardingActivity extends AppCompatActivity {
                         Intent intent = new Intent(OnboardingActivity.this, MainActivity.class);
                         startActivity(intent);
                     }
-                }, 2000);
+                }, 3000);
             }
         }
 
