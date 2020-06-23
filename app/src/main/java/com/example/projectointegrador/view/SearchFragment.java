@@ -85,4 +85,8 @@ public class SearchFragment extends Fragment implements SearchAdapter.SearchAdap
         void onClickSearchFragment();
     }
 
+    @Override
+    public String toString() {
+        return "2";
+    }
 }

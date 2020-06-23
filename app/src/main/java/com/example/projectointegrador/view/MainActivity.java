@@ -20,6 +20,7 @@ import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
 import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.util.ResultListener;
+import com.example.projectointegrador.util.Utils;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -33,16 +34,29 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import static androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
+import static com.example.projectointegrador.view.PlayerActivity.KEY_LISTA;
+import static com.example.projectointegrador.view.PlayerActivity.KEY_TRACK;
+import static com.example.projectointegrador.view.SearchDetailFragment.KEY_QUERY;
+import static com.example.projectointegrador.view.SearchDetailFragment.KEY_TYPE;
+
 public class MainActivity extends AppCompatActivity implements HomeFragment.FragmentHomeListener,
         DetailArtistFragment.FragmentArtistDetailListener,
         FragmentTrackList.FragmentTrackListListener,
         TracksFavoritosFragment.TracksFavoritosFragmentListener,
         ArtistasFavoritosFragment.ArtistasFavoritosFragmentListener,
-        AlbumesFavoritosFragment.AlbumesFavoritosFragmentListener, PerfilFragment.PerfilFragmentListener {
+        AlbumesFavoritosFragment.AlbumesFavoritosFragmentListener,
+        PerfilFragment.PerfilFragmentListener,
+        SearchFragment.SearchFragmentListener,
+        SearchInputFragment.SearchInputFragmentListener,
+        SearchDetailFragment.SearchDetailFragmentListener {
 
     private DrawerLayout drawerLayout;
     private BottomNavigationView bottomNavigationView;
     private FirebaseUser firebaseUser;
+    public static final String FRAGMENT_HOME = "1";
+    public static final String FRAGMENT_BOTTOM = "2";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,14 +77,13 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.bottomNavigationView_Menu:
-                        addFragment(new HomeFragment());
+                        agregarFragmentNavegacion(new HomeFragment(), FRAGMENT_BOTTOM);
                         break;
                     case R.id.bottomNavigationView_Search:
-                        Intent mainASearch = new Intent(MainActivity.this, SearchActivity.class);
-                        startActivity(mainASearch);
+                        agregarFragmentNavegacion(new SearchFragment(), FRAGMENT_BOTTOM);
                         break;
                     case R.id.bottomNavigationView_Favorites:
-                        replaceFragment(new FavoritosFragment());
+                        agregarFragmentNavegacion(new FavoritosFragment(), FRAGMENT_BOTTOM);
                         break;
                 }
                 return true;
@@ -166,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
     @Override
     public void onClickAddAlbumFavFragmentTrackList(Album album, ToggleButton toggleButton) {
-        if (!toggleButton.isChecked()){
+        if (!toggleButton.isChecked()) {
 
             AlbumController albumController = new AlbumController();
             albumController.eliminarAlbumFavoritos(album, firebaseUser, new ResultListener<Album>() {
@@ -176,8 +189,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
                 }
             });
             toggleButton.setChecked(false);
-        }
-        else {
+        } else {
 
             AlbumController albumController = new AlbumController();
             albumController.agregarAlbumAFavoritos(album, firebaseUser, new ResultListener<Album>() {
@@ -238,6 +250,34 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+
+    private void agregarFragmentNavegacion(Fragment fragment, String id){
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.activityMain_contenedorDeFragments, fragment);
+        final int count = fragmentManager.getBackStackEntryCount();
+
+        if( id.equals(FRAGMENT_BOTTOM) ) {
+            fragmentTransaction.addToBackStack(id);
+        }
+
+        fragmentTransaction.commit();
+
+        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                // If the stack decreases it means I clicked the back button
+                if( fragmentManager.getBackStackEntryCount() <= count){
+                    // pop all the fragment and remove the listener
+                    fragmentManager.popBackStack(FRAGMENT_BOTTOM, POP_BACK_STACK_INCLUSIVE);
+                    fragmentManager.removeOnBackStackChangedListener(this);
+                    // set the home button selected
+                    bottomNavigationView.getMenu().getItem(0).setChecked(true);
+                }
+            }
+        });
+    }
+
 
 
     /**
@@ -311,4 +351,118 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         Toast.makeText(this, "Has cerrado sesion! esperamos verte pronto", Toast.LENGTH_SHORT).show();
         logout();
     }
+
+
+
+
+
+
+    //SEARCH FRAGMENT
+    @Override
+    public void onClickSearchFragment(Utils.Searchable searchable) {
+        //en construccion, ponele
+    }
+
+    //SEARCH FRAGMENT
+    @Override
+    public void onClickSearchFragment() {
+        SearchInputFragment searchInputFragment = new SearchInputFragment();
+        addFragment(searchInputFragment);//todo
+    }
+
+    //SEARCH FRAGMENT LISTO
+
+
+
+
+
+
+
+
+
+
+
+
+    //METODOS SEARCHINPUT FRAGMENT
+
+    @Override
+    public void onClickFiltroVerTodo(String query, String type) {
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_QUERY, query);
+        bundle.putString(KEY_TYPE, type);
+        SearchDetailFragment searchDetailFragment = new SearchDetailFragment();
+        searchDetailFragment.setArguments(bundle);
+        addFragment(searchDetailFragment);
+    }
+
+    @Override
+    public void onClickAlbumSearchInputFragment(Album album) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(FragmentTrackList.ALBUM,album);
+        FragmentTrackList fragmentTrackList = new FragmentTrackList();
+        fragmentTrackList.setArguments(bundle);
+        addFragment(fragmentTrackList);
+    }
+
+    @Override
+    public void onClickArtistSearchInputFragment(Artist artist) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(DetailArtistFragment.ARTIST, artist);
+        DetailArtistFragment detailArtistFragment = new DetailArtistFragment();
+        detailArtistFragment.setArguments(bundle);
+        addFragment(detailArtistFragment);
+    }
+
+    @Override
+    public void onClickTrackSearchInputFragment(Track track, List<Track> trackList) {
+        Intent searchToPlayer = new Intent(this, PlayerActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(KEY_TRACK, track);
+        bundle.putSerializable(KEY_LISTA, (ArrayList) trackList);
+        searchToPlayer.putExtras(bundle);
+        startActivity(searchToPlayer);
+    }
+
+    //SEARCH INPUT FRAGMENT LISTO
+
+
+
+
+
+
+
+
+
+
+
+
+    @Override
+    public void onClickAlbumSearchDetailFragment(Album album) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(FragmentTrackList.ALBUM,album);
+        FragmentTrackList fragmentTrackList = new FragmentTrackList();
+        fragmentTrackList.setArguments(bundle);
+        addFragment(fragmentTrackList);
+    }
+
+    @Override
+    public void onClickArtistSearchDetailFragment(Artist artist) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(DetailArtistFragment.ARTIST, artist);
+        DetailArtistFragment detailArtistFragment = new DetailArtistFragment();
+        detailArtistFragment.setArguments(bundle);
+        addFragment(detailArtistFragment);
+    }
+
+    @Override
+    public void onClickTrackSearchDetailFragment(Track track, List<Track> trackList) {
+        Intent searchToPlayer = new Intent(this, PlayerActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(KEY_TRACK, track);
+        bundle.putSerializable(KEY_LISTA, (ArrayList) trackList);
+        searchToPlayer.putExtras(bundle);
+        startActivity(searchToPlayer);
+    }
+
+    
 }

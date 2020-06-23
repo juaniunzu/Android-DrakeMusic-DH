@@ -176,4 +176,8 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
         }
     }
 
+    @Override
+    public String toString() {
+        return "1";
+    }
 }
