@@ -1,5 +1,7 @@
 package com.example.projectointegrador.model;
 
+import androidx.annotation.Nullable;
+
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.util.Utils;
 import com.google.gson.annotations.SerializedName;
@@ -119,4 +121,19 @@ public class Album implements Serializable, Utils.Searchable {
     public String informarDescripcion() {
         return "Album";
     }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if(obj instanceof Album){
+            Album albumAComparar = (Album) obj;
+            if(this.id.equals(albumAComparar.id)){
+                return true;
+            }else {
+                return false;
+            }
+        }else {
+            return false;
+        }
+    }
 }
+

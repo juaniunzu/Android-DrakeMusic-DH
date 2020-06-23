@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
@@ -252,16 +253,21 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     }
 
     private void changeSeekbar() {
-        seekBar.setProgress(audioPlayer.getCurrentPosition());
-        if(audioPlayer.isPlaying()){
-            runnable = new Runnable() {
-                @Override
-                public void run() {
-                    changeSeekbar();
-                }
-            };
-            handler.postDelayed(runnable, 100);
+        try {
+            seekBar.setProgress(audioPlayer.getCurrentPosition());
+            if(audioPlayer.isPlaying()){
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        changeSeekbar();
+                    }
+                };
+                handler.postDelayed(runnable, 100);
+            }
+        } catch (Exception e) {
+            audioPlayer.release();
         }
+
     }
 
     private void setViews() {
@@ -312,13 +318,27 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     }
 
     @Override
-    public void onClickAddTrackFavorite(Track track, ImageView boton) {
-        boton.setImageResource(R.drawable.ic_star_accent_24dp);
-        TrackController trackController = new TrackController();
-        trackController.agregarTrackAFavoritos(track, firebaseUser, new ResultListener<Track>() {
+    public void onClickAddTrackFavorite(final Track track, CheckBox checkBox) {
+        final TrackController trackController = new TrackController();
+        trackController.searchTrackFavoritos(track, firebaseUser, new ResultListener<List<Track>>() {
             @Override
-            public void finish(Track resultado) {
-                Toast.makeText(PlayerActivity.this, "Track agregado a Favoritos!", Toast.LENGTH_SHORT).show();
+            public void finish(List<Track> resultado) {
+                if (resultado.contains(track)){
+                    trackController.eliminarTrackFavoritos(track, firebaseUser, new ResultListener<Track>() {
+                        @Override
+                        public void finish(Track resultado) {
+                            Toast.makeText(PlayerActivity.this, "Track eliminado de Favoritos", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                else {
+                    trackController.agregarTrackAFavoritos(track, firebaseUser, new ResultListener<Track>() {
+                        @Override
+                        public void finish(Track resultado) {
+                            Toast.makeText(PlayerActivity.this, "Track agregado a Favoritos!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
     }
@@ -326,7 +346,16 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        audioPlayer.release();
+        handler = null;
+        runnable = null;
+        seekBar = null;
+        if(audioPlayer.isPlaying()){
+            audioPlayer.stop();
+            audioPlayer.release();
+        } else {
+            audioPlayer.release();
+        }
+
     }
 
     private void agregarTrackAUltimosReproducidos(Track track){

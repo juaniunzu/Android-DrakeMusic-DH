@@ -9,18 +9,26 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
+import com.example.projectointegrador.R;
+import com.example.projectointegrador.controller.TrackController;
 import com.example.projectointegrador.databinding.FragmentPlayerBinding;
 import com.example.projectointegrador.model.Track;
+import com.example.projectointegrador.util.ResultListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.locks.ReadWriteLock;
 
 import static com.example.projectointegrador.util.Utils.setFragmentBackground;
 
@@ -29,12 +37,13 @@ public class PlayerFragment extends Fragment {
 
     public static final String KEY_DETAIL_TRACK = "track";
     private ImageView fragmentPlayerImageView;
-    private ImageView fragmentPlayerButtonAddFavorite;
+    private CheckBox fragmentPlayerButtonAddFavorite;
     private TextView fragmentPlayerTextViewArtista;
     private TextView fragmentPlayerTextViewNombre;
     private PlayerFragmentListener listener;
     private Track trackRecibido;
     private FragmentPlayerBinding binding;
+    private FirebaseUser firebaseUser;
 
 
 
@@ -71,12 +80,27 @@ public class PlayerFragment extends Fragment {
 
         setViewResources(trackRecibido);
 
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
         setFragmentBackground(getContext(), view, trackRecibido.getAlbum().getCover());
 
         fragmentPlayerButtonAddFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onClickAddTrackFavorite(trackRecibido, fragmentPlayerButtonAddFavorite);
+            }
+        });
+
+        TrackController trackController = new TrackController();
+        trackController.searchTrackFavoritos(trackRecibido, firebaseUser, new ResultListener<List<Track>>() {
+            @Override
+            public void finish(List<Track> resultado) {
+                if (resultado.contains(trackRecibido)){
+                    fragmentPlayerButtonAddFavorite.setChecked(true);
+                }
+                else {
+                    fragmentPlayerButtonAddFavorite.setChecked(false);
+                }
             }
         });
 
@@ -113,6 +137,6 @@ public class PlayerFragment extends Fragment {
     }
 
     public interface PlayerFragmentListener{
-        void onClickAddTrackFavorite(Track track, ImageView boton);
+        void onClickAddTrackFavorite(Track track, CheckBox checkBox);
     }
 }

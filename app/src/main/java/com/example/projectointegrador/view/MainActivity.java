@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.AlbumController;
@@ -33,9 +34,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements HomeFragment.FragmentHomeListener,
-                                                                DetailArtistFragment.FragmentArtistDetailListener,
-                                                                FragmentTrackList.FragmentTrackListListener,
-                                                TracksFavoritosFragment.TracksFavoritosFragmentListener,
+        DetailArtistFragment.FragmentArtistDetailListener,
+        FragmentTrackList.FragmentTrackListListener,
+        TracksFavoritosFragment.TracksFavoritosFragmentListener,
         ArtistasFavoritosFragment.ArtistasFavoritosFragmentListener,
         AlbumesFavoritosFragment.AlbumesFavoritosFragmentListener, PerfilFragment.PerfilFragmentListener {
 
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     @Override
     public void onClickArtistaDesdeHomeFragment(Artist artist) {
         Bundle datos = new Bundle();
-        datos.putSerializable(DetailArtistFragment.ARTIST,artist);
+        datos.putSerializable(DetailArtistFragment.ARTIST, artist);
         DetailArtistFragment detailArtistFragment = new DetailArtistFragment();
         detailArtistFragment.setArguments(datos);
         replaceFragment(detailArtistFragment);
@@ -135,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     @Override
     public void fragmentOnClickAlbumDesdeFragmentArtistDetail(Album album) {
         Bundle datos = new Bundle();
-        datos.putSerializable(FragmentTrackList.ALBUM,album);
+        datos.putSerializable(FragmentTrackList.ALBUM, album);
         FragmentTrackList fragmentTrackList = new FragmentTrackList();
         fragmentTrackList.setArguments(datos);
         replaceFragment(fragmentTrackList);
@@ -152,8 +153,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     }
 
 
-
-
     //click a un track desde adentro del detalle de un album
     @Override
     public void onClickTrackFragmentTrackList(Track track, List<Track> trackList) {
@@ -166,25 +165,53 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     }
 
     @Override
-    public void onClickAddAlbumFavFragmentTrackList(Album album) {
-        AlbumController albumController = new AlbumController();
-        albumController.agregarAlbumAFavoritos(album, firebaseUser, new ResultListener<Album>() {
-            @Override
-            public void finish(Album resultado) {
-                Toast.makeText(MainActivity.this, "Agregaste el Album a Favoritos!", Toast.LENGTH_SHORT).show();
-            }
-        });
+    public void onClickAddAlbumFavFragmentTrackList(Album album, ToggleButton toggleButton) {
+        if (!toggleButton.isChecked()){
+
+            AlbumController albumController = new AlbumController();
+            albumController.eliminarAlbumFavoritos(album, firebaseUser, new ResultListener<Album>() {
+                @Override
+                public void finish(Album resultado) {
+                    Toast.makeText(MainActivity.this, "Eliminaste el Album de Favoritos", Toast.LENGTH_SHORT).show();
+                }
+            });
+            toggleButton.setChecked(false);
+        }
+        else {
+
+            AlbumController albumController = new AlbumController();
+            albumController.agregarAlbumAFavoritos(album, firebaseUser, new ResultListener<Album>() {
+                @Override
+                public void finish(Album resultado) {
+                    Toast.makeText(MainActivity.this, "Agregaste el Album a Favoritos!", Toast.LENGTH_SHORT).show();
+                }
+            });
+            toggleButton.setChecked(true);
+        }
     }
 
     @Override
-    public void onClickAddArtistFavFragmentArtistDetail(Artist artist) {
-        ArtistController artistController = new ArtistController();
-        artistController.agregarArtistAFavoritos(artist, firebaseUser, new ResultListener<Artist>() {
-            @Override
-            public void finish(Artist resultado) {
-                Toast.makeText(MainActivity.this, "Agregaste el Artista a Favoritos!", Toast.LENGTH_SHORT).show();
-            }
-        });
+    public void onClickAddArtistFavFragmentArtistDetail(Artist artist, ToggleButton toggleButton) {
+        if (!toggleButton.isChecked()) {
+            ArtistController artistController = new ArtistController();
+            artistController.eliminarArtistFavoritos(artist, firebaseUser, new ResultListener<Artist>() {
+                @Override
+                public void finish(Artist resultado) {
+                    Toast.makeText(MainActivity.this, "Eliminaste el Artista de Favoritos", Toast.LENGTH_SHORT).show();
+                }
+            });
+            toggleButton.setChecked(false);
+        } else {
+
+            ArtistController artistController = new ArtistController();
+            artistController.agregarArtistAFavoritos(artist, firebaseUser, new ResultListener<Artist>() {
+                @Override
+                public void finish(Artist resultado) {
+                    Toast.makeText(MainActivity.this, "Agregaste el Artista a Favoritos!", Toast.LENGTH_SHORT).show();
+                }
+            });
+            toggleButton.setChecked(true);
+        }
     }
 
 
@@ -204,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         fragmentTransaction.commit();
     }
 
-    private void addFragment(Fragment fragment){
+    private void addFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.activityMain_contenedorDeFragments, fragment);
@@ -215,8 +242,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
     /**
      * Metodo para Logout de FB y GOOGLE. Despues Se le agregara Firebase. Vuelve a la Login Activity y mata la Actividad Actual.
-    */
-    public void logout(){
+     */
+    public void logout() {
         //Logout de CaraLibro
         LoginManager.getInstance().logOut();
 
@@ -231,19 +258,19 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Intent intent = new Intent(MainActivity.this,LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                }
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
 
 
-    );
+                );
 
     }
-    
+
     @Override
     public void onClickTracksFavFragment(Track track, List<Track> trackList) {
         Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
@@ -257,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     @Override
     public void onClickAlbumFavFragment(Album album) {
         Bundle datos = new Bundle();
-        datos.putSerializable(FragmentTrackList.ALBUM,album);
+        datos.putSerializable(FragmentTrackList.ALBUM, album);
         FragmentTrackList fragmentTrackList = new FragmentTrackList();
         fragmentTrackList.setArguments(datos);
         replaceFragment(fragmentTrackList);
@@ -266,7 +293,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     @Override
     public void onClickArtistasFavFragment(Artist artist) {
         Bundle datos = new Bundle();
-        datos.putSerializable(DetailArtistFragment.ARTIST,artist);
+        datos.putSerializable(DetailArtistFragment.ARTIST, artist);
         DetailArtistFragment detailArtistFragment = new DetailArtistFragment();
         detailArtistFragment.setArguments(datos);
         replaceFragment(detailArtistFragment);

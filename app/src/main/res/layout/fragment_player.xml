@@ -30,7 +30,7 @@
         app:layout_constraintStart_toStartOf="@id/fragmentPlayerImageView"
         app:layout_constraintTop_toBottomOf="@id/fragmentPlayerImageView" />
 
-    <ImageView
+    <CheckBox
         android:id="@+id/fragmentPlayerButtonAddFavorite"
         android:layout_width="30dp"
         android:layout_height="30dp"

@@ -1,5 +1,7 @@
 package com.example.projectointegrador.model;
 
+import androidx.annotation.Nullable;
+
 import com.example.projectointegrador.util.Utils;
 
 import java.io.Serializable;
@@ -77,4 +79,31 @@ public class Artist implements Serializable, Utils.Searchable {
     public String informarDescripcion() {
         return "Artista";
     }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+         if (obj instanceof Artist){
+             Artist artistAComparar = (Artist) obj;
+
+             if(this.id.equals(artistAComparar.id)){
+                 return true;
+             }
+             else{
+                 return false;
+             }
+         }else{
+             return false;
+         }
+    }
 }
+//        if (obj instanceof Profesor) {
+//
+//                Profesor tmpProfesor = (Profesor) obj;
+//
+//                if (super.equals(tmpProfesor) && this.IdProfesor.equals(tmpProfesor.IdProfesor) ) {
+//
+//                return true; } else { return false; }
+//
+//                }  else { return false; }
+//
+//                }

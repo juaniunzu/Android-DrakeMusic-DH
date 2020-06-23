@@ -1,5 +1,7 @@
 package com.example.projectointegrador.dao;
 
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 
 import com.example.projectointegrador.model.Artist;
@@ -56,6 +58,46 @@ public class TrackFirestoreDao {
                                 trackList.add(track);
                             }
                             listener.finish(trackList);
+                        }
+                    }
+                });
+    }
+
+    public void searchTrackFavoritos(Track track, FirebaseUser firebaseUser, final ResultListener<List<Track>> listener){
+        db.collection(COLECC_TRACKS)
+                .document(firebaseUser.getUid())
+                .collection(MIS_TRACKS)
+                .whereEqualTo("id", track.getId())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            List<Track> trackList = new ArrayList<>();
+                            for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                                Track tracksearch = queryDocumentSnapshot.toObject(Track.class);
+                                trackList.add(tracksearch);
+                            }
+                            listener.finish(trackList);
+                        }
+                    }
+                });
+    }
+
+    public void eliminarTrackFavoritos(final Track track, FirebaseUser firebaseUser, final ResultListener<Track> listener){
+        db.collection(COLECC_TRACKS)
+                .document(firebaseUser.getUid())
+                .collection(MIS_TRACKS)
+                .document(track.getId().toString())
+                .delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            listener.finish(track);
+                        }
+                        else{
+                            task.getException().printStackTrace();
                         }
                     }
                 });
