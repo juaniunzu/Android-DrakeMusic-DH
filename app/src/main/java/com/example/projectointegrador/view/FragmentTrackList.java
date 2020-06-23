@@ -73,9 +73,11 @@ public class FragmentTrackList extends Fragment implements TrackListAdapter.Trac
             public void finish(List<Album> resultado) {
                 if (resultado.contains(albumRecibido)){
                     toggleAddFav.setText(R.string.en_fav);
+                    toggleAddFav.setChecked(true);
                 }
                 else {
                     toggleAddFav.setText(R.string.agregar_a_fav);
+                    toggleAddFav.setChecked(false);
                 }
             }
         });

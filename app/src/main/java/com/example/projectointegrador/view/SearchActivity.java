@@ -227,7 +227,8 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
 
     @Override
     public void onClickAddAlbumFavFragmentTrackList(Album album, ToggleButton toggleButton) {
-        if (toggleButton.isChecked()){
+        if (!toggleButton.isChecked()){
+
             AlbumController albumController = new AlbumController();
             albumController.eliminarAlbumFavoritos(album, firebaseUser, new ResultListener<Album>() {
                 @Override
@@ -235,8 +236,10 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
                     Toast.makeText(SearchActivity.this, "Eliminaste el Album de Favoritos", Toast.LENGTH_SHORT).show();
                 }
             });
+            toggleButton.setChecked(false);
         }
         else {
+
             AlbumController albumController = new AlbumController();
             albumController.agregarAlbumAFavoritos(album, firebaseUser, new ResultListener<Album>() {
                 @Override
@@ -244,12 +247,14 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
                     Toast.makeText(SearchActivity.this, "Agregaste el Album a Favoritos!", Toast.LENGTH_SHORT).show();
                 }
             });
+            toggleButton.setChecked(true);
         }
     }
 
     @Override
     public void onClickAddArtistFavFragmentArtistDetail(Artist artist, ToggleButton toggleButton) {
-        if (toggleButton.isChecked()) {
+        if (!toggleButton.isChecked()) {
+
             ArtistController artistController = new ArtistController();
             artistController.eliminarArtistFavoritos(artist, firebaseUser, new ResultListener<Artist>() {
                 @Override
@@ -257,7 +262,9 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
                     Toast.makeText(SearchActivity.this, "Eliminaste el Artista de Favoritos", Toast.LENGTH_SHORT).show();
                 }
             });
+            toggleButton.setChecked(false);
         } else {
+
             ArtistController artistController = new ArtistController();
             artistController.agregarArtistAFavoritos(artist, firebaseUser, new ResultListener<Artist>() {
                 @Override
@@ -265,6 +272,7 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
                     Toast.makeText(SearchActivity.this, "Agregaste el Artista a Favoritos!", Toast.LENGTH_SHORT).show();
                 }
             });
+            toggleButton.setChecked(true);
         }
     }
 
