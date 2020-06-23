@@ -253,16 +253,21 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     }
 
     private void changeSeekbar() {
-        seekBar.setProgress(audioPlayer.getCurrentPosition());
-        if(audioPlayer.isPlaying()){
-            runnable = new Runnable() {
-                @Override
-                public void run() {
-                    changeSeekbar();
-                }
-            };
-            handler.postDelayed(runnable, 100);
+        try {
+            seekBar.setProgress(audioPlayer.getCurrentPosition());
+            if(audioPlayer.isPlaying()){
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        changeSeekbar();
+                    }
+                };
+                handler.postDelayed(runnable, 100);
+            }
+        } catch (Exception e) {
+            audioPlayer.release();
         }
+
     }
 
     private void setViews() {
@@ -341,7 +346,16 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        audioPlayer.release();
+        handler = null;
+        runnable = null;
+        seekBar = null;
+        if(audioPlayer.isPlaying()){
+            audioPlayer.stop();
+            audioPlayer.release();
+        } else {
+            audioPlayer.release();
+        }
+
     }
 
     private void agregarTrackAUltimosReproducidos(Track track){
