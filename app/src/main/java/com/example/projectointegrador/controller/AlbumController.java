@@ -14,10 +14,18 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.List;
 
 public class AlbumController {
+
+    private AlbumApiDao albumApiDao;
+    private AlbumFirestoreDao albumFirestoreDao;
+
+    public AlbumController() {
+        this.albumApiDao = new AlbumApiDao();
+        this.albumFirestoreDao = new AlbumFirestoreDao();
+    }
+
     public void getAlbums(Context context, final ResultListener<List<Album>> listenerDeLaVista){
         boolean hayInternet = Utils.hayInternet(context);
         if(hayInternet){
-            AlbumApiDao albumApiDao = new AlbumApiDao();
             albumApiDao.getAlbums(new ResultListener<List<Album>>() {
                 @Override
                 public void finish(List<Album> resultado) {
@@ -32,7 +40,6 @@ public class AlbumController {
     public void getAlbumesDeUnArtista(Integer idDelArtista, Context context, final ResultListener<List<Album>>listenerDeLaVista){
         boolean hayInternet = Utils.hayInternet(context);
         if(hayInternet){
-            AlbumApiDao albumApiDao = new AlbumApiDao();
             albumApiDao.getAlbumesDeUnArtista(idDelArtista, new ResultListener<List<Album>>() {
                 @Override
                 public void finish(List<Album> resultado) {
@@ -45,7 +52,6 @@ public class AlbumController {
     public void buscarAlbumes(Context context, String busqueda, final ResultListener<ResponseAlbum> listener){
         boolean hayInternet = Utils.hayInternet(context);
         if(hayInternet){
-            AlbumApiDao albumApiDao = new AlbumApiDao();
             albumApiDao.buscarAlbumes(busqueda, new ResultListener<ResponseAlbum>() {
                 @Override
                 public void finish(ResponseAlbum resultado) {
@@ -56,7 +62,6 @@ public class AlbumController {
     }
 
     public void agregarAlbumAFavoritos(Album album, FirebaseUser firebaseUser, final ResultListener<Album> listener){
-        AlbumFirestoreDao albumFirestoreDao = new AlbumFirestoreDao();
         albumFirestoreDao.agregarAlbumAFavoritos(album, firebaseUser, new ResultListener<Album>() {
             @Override
             public void finish(Album resultado) {
@@ -66,7 +71,6 @@ public class AlbumController {
     }
 
     public void getAlbumListFavoritos(FirebaseUser firebaseUser, final ResultListener<List<Album>> listener){
-        AlbumFirestoreDao albumFirestoreDao = new AlbumFirestoreDao();
         albumFirestoreDao.getAlbumListFavoritos(firebaseUser, new ResultListener<List<Album>>() {
             @Override
             public void finish(List<Album> resultado) {
@@ -76,7 +80,6 @@ public class AlbumController {
     }
 
     public void searchAlbumFavoritos(Album album, FirebaseUser firebaseUser, final ResultListener<List<Album>> listener){
-        AlbumFirestoreDao albumFirestoreDao = new AlbumFirestoreDao();
         albumFirestoreDao.searchAlbumFavoritos(album, firebaseUser, new ResultListener<List<Album>>() {
             @Override
             public void finish(List<Album> resultado) {
@@ -86,7 +89,6 @@ public class AlbumController {
     }
 
     public void eliminarAlbumFavoritos(final Album album, FirebaseUser firebaseUser, final ResultListener<Album> listener){
-        AlbumFirestoreDao albumFirestoreDao = new AlbumFirestoreDao();
         albumFirestoreDao.eliminarAlbumFavoritos(album, firebaseUser, new ResultListener<Album>() {
             @Override
             public void finish(Album resultado) {
