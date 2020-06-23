@@ -16,14 +16,19 @@ import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
+import com.example.projectointegrador.controller.AlbumController;
 import com.example.projectointegrador.controller.TrackController;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.util.ResultListener;
 import com.example.projectointegrador.util.Utils;
 import com.example.projectointegrador.view.adapter.TrackListAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
+
+import javax.xml.transform.Result;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +43,7 @@ public class FragmentTrackList extends Fragment implements TrackListAdapter.Trac
     private TextView textViewNombreAlbum;
     private TextView fragmentTrackListTextViewArtista;
     private ToggleButton toggleAddFav;
+    private FirebaseUser firebaseUser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +57,8 @@ public class FragmentTrackList extends Fragment implements TrackListAdapter.Trac
         recyclerViewListaDeTemas = view.findViewById(R.id.fragmentTrackList_RecyclerViewListaDeTracks);
         View appBarLayout = view.findViewById(R.id.fragmentTrackListAppBarLayout);
 
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
         Utils.setFragmentBackground(getContext(), appBarLayout, albumRecibido.getCover());
 
         toggleAddFav = view.findViewById(R.id.fragmentTrackListButtonAgregarAFavoritos);
@@ -58,6 +66,21 @@ public class FragmentTrackList extends Fragment implements TrackListAdapter.Trac
         textViewNombreAlbum.setText(albumRecibido.getTitle());
         fragmentTrackListTextViewArtista = view.findViewById(R.id.fragmentTrackListTextViewArtista);
         fragmentTrackListTextViewArtista.setText(albumRecibido.getArtist().getName());
+
+        AlbumController albumController = new AlbumController();
+        albumController.searchAlbumFavoritos(albumRecibido, firebaseUser, new ResultListener<List<Album>>() {
+            @Override
+            public void finish(List<Album> resultado) {
+                if (resultado.contains(albumRecibido)){
+                    toggleAddFav.setText(R.string.en_fav);
+                    toggleAddFav.setChecked(true);
+                }
+                else {
+                    toggleAddFav.setText(R.string.agregar_a_fav);
+                    toggleAddFav.setChecked(false);
+                }
+            }
+        });
 
         Glide.with(view)
                 .load(albumRecibido.getCover())
@@ -82,7 +105,7 @@ public class FragmentTrackList extends Fragment implements TrackListAdapter.Trac
         toggleAddFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickAddAlbumFavFragmentTrackList(albumRecibido);
+                listener.onClickAddAlbumFavFragmentTrackList(albumRecibido, toggleAddFav);
             }
         });
         return view;
@@ -99,7 +122,7 @@ public class FragmentTrackList extends Fragment implements TrackListAdapter.Trac
 
     public interface FragmentTrackListListener{
         void onClickTrackFragmentTrackList(Track track, List<Track> trackList);
-        void onClickAddAlbumFavFragmentTrackList(Album album);
+        void onClickAddAlbumFavFragmentTrackList(Album album, ToggleButton toggleButton);
     }
 
     public void onAttach(Context context) {

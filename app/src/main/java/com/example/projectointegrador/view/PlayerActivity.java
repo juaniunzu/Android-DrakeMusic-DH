@@ -253,16 +253,21 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     }
 
     private void changeSeekbar() {
-        seekBar.setProgress(audioPlayer.getCurrentPosition());
-        if(audioPlayer.isPlaying()){
-            runnable = new Runnable() {
-                @Override
-                public void run() {
-                    changeSeekbar();
-                }
-            };
-            handler.postDelayed(runnable, 100);
+        try {
+            seekBar.setProgress(audioPlayer.getCurrentPosition());
+            if(audioPlayer.isPlaying()){
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        changeSeekbar();
+                    }
+                };
+                handler.postDelayed(runnable, 100);
+            }
+        } catch (Exception e) {
+            audioPlayer.release();
         }
+
     }
 
     private void setViews() {
@@ -313,14 +318,46 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     }
 
     @Override
-    public void onClickAddTrackFavorite(Track track, CheckBox boton) {
-        //aca se mergea con lo que hace seba, SALU2
+
+    public void onClickAddTrackFavorite(final Track track, CheckBox checkBox) {
+        final TrackController trackController = new TrackController();
+        trackController.searchTrackFavoritos(track, firebaseUser, new ResultListener<List<Track>>() {
+            @Override
+            public void finish(List<Track> resultado) {
+                if (resultado.contains(track)){
+                    trackController.eliminarTrackFavoritos(track, firebaseUser, new ResultListener<Track>() {
+                        @Override
+                        public void finish(Track resultado) {
+                            Toast.makeText(PlayerActivity.this, "Track eliminado de Favoritos", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                else {
+                    trackController.agregarTrackAFavoritos(track, firebaseUser, new ResultListener<Track>() {
+                        @Override
+                        public void finish(Track resultado) {
+                            Toast.makeText(PlayerActivity.this, "Track agregado a Favoritos!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        audioPlayer.release();
+        handler = null;
+        runnable = null;
+        seekBar = null;
+        if(audioPlayer.isPlaying()){
+            audioPlayer.stop();
+            audioPlayer.release();
+        } else {
+            audioPlayer.release();
+        }
+
     }
 
     private void agregarTrackAUltimosReproducidos(Track track){
