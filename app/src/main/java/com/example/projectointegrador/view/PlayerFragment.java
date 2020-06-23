@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -29,7 +30,7 @@ public class PlayerFragment extends Fragment {
 
     public static final String KEY_DETAIL_TRACK = "track";
     private ImageView fragmentPlayerImageView;
-    private ImageView fragmentPlayerButtonAddFavorite;
+    private CheckBox fragmentPlayerButtonAddFavorite;
     private TextView fragmentPlayerTextViewArtista;
     private TextView fragmentPlayerTextViewNombre;
     private PlayerFragmentListener listener;
@@ -113,6 +114,6 @@ public class PlayerFragment extends Fragment {
     }
 
     public interface PlayerFragmentListener{
-        void onClickAddTrackFavorite(Track track, ImageView boton);
+        void onClickAddTrackFavorite(Track track, CheckBox boton);
     }
 }

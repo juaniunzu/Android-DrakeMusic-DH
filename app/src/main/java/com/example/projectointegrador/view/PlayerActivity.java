@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
@@ -312,15 +313,8 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     }
 
     @Override
-    public void onClickAddTrackFavorite(Track track, ImageView boton) {
-        boton.setImageResource(R.drawable.ic_star_accent_24dp);
-        TrackController trackController = new TrackController();
-        trackController.agregarTrackAFavoritos(track, firebaseUser, new ResultListener<Track>() {
-            @Override
-            public void finish(Track resultado) {
-                Toast.makeText(PlayerActivity.this, "Track agregado a Favoritos!", Toast.LENGTH_SHORT).show();
-            }
-        });
+    public void onClickAddTrackFavorite(Track track, CheckBox boton) {
+        //aca se mergea con lo que hace seba, SALU2
     }
 
     @Override
