@@ -40,9 +40,6 @@
         </activity>
         <activity android:name=".view.LoginActivity" />
         <activity android:name=".view.PlayerActivity" />
-        <activity
-            android:name=".view.SearchActivity"
-            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".view.MainActivity" />
         <activity android:name=".view.SplashActivity">
             <intent-filter>
