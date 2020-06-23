@@ -1,5 +1,7 @@
 package com.example.projectointegrador.dao;
 
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 
 import com.example.projectointegrador.model.Artist;
@@ -77,6 +79,25 @@ public class TrackFirestoreDao {
                                 trackList.add(tracksearch);
                             }
                             listener.finish(trackList);
+                        }
+                    }
+                });
+    }
+
+    public void eliminarTrackFavoritos(final Track track, FirebaseUser firebaseUser, final ResultListener<Track> listener){
+        db.collection(COLECC_TRACKS)
+                .document(firebaseUser.getUid())
+                .collection(MIS_TRACKS)
+                .document(track.getId().toString())
+                .delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            listener.finish(track);
+                        }
+                        else{
+                            task.getException().printStackTrace();
                         }
                     }
                 });

@@ -3,6 +3,7 @@ package com.example.projectointegrador.controller;
 import android.content.Context;
 
 
+import com.example.projectointegrador.R;
 import com.example.projectointegrador.dao.ArtistApiDao;
 import com.example.projectointegrador.dao.ArtistDao;
 import com.example.projectointegrador.dao.ArtistFirestoreDao;
@@ -68,6 +69,16 @@ public class ArtistController {
         artistFirestoreDao.searchArtistFavoritos(artist, firebaseUser, new ResultListener<List<Artist>>() {
             @Override
             public void finish(List<Artist> resultado) {
+                listener.finish(resultado);
+            }
+        });
+    }
+
+    public void eliminarArtistFavoritos(Artist artist, FirebaseUser firebaseUser, final ResultListener<Artist> listener){
+        ArtistFirestoreDao artistFirestoreDao = new ArtistFirestoreDao();
+        artistFirestoreDao.eliminarArtistFavoritos(artist, firebaseUser, new ResultListener<Artist>() {
+            @Override
+            public void finish(Artist resultado) {
                 listener.finish(resultado);
             }
         });

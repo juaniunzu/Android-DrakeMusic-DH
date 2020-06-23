@@ -103,7 +103,7 @@ public class FragmentTrackList extends Fragment implements TrackListAdapter.Trac
         toggleAddFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickAddAlbumFavFragmentTrackList(albumRecibido);
+                listener.onClickAddAlbumFavFragmentTrackList(albumRecibido, toggleAddFav);
             }
         });
         return view;
@@ -120,7 +120,7 @@ public class FragmentTrackList extends Fragment implements TrackListAdapter.Trac
 
     public interface FragmentTrackListListener{
         void onClickTrackFragmentTrackList(Track track, List<Track> trackList);
-        void onClickAddAlbumFavFragmentTrackList(Album album);
+        void onClickAddAlbumFavFragmentTrackList(Album album, ToggleButton toggleButton);
     }
 
     public void onAttach(Context context) {

@@ -120,4 +120,14 @@ public class TrackController {
         });
     }
 
+    public void eliminarTrackFavoritos (final Track track, FirebaseUser firebaseUser, final ResultListener<Track> listener){
+        TrackFirestoreDao trackFirestoreDao = new TrackFirestoreDao();
+        trackFirestoreDao.eliminarTrackFavoritos(track, firebaseUser, new ResultListener<Track>() {
+            @Override
+            public void finish(Track resultado) {
+                listener.finish(track);
+            }
+        });
+    }
+
 }

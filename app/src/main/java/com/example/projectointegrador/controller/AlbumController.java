@@ -84,4 +84,14 @@ public class AlbumController {
             }
         });
     }
+
+    public void eliminarAlbumFavoritos(final Album album, FirebaseUser firebaseUser, final ResultListener<Album> listener){
+        AlbumFirestoreDao albumFirestoreDao = new AlbumFirestoreDao();
+        albumFirestoreDao.eliminarAlbumFavoritos(album, firebaseUser, new ResultListener<Album>() {
+            @Override
+            public void finish(Album resultado) {
+                listener.finish(resultado);
+            }
+        });
+    }
 }

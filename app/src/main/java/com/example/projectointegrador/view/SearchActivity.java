@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.AlbumController;
@@ -215,17 +216,6 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
     }
 
     @Override
-    public void onClickAddArtistFavFragmentArtistDetail(Artist artist) {
-        ArtistController artistController = new ArtistController();
-        artistController.agregarArtistAFavoritos(artist, firebaseUser, new ResultListener<Artist>() {
-            @Override
-            public void finish(Artist resultado) {
-                Toast.makeText(SearchActivity.this, "Agregaste el Artista a Favoritos!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    @Override
     public void onClickTrackFragmentTrackList(Track track, List<Track> trackList) {
         Intent searchAPlayer = new Intent(SearchActivity.this, PlayerActivity.class);
         Bundle datos = new Bundle();
@@ -236,13 +226,46 @@ public class SearchActivity extends AppCompatActivity implements SearchFragment.
     }
 
     @Override
-    public void onClickAddAlbumFavFragmentTrackList(Album album) {
-        AlbumController albumController = new AlbumController();
-        albumController.agregarAlbumAFavoritos(album, firebaseUser, new ResultListener<Album>() {
-            @Override
-            public void finish(Album resultado) {
-                Toast.makeText(SearchActivity.this, "Agregaste el Album a Favoritos!", Toast.LENGTH_SHORT).show();
-            }
-        });
+    public void onClickAddAlbumFavFragmentTrackList(Album album, ToggleButton toggleButton) {
+        if (toggleButton.isChecked()){
+            AlbumController albumController = new AlbumController();
+            albumController.eliminarAlbumFavoritos(album, firebaseUser, new ResultListener<Album>() {
+                @Override
+                public void finish(Album resultado) {
+                    Toast.makeText(SearchActivity.this, "Eliminaste el Album de Favoritos", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else {
+            AlbumController albumController = new AlbumController();
+            albumController.agregarAlbumAFavoritos(album, firebaseUser, new ResultListener<Album>() {
+                @Override
+                public void finish(Album resultado) {
+                    Toast.makeText(SearchActivity.this, "Agregaste el Album a Favoritos!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
+
+    @Override
+    public void onClickAddArtistFavFragmentArtistDetail(Artist artist, ToggleButton toggleButton) {
+        if (toggleButton.isChecked()) {
+            ArtistController artistController = new ArtistController();
+            artistController.eliminarArtistFavoritos(artist, firebaseUser, new ResultListener<Artist>() {
+                @Override
+                public void finish(Artist resultado) {
+                    Toast.makeText(SearchActivity.this, "Eliminaste el Artista de Favoritos", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            ArtistController artistController = new ArtistController();
+            artistController.agregarArtistAFavoritos(artist, firebaseUser, new ResultListener<Artist>() {
+                @Override
+                public void finish(Artist resultado) {
+                    Toast.makeText(SearchActivity.this, "Agregaste el Artista a Favoritos!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
 }

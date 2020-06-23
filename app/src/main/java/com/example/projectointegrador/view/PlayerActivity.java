@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
@@ -312,13 +313,27 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     }
 
     @Override
-    public void onClickAddTrackFavorite(Track track, ImageView boton) {
-        boton.setImageResource(R.drawable.ic_star_accent_24dp);
-        TrackController trackController = new TrackController();
-        trackController.agregarTrackAFavoritos(track, firebaseUser, new ResultListener<Track>() {
+    public void onClickAddTrackFavorite(final Track track, CheckBox checkBox) {
+        final TrackController trackController = new TrackController();
+        trackController.searchTrackFavoritos(track, firebaseUser, new ResultListener<List<Track>>() {
             @Override
-            public void finish(Track resultado) {
-                Toast.makeText(PlayerActivity.this, "Track agregado a Favoritos!", Toast.LENGTH_SHORT).show();
+            public void finish(List<Track> resultado) {
+                if (resultado.contains(track)){
+                    trackController.eliminarTrackFavoritos(track, firebaseUser, new ResultListener<Track>() {
+                        @Override
+                        public void finish(Track resultado) {
+                            Toast.makeText(PlayerActivity.this, "Track eliminado de Favoritos", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                else {
+                    trackController.agregarTrackAFavoritos(track, firebaseUser, new ResultListener<Track>() {
+                        @Override
+                        public void finish(Track resultado) {
+                            Toast.makeText(PlayerActivity.this, "Track agregado a Favoritos!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
     }

@@ -84,4 +84,23 @@ public class ArtistFirestoreDao {
 
     }
 
+    public void eliminarArtistFavoritos(final Artist artist, FirebaseUser firebaseUser, final ResultListener<Artist> listener){
+        db.collection(COLECC_ARTISTAS)
+                .document(firebaseUser.getUid())
+                .collection(MIS_ARTISTAS)
+                .document(artist.getId().toString())
+                .delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            listener.finish(artist);
+                        }
+                        else {
+                            task.getException().printStackTrace();
+                        }
+                    }
+                });
+    }
+
 }

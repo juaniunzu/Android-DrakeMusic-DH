@@ -21,6 +21,7 @@ import android.widget.ToggleButton;
 import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.AlbumController;
+import com.example.projectointegrador.controller.ArtistController;
 import com.example.projectointegrador.controller.TrackController;
 import com.example.projectointegrador.dao.ArtistFirestoreDao;
 import com.example.projectointegrador.model.Album;
@@ -76,8 +77,8 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        ArtistFirestoreDao artistFirestoreDao = new ArtistFirestoreDao();
-        artistFirestoreDao.searchArtistFavoritos(artistaRecibido, firebaseUser, new ResultListener<List<Artist>>() {
+        ArtistController artistController = new ArtistController();
+        artistController.searchArtistFavoritos(artistaRecibido, firebaseUser, new ResultListener<List<Artist>>() {
             @Override
             public void finish(List<Artist> resultado) {
                 if (resultado.contains(artistaRecibido)){
@@ -132,7 +133,7 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
         toggleAddFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickAddArtistFavFragmentArtistDetail(artistaRecibido);
+                listener.onClickAddArtistFavFragmentArtistDetail(artistaRecibido, toggleAddFav);
             }
         });
 
@@ -158,7 +159,7 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
     public interface FragmentArtistDetailListener{
         void fragmentOnClickAlbumDesdeFragmentArtistDetail(Album album);
         void fragmentOnClickTrackDesdeFragmentArtistDetail(Track track, List<Track> trackList);
-        void onClickAddArtistFavFragmentArtistDetail(Artist artist);
+        void onClickAddArtistFavFragmentArtistDetail(Artist artist, ToggleButton toggleButton);
     }
 
     @Override
