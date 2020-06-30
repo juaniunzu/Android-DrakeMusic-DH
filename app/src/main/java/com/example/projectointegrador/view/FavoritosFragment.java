@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
@@ -50,7 +51,7 @@ public class FavoritosFragment extends Fragment {
 
 
 
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getChildFragmentManager();
 
         List<Fragment> fragments = new ArrayList<>();
         AlbumesFavoritosFragment albumesFavoritosFragment = new AlbumesFavoritosFragment();
@@ -103,7 +104,16 @@ public class FavoritosFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        viewPager = null;
+        albumes = null;
+        artistas = null;
+        tracks = null;
+        getFragmentManager().beginTransaction().remove(this).commitAllowingStateLoss();
 
+    }
 
     private void findViews() {
         viewPager = binding.fragmentFavoritosViewPager;

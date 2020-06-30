@@ -20,13 +20,6 @@ import com.google.android.material.textfield.TextInputEditText;
  */
 public class LoginFragment extends Fragment {
 
-    private static final String EMAIL = "email";
-    private static final int RC_SIGN_IN = 1;
-    private Button botonLogin;
-    private SignInButton botonLoginConGoogle;
-    private LoginButton botonLoginConFacebook;
-    private TextInputEditText textInputEditTextUsername;
-    private TextInputEditText textInputEditTextPassword;
     private FragmentLoginBinding binding;
     private LoginFragmentListener listener;
 
@@ -46,33 +39,13 @@ public class LoginFragment extends Fragment {
         View view = binding.getRoot();
 
 
-        binding.fragmentLoginButtonIniciarSesion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onClickLoginFragmentBotonLogin(binding.fragmentLoginTextInputEditTextUsername.getText().toString(), binding.fragmentLoginTextInputEditTextPassword.getText().toString());
-            }
-        });
+        binding.fragmentLoginButtonIniciarSesion.setOnClickListener(v -> listener.onClickLoginFragmentBotonLogin(binding.fragmentLoginTextInputEditTextUsername.getText().toString(), binding.fragmentLoginTextInputEditTextPassword.getText().toString()));
 
-        binding.fragmentLoginBotonLoginDeGoogle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onClickLoginFragmentBotonLoginConGoogle();
-            }
-        });
+        binding.fragmentLoginBotonLoginDeGoogle.setOnClickListener(v -> listener.onClickLoginFragmentBotonLoginConGoogle());
 
-        binding.fragmentLoginLoginbuttonFacebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onClickLoginFragmentBotonLoginConFacebook(binding.fragmentLoginLoginbuttonFacebook);
-            }
-        });
+        binding.fragmentLoginLoginbuttonFacebook.setOnClickListener(v-> listener.onClickLoginFragmentBotonLoginConFacebook(binding.fragmentLoginLoginbuttonFacebook));
 
         return view;
-    }
-
-    private void irAMainActivity() {
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        startActivity(intent);
     }
 
     public interface LoginFragmentListener {

@@ -46,10 +46,6 @@ public class LoginInicioFragment extends Fragment {
         final View view = binding.getRoot();
 
 
-
-
-
-
         AlphaAnimation fadeInSlogan = new AlphaAnimation(0.0f, 1.0f);
         binding.fragmentLoginInicioSlogan.startAnimation(fadeInSlogan);
         fadeInSlogan.setDuration(1500);
