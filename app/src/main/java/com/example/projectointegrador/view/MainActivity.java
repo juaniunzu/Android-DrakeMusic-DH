@@ -33,6 +33,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
 import static com.example.projectointegrador.view.PlayerActivity.KEY_LISTA;
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         setContentView(R.layout.activity_main);
 
         setFindViewsByIds();
+        final FavoritosFragment favoritosFragment = new FavoritosFragment();
 
         HomeFragment homeFragment = new HomeFragment();
         setFragmentInicial(homeFragment);
@@ -75,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if(Objects.equals(item.getItemId(), bottomNavigationView.getSelectedItemId()))
+                    return true;
                 switch (item.getItemId()) {
                     case R.id.bottomNavigationView_Menu:
                         agregarFragmentNavegacion(new HomeFragment(), FRAGMENT_BOTTOM);
@@ -83,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
                         agregarFragmentNavegacion(new SearchFragment(), FRAGMENT_BOTTOM);
                         break;
                     case R.id.bottomNavigationView_Favorites:
-                        agregarFragmentNavegacion(new FavoritosFragment(), FRAGMENT_BOTTOM);
+                        agregarFragmentNavegacion(favoritosFragment, FRAGMENT_BOTTOM);
                         break;
                 }
                 return true;
@@ -255,27 +259,27 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         final FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.activityMain_contenedorDeFragments, fragment);
-        final int count = fragmentManager.getBackStackEntryCount();
-
-        if( id.equals(FRAGMENT_BOTTOM) ) {
-            fragmentTransaction.addToBackStack(id);
-        }
+//        final int count = fragmentManager.getBackStackEntryCount();
+//
+//        if( id.equals(FRAGMENT_BOTTOM) ) {
+//            fragmentTransaction.addToBackStack(id);
+//        }
 
         fragmentTransaction.commit();
 
-        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                // If the stack decreases it means I clicked the back button
-                if( fragmentManager.getBackStackEntryCount() <= count){
-                    // pop all the fragment and remove the listener
-                    fragmentManager.popBackStack(FRAGMENT_BOTTOM, POP_BACK_STACK_INCLUSIVE);
-                    fragmentManager.removeOnBackStackChangedListener(this);
-                    // set the home button selected
-                    bottomNavigationView.getMenu().getItem(0).setChecked(true);
-                }
-            }
-        });
+//        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+//            @Override
+//            public void onBackStackChanged() {
+//                // If the stack decreases it means I clicked the back button
+//                if( fragmentManager.getBackStackEntryCount() <= count){
+//                    // pop all the fragment and remove the listener
+//                    fragmentManager.popBackStack(FRAGMENT_BOTTOM, POP_BACK_STACK_INCLUSIVE);
+//                    fragmentManager.removeOnBackStackChangedListener(this);
+//                    // set the home button selected
+//                    bottomNavigationView.getMenu().getItem(0).setChecked(true);
+//                }
+//            }
+//        });
     }
 
 
