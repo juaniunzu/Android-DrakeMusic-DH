@@ -38,6 +38,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -49,6 +50,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     private ViewPager viewPager;
     private Toolbar toolbar;
     private ArrayList<Track> trackArrayList;
+    private ArrayList<Track> orderedTrackArrayList;
     private FirebaseUser firebaseUser;
     private FirebaseAuth firebaseAuth;
     private MediaPlayer audioPlayer;
@@ -90,6 +92,8 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         Bundle datosDesdeMain = desdeMain.getExtras();
         Track trackClickeado = (Track) datosDesdeMain.getSerializable(KEY_TRACK);
         trackArrayList = (ArrayList<Track>) datosDesdeMain.getSerializable(KEY_LISTA);
+        orderedTrackArrayList = new ArrayList<>();
+        orderedTrackArrayList.addAll(trackArrayList);
         List<Fragment> listaFragments = generarFragments(trackArrayList);
 
         Integer indice = trackArrayList.indexOf(trackClickeado);
@@ -102,6 +106,17 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
 
         setReproductor();
+
+        int currentItem = 0;
+
+        audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            int cantidadTemas = trackArrayList.size();
+
+                            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                        }
+                    });
 
         agregarTrackAUltimosReproducidos(trackArrayList.get(viewPager.getCurrentItem()));
 
@@ -180,24 +195,27 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                 if(buttonShuffle.isChecked()){
                     buttonShuffle.setBackground(getDrawable(R.drawable.ic_shuffle_accent_24dp));
                     final int cantTemas = trackArrayList.size();
-                    for (int i = 0; i < cantTemas; i++) {
-                        audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                            @Override
-                            public void onCompletion(MediaPlayer mp) {
-                                Random r = new Random();
-                                int indiceTemaNuevo = r.nextInt(cantTemas);
-                                viewPager.setCurrentItem(indiceTemaNuevo);
-                            }
-                        });
-                    }
+                    Collections.shuffle(trackArrayList);
+//                    audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//                        @Override
+//                        public void onCompletion(MediaPlayer mp) {
+//                            Random r = new Random();
+//                            int indiceTemaNuevo = r.nextInt(cantTemas);
+//                            viewPager.setCurrentItem(indiceTemaNuevo);
+//                        }
+//                    });
+//                } else {
+//                    buttonShuffle.setBackground(getDrawable(R.drawable.ic_shuffle_black_24dp));
+//                    audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//                        @Override
+//                        public void onCompletion(MediaPlayer mp) {
+//                            viewPager.setCurrentItem(viewPager.getCurrentItem());
+//                        }
+//                    });
                 } else {
-                    buttonShuffle.setBackground(getDrawable(R.drawable.ic_shuffle_black_24dp));
-                    audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mp) {
-                            viewPager.setCurrentItem(viewPager.getCurrentItem());
-                        }
-                    });
+                    //Collections.sort(trackArrayList, (o1, o2) -> o1.getId() - o2.getId());
+                    trackArrayList.clear();
+                    trackArrayList.addAll(orderedTrackArrayList);
                 }
             }
         });
