@@ -2,23 +2,29 @@ package com.example.projectointegrador.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.AlbumController;
 import com.example.projectointegrador.controller.ArtistController;
+import com.example.projectointegrador.controller.TrackController;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
 import com.example.projectointegrador.model.Track;
+import com.example.projectointegrador.util.DrakePlayer;
 import com.example.projectointegrador.util.ResultListener;
 import com.example.projectointegrador.util.Utils;
 import com.facebook.login.LoginManager;
@@ -31,6 +37,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,9 +58,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         SearchInputFragment.SearchInputFragmentListener,
         SearchDetailFragment.SearchDetailFragmentListener {
 
+    private MediaPlayer audioPlayer;
     private DrawerLayout drawerLayout;
     private BottomNavigationView bottomNavigationView;
     private FirebaseUser firebaseUser;
+    private ConstraintLayout reproductorChico;
     public static final String FRAGMENT_HOME = "1";
     public static final String FRAGMENT_BOTTOM = "2";
 
@@ -64,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         setContentView(R.layout.activity_main);
 
         setFindViewsByIds();
+        // Llama al audioPlayer. Que es uno solo y existe en todo el proyecto.
+        audioPlayer = DrakePlayer.getInstance().getMediaPlayer();
 
         HomeFragment homeFragment = new HomeFragment();
         setFragmentInicial(homeFragment);
@@ -94,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     private void setFindViewsByIds() {
         drawerLayout = findViewById(R.id.activityMain_DrawerLayout);
         bottomNavigationView = findViewById(R.id.activityMain_BottomNavigationView);
+        reproductorChico = findViewById(R.id.mainActivity_ReproductorChiquito);
     }
 
 
@@ -460,9 +472,59 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         Bundle bundle = new Bundle();
         bundle.putSerializable(KEY_TRACK, track);
         bundle.putSerializable(KEY_LISTA, (ArrayList) trackList);
+        //tracklistDeLaActividad = tracklist;
         searchToPlayer.putExtras(bundle);
         startActivity(searchToPlayer);
     }
 
-    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (audioPlayer.isPlaying()) {
+            reproductorChico.setVisibility(View.VISIBLE);
+        } else {
+            reproductorChico.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(audioPlayer.isPlaying()){
+            audioPlayer.stop();
+            audioPlayer.release();
+        } else {
+            audioPlayer.release();
+        }
+    }
 }
+//   Usar esta Logica para pasar de temas. Necesita una lista privada de temas la actividad.
+//                if(audioPlayer != null){
+//                        if(audioPlayer.isPlaying()){
+//                        audioPlayer.stop();
+//                        }
+//                        audioPlayer.reset();
+//
+//                        prepararTrackParaReproduccion(position);
+//                        audioPlayer.start();
+//                        agregarTrackAUltimosReproducidos(trackArrayList.get(position));
+//                        }
+//  private void prepararTrackParaReproduccion(Integer ordenTrackEnLista){
+//    Track track = this.trackArrayList.get(ordenTrackEnLista);
+//    try {
+//        audioPlayer.setDataSource(this, Uri.parse(track.getPreview()));
+//        audioPlayer.prepareAsync();
+//    } catch (IOException e) {
+//        e.printStackTrace();
+//    }
+//}
+//  private void agregarTrackAUltimosReproducidos(Track track){
+//    TrackController trackController = new TrackController();
+//    trackController.agregarTrackAUltimosReproducidos(track, firebaseUser, new ResultListener<Track>() {
+//        @Override
+//        public void finish(Track resultado) {
+//            Toast.makeText(MainActivity.this, "Track agregado", Toast.LENGTH_SHORT).show();
+//        }
+//    });
+//}
+

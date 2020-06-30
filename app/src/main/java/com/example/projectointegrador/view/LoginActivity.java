@@ -263,6 +263,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
 
     @Override
     public void onClickLoginFragmentBotonLogin(String username, String password) {
+
         loginFirebaseUser(username, password);
     }
 
@@ -339,7 +340,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
     //chequeos de mail y contraseña firebase
     @Override
     public void onClickSignUpFragmentBotonRegistrarse(String username, String password) {
-        if (username.contains(" ") && !username.contains("@") && (!username.contains(".com") || !username.contains(".net") || !username.contains(".org"))) {
+        if (username.isEmpty() || username.contains(" ") && !username.contains("@") && (!username.contains(".com") || !username.contains(".net") || !username.contains(".org"))) {
             Toast.makeText(this, "El Email no es Valido", Toast.LENGTH_SHORT).show();
             return;
         }

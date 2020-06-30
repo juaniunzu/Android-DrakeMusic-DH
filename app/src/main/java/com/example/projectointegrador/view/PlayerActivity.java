@@ -31,6 +31,7 @@ import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.TrackController;
 import com.example.projectointegrador.databinding.ActivityPlayerBinding;
 import com.example.projectointegrador.model.Track;
+import com.example.projectointegrador.util.DrakePlayer;
 import com.example.projectointegrador.util.ResultListener;
 import com.example.projectointegrador.view.adapter.TrackSearchAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -86,6 +87,8 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             supportActionBar.setTitle("");
         }
 
+        audioPlayer = DrakePlayer.getInstance().getMediaPlayer();
+
         Intent desdeMain = getIntent();
         Bundle datosDesdeMain = desdeMain.getExtras();
         Track trackClickeado = (Track) datosDesdeMain.getSerializable(KEY_TRACK);
@@ -120,7 +123,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                         audioPlayer.stop();
                     }
                     audioPlayer.reset();
-                    audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
                     prepararTrackParaReproduccion(position);
                     audioPlayer.start();
                     agregarTrackAUltimosReproducidos(trackArrayList.get(position));
@@ -143,11 +146,9 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             @Override
             public void onClick(View v) {
                 if(!buttonPlay.isChecked()){
-                    if(audioPlayer == null){
-                        audioPlayer = new MediaPlayer();
-                        audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                    /*if(audioPlayer == null){
                         prepararTrackParaReproduccion(viewPager.getCurrentItem());
-                    }
+                    }*/
                     audioPlayer.start();
                     changeSeekbar();
                     buttonPlay.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
@@ -217,8 +218,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     }
 
     private void setReproductor() {
-        audioPlayer = new MediaPlayer();
-        audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        audioPlayer.reset();
         prepararTrackParaReproduccion(viewPager.getCurrentItem());
 
         handler = new Handler();
@@ -265,7 +265,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                 handler.postDelayed(runnable, 100);
             }
         } catch (Exception e) {
-            audioPlayer.release();
+            e.printStackTrace();
         }
 
     }
@@ -285,7 +285,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         Track track = this.trackArrayList.get(ordenTrackEnLista);
         try {
             audioPlayer.setDataSource(this, Uri.parse(track.getPreview()));
-            audioPlayer.prepare();
+            audioPlayer.prepareAsync();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -351,12 +351,12 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         handler = null;
         runnable = null;
         seekBar = null;
-        if(audioPlayer.isPlaying()){
+        /*if(audioPlayer.isPlaying()){
             audioPlayer.stop();
             audioPlayer.release();
         } else {
             audioPlayer.release();
-        }
+        }*/
 
     }
 
