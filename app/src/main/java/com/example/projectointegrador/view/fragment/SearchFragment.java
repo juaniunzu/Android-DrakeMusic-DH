@@ -1,4 +1,4 @@
-package com.example.projectointegrador.view;
+package com.example.projectointegrador.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;

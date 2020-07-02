@@ -1,10 +1,10 @@
 package com.example.projectointegrador.view;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.widget.TextViewCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.projectointegrador.R;
+import com.example.projectointegrador.view.adapter.SliderAdapter;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,6 @@ import android.os.Handler;
 import android.text.Html;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class OnboardingActivity extends AppCompatActivity {
 

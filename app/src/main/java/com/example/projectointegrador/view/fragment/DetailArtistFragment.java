@@ -1,12 +1,8 @@
-package com.example.projectointegrador.view;
+package com.example.projectointegrador.view.fragment;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,7 +19,6 @@ import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.AlbumController;
 import com.example.projectointegrador.controller.ArtistController;
 import com.example.projectointegrador.controller.TrackController;
-import com.example.projectointegrador.dao.ArtistFirestoreDao;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
 import com.example.projectointegrador.model.Track;
@@ -34,7 +29,6 @@ import com.example.projectointegrador.view.adapter.TrackListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

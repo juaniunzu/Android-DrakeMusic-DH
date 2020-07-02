@@ -1,4 +1,4 @@
-package com.example.projectointegrador.view;
+package com.example.projectointegrador.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -27,8 +27,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
-
-import javax.xml.transform.Result;
 
 /**
  * A simple {@link Fragment} subclass.

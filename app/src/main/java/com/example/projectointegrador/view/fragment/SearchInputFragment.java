@@ -1,4 +1,4 @@
-package com.example.projectointegrador.view;
+package com.example.projectointegrador.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -30,9 +30,9 @@ import com.example.projectointegrador.view.adapter.TrackSearchAdapter;
 
 import java.util.List;
 
-import static com.example.projectointegrador.view.SearchDetailFragment.TYPE_ALBUM;
-import static com.example.projectointegrador.view.SearchDetailFragment.TYPE_ARTIST;
-import static com.example.projectointegrador.view.SearchDetailFragment.TYPE_TRACK;
+import static com.example.projectointegrador.view.fragment.SearchDetailFragment.TYPE_ALBUM;
+import static com.example.projectointegrador.view.fragment.SearchDetailFragment.TYPE_ARTIST;
+import static com.example.projectointegrador.view.fragment.SearchDetailFragment.TYPE_TRACK;
 
 
 public class SearchInputFragment extends Fragment implements

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000"
-    tools:context=".view.NoInetFragment">
+    tools:context=".view.fragment.NoInetFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/fragmentNoInetCardView"

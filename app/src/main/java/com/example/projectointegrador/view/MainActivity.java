@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -25,6 +24,18 @@ import com.example.projectointegrador.model.Busqueda;
 import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.util.ResultListener;
 import com.example.projectointegrador.util.Utils;
+import com.example.projectointegrador.view.fragment.AlbumesFavoritosFragment;
+import com.example.projectointegrador.view.fragment.ArtistasFavoritosFragment;
+import com.example.projectointegrador.view.fragment.DetailArtistFragment;
+import com.example.projectointegrador.view.fragment.FavoritosFragment;
+import com.example.projectointegrador.view.fragment.FragmentTrackList;
+import com.example.projectointegrador.view.fragment.HomeFragment;
+import com.example.projectointegrador.view.fragment.NoInetFragment;
+import com.example.projectointegrador.view.fragment.PerfilFragment;
+import com.example.projectointegrador.view.fragment.SearchDetailFragment;
+import com.example.projectointegrador.view.fragment.SearchFragment;
+import com.example.projectointegrador.view.fragment.SearchInputFragment;
+import com.example.projectointegrador.view.fragment.TracksFavoritosFragment;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -39,11 +50,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
 import static com.example.projectointegrador.view.PlayerActivity.KEY_LISTA;
 import static com.example.projectointegrador.view.PlayerActivity.KEY_TRACK;
-import static com.example.projectointegrador.view.SearchDetailFragment.KEY_QUERY;
-import static com.example.projectointegrador.view.SearchDetailFragment.KEY_TYPE;
+import static com.example.projectointegrador.view.fragment.SearchDetailFragment.KEY_QUERY;
+import static com.example.projectointegrador.view.fragment.SearchDetailFragment.KEY_TYPE;
 
 public class MainActivity extends AppCompatActivity implements HomeFragment.FragmentHomeListener,
         DetailArtistFragment.FragmentArtistDetailListener,

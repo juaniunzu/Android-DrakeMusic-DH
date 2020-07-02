@@ -1,4 +1,4 @@
-package com.example.projectointegrador.view;
+package com.example.projectointegrador.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.AlbumController;
 import com.example.projectointegrador.databinding.FragmentAlbumesFavoritosBinding;
 import com.example.projectointegrador.model.Album;
