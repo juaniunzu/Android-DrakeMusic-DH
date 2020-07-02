@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -32,13 +33,14 @@ import com.example.projectointegrador.view.adapter.ViewPagerAdapter;
 import com.example.projectointegrador.view.fragment.PlayerFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.seismic.ShakeDetector;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class PlayerActivity extends AppCompatActivity implements PlayerFragment.PlayerFragmentListener {
+public class PlayerActivity extends AppCompatActivity implements PlayerFragment.PlayerFragmentListener, ShakeDetector.Listener {
 
     public static final String KEY_TRACK = "track";
     public static final String KEY_LISTA = "lista";
@@ -72,6 +74,11 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
 
         setViews();
+
+        SensorManager sensorManager = (SensorManager)
+                getSystemService(SENSOR_SERVICE);
+        ShakeDetector shakeDetector = new ShakeDetector(this);
+        shakeDetector.start(sensorManager);
 
         setSupportActionBar(toolbar);
 
@@ -365,5 +372,12 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                 Toast.makeText(PlayerActivity.this, "Track agregado", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void hearShake() {
+        //Metodo que reprodusca un tema random de la Lista.
+        int fragmentActual = viewPager.getCurrentItem();
+        viewPager.setCurrentItem(fragmentActual + 1);
     }
 }
