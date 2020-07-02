@@ -18,8 +18,10 @@ import android.widget.ToggleButton;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.AlbumController;
 import com.example.projectointegrador.controller.ArtistController;
+import com.example.projectointegrador.controller.HistorialController;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
+import com.example.projectointegrador.model.Busqueda;
 import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.util.ResultListener;
 import com.example.projectointegrador.util.Utils;
@@ -452,13 +454,16 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         startActivity(searchToPlayer);
     }
 
-    //SEARCH INPUT FRAGMENT LISTO
-
-
-
-
-
-
+    @Override
+    public void agregarBusquedaAlHistorial(Busqueda busqueda) {
+        HistorialController historialController = new HistorialController();
+        historialController.agregarBusquedaAlHistorial(busqueda, firebaseUser, new ResultListener<Busqueda>() {
+            @Override
+            public void finish(Busqueda resultado) {
+                Toast.makeText(MainActivity.this, resultado.getBusqueda(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 
 

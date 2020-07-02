@@ -84,7 +84,7 @@ public class SearchDetailFragment extends Fragment implements AlbumSearchAdapter
 
             case TYPE_ALBUM:
                 AlbumController albumController = new AlbumController();
-                albumController.buscarAlbumes(getContext(), query, new ResultListener<ResponseAlbum>() {
+                albumController.buscarAlbumes(getContext(), query, null, new ResultListener<ResponseAlbum>() {
                     @Override
                     public void finish(ResponseAlbum resultado) {
                         AlbumSearchAdapter albumSearchAdapter = new AlbumSearchAdapter(resultado.getAlbumes(), true, SearchDetailFragment.this);
@@ -100,7 +100,7 @@ public class SearchDetailFragment extends Fragment implements AlbumSearchAdapter
 
             case TYPE_ARTIST:
                 ArtistController artistController = new ArtistController();
-                artistController.buscarArtistas(getContext(), query, new ResultListener<ResponseArtist>() {
+                artistController.buscarArtistas(getContext(), query, null, new ResultListener<ResponseArtist>() {
                     @Override
                     public void finish(ResponseArtist resultado) {
                         ArtistSearchAdapter artistSearchAdapter = new ArtistSearchAdapter(resultado.getArtistas(), true, SearchDetailFragment.this);
@@ -115,7 +115,7 @@ public class SearchDetailFragment extends Fragment implements AlbumSearchAdapter
                 break;
             case TYPE_TRACK:
                 TrackController trackController = new TrackController();
-                trackController.buscarTracks(getContext(), query, new ResultListener<ResponseTrack>() {
+                trackController.buscarTracks(getContext(), query, null, new ResultListener<ResponseTrack>() {
                     @Override
                     public void finish(ResponseTrack resultado) {
                         TrackSearchAdapter trackSearchAdapter = new TrackSearchAdapter(resultado.getTracks(), true, SearchDetailFragment.this);

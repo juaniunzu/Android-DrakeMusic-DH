@@ -3,7 +3,6 @@ package com.example.projectointegrador.controller;
 import android.content.Context;
 
 import com.example.projectointegrador.dao.TrackApiDao;
-import com.example.projectointegrador.dao.TrackDao;
 import com.example.projectointegrador.dao.TrackFirestoreDao;
 import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.service.ResponseTrack;
@@ -33,7 +32,7 @@ public class TrackController {
                 }
             });
         } else {
-            listenerDeLaVista.finish(TrackDao.getRecomendados());
+            //TODO ROOM
         }
     }
 
@@ -60,10 +59,10 @@ public class TrackController {
         }
     }
 
-    public void buscarTracks(Context context, String busqueda, final ResultListener<ResponseTrack> listener){
+    public void buscarTracks(Context context, String busqueda, String limit, final ResultListener<ResponseTrack> listener){
         boolean hayInternet = Utils.hayInternet(context);
         if (hayInternet){
-            trackApiDao.buscarTracks(busqueda, new ResultListener<ResponseTrack>() {
+            trackApiDao.buscarTracks(busqueda, limit, new ResultListener<ResponseTrack>() {
                 @Override
                 public void finish(ResponseTrack resultado) {
                     listener.finish(resultado);

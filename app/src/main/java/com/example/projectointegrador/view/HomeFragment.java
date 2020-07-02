@@ -18,9 +18,6 @@ import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.AlbumController;
 import com.example.projectointegrador.controller.ArtistController;
 import com.example.projectointegrador.controller.TrackController;
-import com.example.projectointegrador.dao.AlbumDao;
-import com.example.projectointegrador.dao.ArtistDao;
-import com.example.projectointegrador.dao.TrackDao;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
 import com.example.projectointegrador.model.Track;
@@ -70,7 +67,6 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        listaDeUltimasReproducciones = TrackDao.getUltimosReproducidos();
         setFindViewByIds(view);
 
         recyclerViewRecomendados.setVisibility(View.INVISIBLE);
