@@ -3,7 +3,6 @@ package com.example.projectointegrador.controller;
 import android.content.Context;
 
 import com.example.projectointegrador.dao.TrackApiDao;
-import com.example.projectointegrador.dao.TrackDao;
 import com.example.projectointegrador.dao.TrackFirestoreDao;
 import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.service.ResponseTrack;
@@ -33,7 +32,7 @@ public class TrackController {
                 }
             });
         } else {
-            listenerDeLaVista.finish(TrackDao.getRecomendados());
+            //TODO ROOM
         }
     }
 

@@ -3,7 +3,6 @@ package com.example.projectointegrador.controller;
 import android.content.Context;
 
 import com.example.projectointegrador.dao.AlbumApiDao;
-import com.example.projectointegrador.dao.AlbumDao;
 import com.example.projectointegrador.dao.AlbumFirestoreDao;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.service.ResponseAlbum;
@@ -34,7 +33,7 @@ public class AlbumController {
             });
         }
         else {
-            listenerDeLaVista.finish(AlbumDao.getAlbums());
+            //TODO ROOM
         }
     }
     public void getAlbumesDeUnArtista(Integer idDelArtista, Context context, final ResultListener<List<Album>>listenerDeLaVista){

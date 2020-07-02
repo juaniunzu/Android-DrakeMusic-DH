@@ -4,11 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,12 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.HistorialController;
-import com.example.projectointegrador.dao.SearchableDao;
 import com.example.projectointegrador.databinding.FragmentSearchBinding;
-import com.example.projectointegrador.model.Busqueda;
-import com.example.projectointegrador.util.ResultListener;
 import com.example.projectointegrador.util.Utils;
 import com.example.projectointegrador.view.adapter.HistorialAdapter;
 import com.example.projectointegrador.view.adapter.SearchAdapter;

@@ -3,9 +3,7 @@ package com.example.projectointegrador.controller;
 import android.content.Context;
 
 
-import com.example.projectointegrador.R;
 import com.example.projectointegrador.dao.ArtistApiDao;
-import com.example.projectointegrador.dao.ArtistDao;
 import com.example.projectointegrador.dao.ArtistFirestoreDao;
 import com.example.projectointegrador.model.Artist;
 import com.example.projectointegrador.service.ResponseArtist;
@@ -35,7 +33,7 @@ public class ArtistController {
                 }
             });
         } else {
-            listenerDeLaVista.finish(ArtistDao.getArtists());
+            //TODO ROOM
         }
     }
 
