@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activityMain_DrawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/primary"
-    tools:context=".view.MainActivity"
-    android:id="@+id/activityMain_DrawerLayout">
+    tools:context=".view.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <FrameLayout
             android:id="@+id/activityMain_contenedorDeFragments"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_weight="9" />
+
+        <FrameLayout
+            android:id="@+id/activityMain_contenedorDeFragmentNoInet"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="9"
-            />
+            android:visibility="gone"/>
+
         <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/activityMain_BottomNavigationView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/activityMain_BottomNavigationView"
             android:background="@color/accent_elevation_app"
-            app:itemTextColor="@drawable/tab_color"
             app:itemIconTint="@drawable/tab_color"
-            app:menu="@menu/bottom_navigation_menu"/>
+            app:itemTextColor="@drawable/tab_color"
+            app:menu="@menu/bottom_navigation_menu" />
     </LinearLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>
