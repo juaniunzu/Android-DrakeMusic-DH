@@ -59,8 +59,8 @@ public class TrackApiDao extends DaoHelper {
         });
     }
 
-    public void buscarTracks(String busqueda, final ResultListener<ResponseTrack> resultListenerFromController){
-        Call<ResponseTrack> call = trackService.buscarTracks(busqueda);
+    public void buscarTracks(String busqueda, String limit, final ResultListener<ResponseTrack> resultListenerFromController){
+        Call<ResponseTrack> call = trackService.buscarTracks(busqueda, limit);
         call.enqueue(new Callback<ResponseTrack>() {
             @Override
             public void onResponse(Call<ResponseTrack> call, Response<ResponseTrack> response) {

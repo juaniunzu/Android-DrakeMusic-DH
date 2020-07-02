@@ -42,6 +42,7 @@ public class SearchInputFragment extends Fragment implements
 
     private String query;
     private SearchInputFragmentListener listener;
+    private static final String LIMIT_RESULTS = "2";
 
     private FragmentSearchInputBinding binding;
 
@@ -94,7 +95,7 @@ public class SearchInputFragment extends Fragment implements
                 binding.fragmentSearchInputTextViewArtistas.setVisibility(View.VISIBLE);
                 binding.fragmentSearchInputTextViewTracks.setVisibility(View.VISIBLE);
 
-                    albumController.buscarAlbumes(getContext(), newText, new ResultListener<ResponseAlbum>() {
+                    albumController.buscarAlbumes(getContext(), newText, LIMIT_RESULTS, new ResultListener<ResponseAlbum>() {
                         @Override
                         public void finish(ResponseAlbum resultado) {
                             AlbumSearchAdapter albumSearchAdapter = new AlbumSearchAdapter(resultado.getAlbumes(), false, SearchInputFragment.this);
@@ -104,7 +105,7 @@ public class SearchInputFragment extends Fragment implements
                         }
                     });
 
-                    artistController.buscarArtistas(getContext(), newText, new ResultListener<ResponseArtist>() {
+                    artistController.buscarArtistas(getContext(), newText, LIMIT_RESULTS, new ResultListener<ResponseArtist>() {
                         @Override
                         public void finish(ResponseArtist resultado) {
                             ArtistSearchAdapter artistSearchAdapter = new ArtistSearchAdapter(resultado.getArtistas(), false, SearchInputFragment.this);
@@ -114,7 +115,7 @@ public class SearchInputFragment extends Fragment implements
                         }
                     });
 
-                    trackController.buscarTracks(getContext(), newText, new ResultListener<ResponseTrack>() {
+                    trackController.buscarTracks(getContext(), newText, LIMIT_RESULTS, new ResultListener<ResponseTrack>() {
                         @Override
                         public void finish(ResponseTrack resultado) {
                             TrackSearchAdapter trackSearchAdapter = new TrackSearchAdapter(resultado.getTracks(), false, SearchInputFragment.this);

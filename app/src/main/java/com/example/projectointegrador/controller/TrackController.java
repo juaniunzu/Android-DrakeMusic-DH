@@ -59,10 +59,10 @@ public class TrackController {
         }
     }
 
-    public void buscarTracks(Context context, String busqueda, final ResultListener<ResponseTrack> listener){
+    public void buscarTracks(Context context, String busqueda, String limit, final ResultListener<ResponseTrack> listener){
         boolean hayInternet = Utils.hayInternet(context);
         if (hayInternet){
-            trackApiDao.buscarTracks(busqueda, new ResultListener<ResponseTrack>() {
+            trackApiDao.buscarTracks(busqueda, limit, new ResultListener<ResponseTrack>() {
                 @Override
                 public void finish(ResponseTrack resultado) {
                     listener.finish(resultado);

@@ -48,10 +48,10 @@ public class AlbumController {
         }
     }
 
-    public void buscarAlbumes(Context context, String busqueda, final ResultListener<ResponseAlbum> listener){
+    public void buscarAlbumes(Context context, String busqueda, String limit, final ResultListener<ResponseAlbum> listener){
         boolean hayInternet = Utils.hayInternet(context);
         if(hayInternet){
-            albumApiDao.buscarAlbumes(busqueda, new ResultListener<ResponseAlbum>() {
+            albumApiDao.buscarAlbumes(busqueda, limit, new ResultListener<ResponseAlbum>() {
                 @Override
                 public void finish(ResponseAlbum resultado) {
                     listener.finish(resultado);

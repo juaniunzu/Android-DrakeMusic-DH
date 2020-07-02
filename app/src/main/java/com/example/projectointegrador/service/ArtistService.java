@@ -11,5 +11,5 @@ public interface ArtistService {
     Call<ResponseArtist> obtenerTop10Artistas();
 
     @GET("search/artist")
-    Call<ResponseArtist> buscarArtistas(@Query("q") String busqueda);
+    Call<ResponseArtist> buscarArtistas(@Query("q") String busqueda, @Query("limit") String limit);
 }

@@ -69,10 +69,10 @@ public class Controller {
         }
     }
 
-    public void buscarAlbumes(Context context, String busqueda, final ResultListener<ResponseAlbum> listener){
+    public void buscarAlbumes(Context context, String busqueda, String limit, final ResultListener<ResponseAlbum> listener){
         boolean hayInternet = Utils.hayInternet(context);
         if(hayInternet){
-            albumApiDao.buscarAlbumes(busqueda, new ResultListener<ResponseAlbum>() {
+            albumApiDao.buscarAlbumes(busqueda, limit, new ResultListener<ResponseAlbum>() {
                 @Override
                 public void finish(ResponseAlbum resultado) {
                     listener.finish(resultado);
@@ -134,10 +134,10 @@ public class Controller {
         }
     }
 
-    public void buscarArtistas(Context context, String busqueda, final ResultListener<ResponseArtist> listener) {
+    public void buscarArtistas(Context context, String busqueda, String limit, final ResultListener<ResponseArtist> listener) {
         boolean hayInternet = Utils.hayInternet(context);
         if (hayInternet) {
-            artistApiDao.buscarArtistas(busqueda, new ResultListener<ResponseArtist>() {
+            artistApiDao.buscarArtistas(busqueda, limit, new ResultListener<ResponseArtist>() {
                 @Override
                 public void finish(ResponseArtist resultado) {
                     listener.finish(resultado);
@@ -245,10 +245,10 @@ public class Controller {
         }
     }
 
-    public void buscarTracks(Context context, String busqueda, final ResultListener<ResponseTrack> listener){
+    public void buscarTracks(Context context, String busqueda, String limit, final ResultListener<ResponseTrack> listener){
         boolean hayInternet = Utils.hayInternet(context);
         if (hayInternet){
-            trackApiDao.buscarTracks(busqueda, new ResultListener<ResponseTrack>() {
+            trackApiDao.buscarTracks(busqueda, limit, new ResultListener<ResponseTrack>() {
                 @Override
                 public void finish(ResponseTrack resultado) {
                     listener.finish(resultado);

@@ -37,10 +37,10 @@ public class ArtistController {
         }
     }
 
-    public void buscarArtistas(Context context, String busqueda, final ResultListener<ResponseArtist> listener) {
+    public void buscarArtistas(Context context, String busqueda, String limit, final ResultListener<ResponseArtist> listener) {
         boolean hayInternet = Utils.hayInternet(context);
         if (hayInternet) {
-            artistApiDao.buscarArtistas(busqueda, new ResultListener<ResponseArtist>() {
+            artistApiDao.buscarArtistas(busqueda, limit, new ResultListener<ResponseArtist>() {
                 @Override
                 public void finish(ResponseArtist resultado) {
                     listener.finish(resultado);
