@@ -17,10 +17,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.projectointegrador.R;
+import com.example.projectointegrador.controller.HistorialController;
 import com.example.projectointegrador.dao.SearchableDao;
 import com.example.projectointegrador.databinding.FragmentSearchBinding;
+import com.example.projectointegrador.model.Busqueda;
+import com.example.projectointegrador.util.ResultListener;
 import com.example.projectointegrador.util.Utils;
+import com.example.projectointegrador.view.adapter.HistorialAdapter;
 import com.example.projectointegrador.view.adapter.SearchAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
@@ -31,6 +37,7 @@ public class SearchFragment extends Fragment implements SearchAdapter.SearchAdap
 
     private List<Utils.Searchable> searchableList;
     private SearchFragmentListener listener;
+    private FirebaseUser firebaseUser;
 
     private FragmentSearchBinding binding;
 
@@ -46,7 +53,9 @@ public class SearchFragment extends Fragment implements SearchAdapter.SearchAdap
         binding = FragmentSearchBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        //esta lista por el momento se llena con datos hardcodeados, en un futuro tiene que recibir data de Firebase
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        //Lista de busquedas
         setBusquedasRecientesList(view);
 
         //Crea y pega un SearchInputFragment
@@ -61,12 +70,13 @@ public class SearchFragment extends Fragment implements SearchAdapter.SearchAdap
     }
 
     private void setBusquedasRecientesList(View view) {
-        
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-        SearchAdapter searchAdapter = new SearchAdapter(searchableList, this);
-//
-//        binding.fragmentSearchRecyclerView.setAdapter(searchAdapter);
-//        binding.fragmentSearchRecyclerView.setLayoutManager(linearLayoutManager);
+        HistorialController historialController = new HistorialController();
+        historialController.getHistorial(firebaseUser, resultado -> {
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+            HistorialAdapter historialAdapter = new HistorialAdapter(resultado);
+            binding.fragmentSearchRecyclerView.setLayoutManager(linearLayoutManager);
+            binding.fragmentSearchRecyclerView.setAdapter(historialAdapter);
+        });
     }
 
     @Override

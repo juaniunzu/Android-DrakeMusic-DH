@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:layout_gravity="center"
-        android:textColor="#000"
+        android:textColor="#9FFF"
         android:textSize="30dp"
         android:id="@+id/tvceldahistorial"/>
 

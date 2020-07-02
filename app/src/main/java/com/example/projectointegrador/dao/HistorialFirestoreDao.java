@@ -13,6 +13,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.text.CollationElementIterator;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HistorialFirestoreDao {
 
@@ -35,6 +41,26 @@ public class HistorialFirestoreDao {
                     @Override
                     public void onSuccess(Void aVoid) {
                         listener.finish(busqueda);
+                    }
+                });
+    }
+
+    public void getHistorial(FirebaseUser firebaseUser, ResultListener<List<Busqueda>> listener){
+        db.collection(COLECC_HISTORY)
+                .document(firebaseUser.getUid())
+                .collection(MI_HISTORIAL)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            List<Busqueda> historial = new ArrayList<>();
+                            for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                                Busqueda busqueda = queryDocumentSnapshot.toObject(Busqueda.class);
+                                historial.add(busqueda);
+                            }
+                            listener.finish(historial);
+                        }
                     }
                 });
     }

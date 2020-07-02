@@ -5,6 +5,9 @@ public class Busqueda {
 
     private String busqueda;
 
+    public Busqueda() {
+    }
+
     public Busqueda(String busqueda) {
         this.busqueda = busqueda;
     }
