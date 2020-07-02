@@ -47,7 +47,7 @@ public class SearchFragment extends Fragment implements SearchAdapter.SearchAdap
         View view = binding.getRoot();
 
         //esta lista por el momento se llena con datos hardcodeados, en un futuro tiene que recibir data de Firebase
-        //setBusquedasRecientesList(view);
+        setBusquedasRecientesList(view);
 
         //Crea y pega un SearchInputFragment
         binding.fragmentSearchCardViewBuscar.setOnClickListener(new View.OnClickListener() {
@@ -60,14 +60,14 @@ public class SearchFragment extends Fragment implements SearchAdapter.SearchAdap
         return view;
     }
 
-//    private void setBusquedasRecientesList(View view) {
-//        searchableList = SearchableDao.getSearchables();
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-//        SearchAdapter searchAdapter = new SearchAdapter(searchableList, this);
+    private void setBusquedasRecientesList(View view) {
+        
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        SearchAdapter searchAdapter = new SearchAdapter(searchableList, this);
 //
 //        binding.fragmentSearchRecyclerView.setAdapter(searchAdapter);
 //        binding.fragmentSearchRecyclerView.setLayoutManager(linearLayoutManager);
-//    }
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
