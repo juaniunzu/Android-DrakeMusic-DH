@@ -18,6 +18,7 @@ import com.example.projectointegrador.controller.TrackController;
 import com.example.projectointegrador.databinding.FragmentSearchInputBinding;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
+import com.example.projectointegrador.model.Busqueda;
 import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.service.ResponseAlbum;
 import com.example.projectointegrador.service.ResponseArtist;
@@ -79,6 +80,8 @@ public class SearchInputFragment extends Fragment implements
             @Override
             public boolean onQueryTextSubmit(String query) {
                 SearchInputFragment.this.query = query;
+                Busqueda busqueda = new Busqueda(query);
+                listener.agregarBusquedaAlHistorial(busqueda);
                 return false;
             }
 
@@ -178,5 +181,6 @@ public class SearchInputFragment extends Fragment implements
         void onClickAlbumSearchInputFragment (Album album);
         void onClickArtistSearchInputFragment (Artist artist);
         void onClickTrackSearchInputFragment (Track track, List<Track> trackList);
+        void agregarBusquedaAlHistorial(Busqueda busqueda);
     }
 }
