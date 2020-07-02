@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activityMain_DrawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/primary"
-    tools:context=".view.MainActivity"
-    android:id="@+id/activityMain_DrawerLayout">
+    tools:context=".view.MainActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -15,43 +15,77 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <FrameLayout
                 android:id="@+id/activityMain_contenedorDeFragments"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="9"
-                />
+                android:layout_weight="9" />
+
             <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/activityMain_BottomNavigationView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/activityMain_BottomNavigationView"
                 android:background="@color/accent_elevation_app"
-                app:itemTextColor="@drawable/tab_color"
                 app:itemIconTint="@drawable/tab_color"
-                app:menu="@menu/bottom_navigation_menu"/>
+                app:itemTextColor="@drawable/tab_color"
+                app:menu="@menu/bottom_navigation_menu" />
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mainActivity_ReproductorChiquito"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
+            android:layout_marginBottom="56dp"
+            android:background="#2C2C2C"
             android:visibility="gone"
-            tools:visibility="visible"
-            android:layout_marginBottom="56dp">
+            tools:visibility="visible">
 
+
+            <ImageView
+                android:id="@+id/activityMainImageViewPlayer"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/charizardmusicpng"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/activityMainTextViewTrackPlayer"
+                style="@style/celdahome_titulo_celda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#fff"
-                android:text="FUNCIONA"
-                android:textColor="#000"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:text="Nombre Track"
+                app:layout_constraintBottom_toTopOf="@id/activityMainTextViewArtistaPlayer"
+                app:layout_constraintStart_toEndOf="@id/activityMainImageViewPlayer"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/activityMainTextViewArtistaPlayer"
+                style="@style/celdahome_album_artista_celda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="Nombre artista"
+                app:layout_constraintStart_toEndOf="@id/activityMainImageViewPlayer"
+                app:layout_constraintTop_toBottomOf="@id/activityMainTextViewTrackPlayer" />
+
+            <ToggleButton
+                android:id="@+id/activityMainPlayPauseButtonPlayer"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/ic_pause_circle_filled_black_24dp"
+                android:textOff=""
+                android:textOn=""
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
