@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,8 +11,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000"
         android:layout_margin="10dp"
+        android:background="#000"
         android:orientation="vertical">
 
         <TextView
@@ -31,6 +32,28 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/fragmentHome_TextViewRecomendados" />
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/fragmentHomeShimmerRecomendados"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragmentHome_TextViewRecomendados"
+            app:shimmer_duration="800">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include layout="@layout/celda_recomendado_placeholder" />
+
+                <include layout="@layout/celda_recomendado_placeholder" />
+
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fargmentHome_RecyclerDeRecomendados"
@@ -41,26 +64,40 @@
             app:layout_constraintTop_toBottomOf="@id/fragmentHome_TextViewRecomendados" />
 
         <TextView
-            android:id="@+id/fragmentHome_TextViewUltimasReproducidas"
-            style="@style/title_home"
-            android:text="@string/ultimas_reproducciones"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fargmentHome_RecyclerDeRecomendados" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fargmentHome_RecyclerDeUltimasReproducciones"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fragmentHome_TextViewUltimasReproducidas" />
-
-        <TextView
             android:id="@+id/fragmentHome_TextViewArtistas"
             style="@style/title_home"
             android:text="@string/artistas"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fargmentHome_RecyclerDeUltimasReproducciones" />
+            app:layout_constraintTop_toBottomOf="@id/fargmentHome_RecyclerDeRecomendados" />
+
+        <TextView
+            android:id="@+id/fragmentHome_TextViewArtistasPlaceholder"
+            style="@style/title_home"
+            android:text="@string/artistas"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragmentHomeShimmerRecomendados" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/fragmentHomeShimmerArtistas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragmentHome_TextViewArtistasPlaceholder"
+            app:shimmer_duration="800">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include layout="@layout/celda_artista_placeholder" />
+
+                <include layout="@layout/celda_artista_placeholder" />
+
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fargmentHome_RecyclerDeArtistas"
@@ -78,6 +115,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fargmentHome_RecyclerDeArtistas" />
 
+        <TextView
+            android:id="@+id/fragmentHome_TextViewAlbumesPlaceholder"
+            style="@style/title_home"
+            android:layout_marginTop="20dp"
+            android:text="@string/albumes"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragmentHomeShimmerArtistas" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/fragmentHomeShimmerAlbumes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragmentHome_TextViewAlbumesPlaceholder"
+            app:shimmer_duration="800">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include layout="@layout/celda_album_placeholder" />
+
+                <include layout="@layout/celda_album_placeholder" />
+
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fargmentHome_RecyclerDeAlbumes"
             android:layout_width="match_parent"
@@ -85,6 +152,50 @@
             android:layout_marginBottom="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fragmentHome_TextViewAlbumes" />
+
+        <TextView
+            android:id="@+id/fragmentHome_TextViewUltimasReproducidas"
+            style="@style/title_home"
+            android:text="@string/ultimas_reproducciones"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fargmentHome_RecyclerDeAlbumes" />
+
+        <TextView
+            android:id="@+id/fragmentHome_TextViewUltimasReproducidasPlaceholder"
+            style="@style/title_home"
+            android:text="@string/ultimas_reproducciones"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragmentHomeShimmerAlbumes" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/fragmentHomeShimmerUltimasReproducidas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragmentHome_TextViewUltimasReproducidasPlaceholder"
+            app:shimmer_duration="800">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include layout="@layout/celda_recomendado_placeholder" />
+
+                <include layout="@layout/celda_recomendado_placeholder" />
+
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fargmentHome_RecyclerDeUltimasReproducciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragmentHome_TextViewUltimasReproducidas" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

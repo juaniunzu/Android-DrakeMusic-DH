@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.databinding.ActivityLoginBinding;
+import com.example.projectointegrador.util.Utils;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -72,6 +73,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
         setContentView(view);
         //getHashkey();
 
+
         Glide.with(this).asGif().load(R.drawable.giffondologin).into(binding.imagenFondo);
 
         pegarFragmentInicial(new LoginInicioFragment(this));
@@ -115,11 +117,15 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUIFirebase(currentUser);
     }
+
     //Recibe un user de firebase, facebook, o google y pasa a la main
     private void updateUIFirebase(FirebaseUser currentUser) {
         if (currentUser != null){
-            Toast.makeText(this, "Bienvenido!", Toast.LENGTH_SHORT).show();
             pasarALaMainActivityMatandoActividadActual();
+        } else if (currentUser == null && !Utils.hayInternet(this)){
+            //binding.activityLoginFragmentContainer.setVisibility(View.GONE);
+            binding.imagenFondo.setVisibility(View.GONE);
+            pegarFragmentInicial(new NoInetFragment());
         }
     }
 

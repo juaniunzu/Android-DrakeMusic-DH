@@ -71,6 +71,9 @@ public class SearchDetailFragment extends Fragment implements AlbumSearchAdapter
         binding = FragmentSearchDetailBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
+        binding.fragmentSearchDetailRecyclerView.setVisibility(View.INVISIBLE);
+        binding.fragmentSearchDetailShimmer.startShimmer();
+
 
         Bundle bundle = getArguments();
         String query = bundle.getString(KEY_QUERY);
@@ -88,6 +91,9 @@ public class SearchDetailFragment extends Fragment implements AlbumSearchAdapter
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                         binding.fragmentSearchDetailRecyclerView.setAdapter(albumSearchAdapter);
                         binding.fragmentSearchDetailRecyclerView.setLayoutManager(linearLayoutManager);
+                        binding.fragmentSearchDetailRecyclerView.setVisibility(View.VISIBLE);
+                        binding.fragmentSearchDetailShimmer.setVisibility(View.INVISIBLE);
+                        binding.fragmentSearchDetailShimmer.stopShimmer();
                     }
                 });
                 break;
@@ -101,6 +107,9 @@ public class SearchDetailFragment extends Fragment implements AlbumSearchAdapter
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                         binding.fragmentSearchDetailRecyclerView.setAdapter(artistSearchAdapter);
                         binding.fragmentSearchDetailRecyclerView.setLayoutManager(linearLayoutManager);
+                        binding.fragmentSearchDetailRecyclerView.setVisibility(View.VISIBLE);
+                        binding.fragmentSearchDetailShimmer.setVisibility(View.INVISIBLE);
+                        binding.fragmentSearchDetailShimmer.stopShimmer();
                     }
                 });
                 break;
@@ -113,6 +122,9 @@ public class SearchDetailFragment extends Fragment implements AlbumSearchAdapter
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                         binding.fragmentSearchDetailRecyclerView.setAdapter(trackSearchAdapter);
                         binding.fragmentSearchDetailRecyclerView.setLayoutManager(linearLayoutManager);
+                        binding.fragmentSearchDetailRecyclerView.setVisibility(View.VISIBLE);
+                        binding.fragmentSearchDetailShimmer.setVisibility(View.INVISIBLE);
+                        binding.fragmentSearchDetailShimmer.stopShimmer();
                     }
                 });
         }

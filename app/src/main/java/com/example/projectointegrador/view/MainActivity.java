@@ -7,9 +7,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -93,11 +95,26 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
                 return true;
             }
         });
+
+        //bottomNavigationView.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(!Utils.hayInternet(this)){
+            findViewById(R.id.activityMain_contenedorDeFragments).setVisibility(View.GONE);
+            findViewById(R.id.activityMain_contenedorDeFragmentNoInet).setVisibility(View.VISIBLE);
+            bottomNavigationView.setVisibility(View.GONE);
+            setFragmentInicialNoInet(new NoInetFragment());
+        }
     }
 
     private void setFindViewsByIds() {
         drawerLayout = findViewById(R.id.activityMain_DrawerLayout);
         bottomNavigationView = findViewById(R.id.activityMain_BottomNavigationView);
+
     }
 
 
@@ -236,6 +253,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.activityMain_contenedorDeFragments, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void setFragmentInicialNoInet(Fragment fragment) {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.activityMain_contenedorDeFragmentNoInet, fragment);
         fragmentTransaction.commit();
     }
 
