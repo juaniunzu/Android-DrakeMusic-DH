@@ -1,6 +1,7 @@
 package com.example.projectointegrador.view;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     private ToggleButton playPauseReproductorChico;
     public static final String FRAGMENT_HOME = "1";
     public static final String FRAGMENT_BOTTOM = "2";
+    public static final Integer GO_REPRODUCTOR = 150;
 
 
     @Override
@@ -152,34 +154,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         imageViewTrackSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int trackActual = listaDeReproduccion.indexOf(trackSonando);
-                int trackSiguiente = trackActual + 1;
-                if ((trackSiguiente < listaDeReproduccion.size())) {
-                    if (audioPlayer != null) {
-                        if (audioPlayer.isPlaying()) {
-                            audioPlayer.stop();
-                        }
-                        audioPlayer.reset();
-
-                        Track nuevoTrackAReproducir = listaDeReproduccion.get(trackSiguiente);
-                        Glide.with(MainActivity.this)
-                                .setDefaultRequestOptions(Utils.requestOptionsCircularProgressBar(MainActivity.this))
-                                .load(nuevoTrackAReproducir.getAlbum().getCover())
-                                .into(imagenReproductorChico);
-                        trackReproductorChico.setText(nuevoTrackAReproducir.getTitle());
-                        artistaReproductorChico.setText(nuevoTrackAReproducir.getArtist().getName());
-                        trackSonando = nuevoTrackAReproducir;
-
-
-                        prepararTrackParaReproduccion(trackSiguiente);
-                        audioPlayer.start();
-                        if(playPauseReproductorChico.isChecked()){
-                            playPauseReproductorChico.setChecked(false);
-                            playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
-                        }
-                        agregarTrackAUltimosReproducidos(listaDeReproduccion.get(trackSiguiente));
-                    }
-                }
+                reproducirSiguiente();
             }
         });
         imageViewTrackAnterior.setOnClickListener(new View.OnClickListener() {
@@ -215,6 +190,43 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
                 }
             }
         });
+        audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                reproducirSiguiente();
+            }
+        });
+    }
+
+    private void reproducirSiguiente() {
+        int trackActual = listaDeReproduccion.indexOf(trackSonando);
+        int trackSiguiente = trackActual + 1;
+        if ((trackSiguiente < listaDeReproduccion.size())) {
+            if (audioPlayer != null) {
+                if (audioPlayer.isPlaying()) {
+                    audioPlayer.stop();
+                }
+                audioPlayer.reset();
+
+                Track nuevoTrackAReproducir = listaDeReproduccion.get(trackSiguiente);
+                Glide.with(MainActivity.this)
+                        .setDefaultRequestOptions(Utils.requestOptionsCircularProgressBar(MainActivity.this))
+                        .load(nuevoTrackAReproducir.getAlbum().getCover())
+                        .into(imagenReproductorChico);
+                trackReproductorChico.setText(nuevoTrackAReproducir.getTitle());
+                artistaReproductorChico.setText(nuevoTrackAReproducir.getArtist().getName());
+                trackSonando = nuevoTrackAReproducir;
+
+
+                prepararTrackParaReproduccion(trackSiguiente);
+                audioPlayer.start();
+                if(playPauseReproductorChico.isChecked()){
+                    playPauseReproductorChico.setChecked(false);
+                    playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
+                }
+                agregarTrackAUltimosReproducidos(listaDeReproduccion.get(trackSiguiente));
+            }
+        }
     }
 
     private void prepararTrackParaReproduccion(Integer ordenTrackEnLista) {
@@ -244,26 +256,23 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         //como la lista completa perteneciente al adapter. me la llevo a una nueva activity donde
         //esta el viewpager que se encargara de crear una lista de fragments con cada track de
         //la lista inicial
-        setReproductorChico(track, trackList);
         Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
         Bundle datos = new Bundle();
         datos.putSerializable("track", track);
         datos.putSerializable("lista", (ArrayList) trackList);
         mainAPlayer.putExtras(datos);
-        startActivity(mainAPlayer);
-
+        startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
     }
 
 
     @Override
     public void onClickUltimosReproducidosDesdeHomeFragment(Track track, List<Track> trackList) {
-        setReproductorChico(track, trackList);
         Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
         Bundle datos = new Bundle();
         datos.putSerializable("track", track);
         datos.putSerializable("lista", (ArrayList) trackList);
         mainAPlayer.putExtras(datos);
-        startActivity(mainAPlayer);
+        startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
     }
 
 
@@ -301,26 +310,24 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
     @Override
     public void fragmentOnClickTrackDesdeFragmentArtistDetail(Track track, List<Track> trackList) {
-        setReproductorChico(track, trackList);
         Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
         Bundle datos = new Bundle();
         datos.putSerializable("track", track);
         datos.putSerializable("lista", (ArrayList) trackList);
         mainAPlayer.putExtras(datos);
-        startActivity(mainAPlayer);
+        startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
     }
 
 
     //click a un track desde adentro del detalle de un album
     @Override
     public void onClickTrackFragmentTrackList(Track track, List<Track> trackList) {
-        setReproductorChico(track, trackList);
         Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
         Bundle datos = new Bundle();
         datos.putSerializable("track", track);
         datos.putSerializable("lista", (ArrayList) trackList);
         mainAPlayer.putExtras(datos);
-        startActivity(mainAPlayer);
+        startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
     }
 
     @Override
@@ -458,13 +465,12 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
     @Override
     public void onClickTracksFavFragment(Track track, List<Track> trackList) {
-        setReproductorChico(track, trackList);
         Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
         Bundle datos = new Bundle();
         datos.putSerializable("track", track);
         datos.putSerializable("lista", (ArrayList) trackList);
         mainAPlayer.putExtras(datos);
-        startActivity(mainAPlayer);
+        startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
     }
 
     @Override
@@ -543,13 +549,12 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
     @Override
     public void onClickTrackSearchInputFragment(Track track, List<Track> trackList) {
-        setReproductorChico(track, trackList);
         Intent searchToPlayer = new Intent(this, PlayerActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(KEY_TRACK, track);
         bundle.putSerializable(KEY_LISTA, (ArrayList) trackList);
         searchToPlayer.putExtras(bundle);
-        startActivity(searchToPlayer);
+        startActivityForResult(searchToPlayer, GO_REPRODUCTOR);
     }
 
 
@@ -573,14 +578,26 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
     @Override
     public void onClickTrackSearchDetailFragment(Track track, List<Track> trackList) {
-        setReproductorChico(track, trackList);
         Intent searchToPlayer = new Intent(this, PlayerActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(KEY_TRACK, track);
         bundle.putSerializable(KEY_LISTA, (ArrayList) trackList);
         //tracklistDeLaActividad = tracklist;
         searchToPlayer.putExtras(bundle);
-        startActivity(searchToPlayer);
+        startActivityForResult(searchToPlayer, GO_REPRODUCTOR);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GO_REPRODUCTOR) {
+            if (data != null) {
+                Bundle datos = data.getExtras();
+                List<Track> lista = (List<Track>) datos.getSerializable(KEY_LISTA);
+                Track track = (Track) datos.getSerializable(KEY_TRACK);
+                setReproductorChico(track, lista);
+            }
+        }
     }
 
     @Override
@@ -594,6 +611,12 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        audioPlayer.stop();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (audioPlayer.isPlaying()) {
@@ -603,34 +626,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             audioPlayer.release();
         }
     }
-}
-//   Usar esta Logica para pasar de temas. Necesita una lista privada de temas la actividad.
-//                if(audioPlayer != null){
-//                        if(audioPlayer.isPlaying()){
-//                        audioPlayer.stop();
-//                        }
-//                        audioPlayer.reset();
-//
-//                        prepararTrackParaReproduccion(position);
-//                        audioPlayer.start();
-//                        agregarTrackAUltimosReproducidos(trackArrayList.get(position));
-//                        }
-//  private void prepararTrackParaReproduccion(Integer ordenTrackEnLista){
-//    Track track = this.trackArrayList.get(ordenTrackEnLista);
-//    try {
-//        audioPlayer.setDataSource(this, Uri.parse(track.getPreview()));
-//        audioPlayer.prepareAsync();
-//    } catch (IOException e) {
-//        e.printStackTrace();
-//    }
-//}
-//  private void agregarTrackAUltimosReproducidos(Track track){
-//    TrackController trackController = new TrackController();
-//    trackController.agregarTrackAUltimosReproducidos(track, firebaseUser, new ResultListener<Track>() {
-//        @Override
-//        public void finish(Track resultado) {
-//            Toast.makeText(MainActivity.this, "Track agregado", Toast.LENGTH_SHORT).show();
-//        }
-//    });
-//}
 
+
+}

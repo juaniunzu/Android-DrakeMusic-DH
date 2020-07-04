@@ -1,31 +1,26 @@
 package com.example.projectointegrador.view;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.TrackController;
@@ -33,7 +28,6 @@ import com.example.projectointegrador.databinding.ActivityPlayerBinding;
 import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.util.DrakePlayer;
 import com.example.projectointegrador.util.ResultListener;
-import com.example.projectointegrador.view.adapter.TrackSearchAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -87,6 +81,18 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         }
 
         audioPlayer = DrakePlayer.getInstance().getMediaPlayer();
+        audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+            }
+        });
+        audioPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                return true;
+            }
+        });
 
         Intent desdeMain = getIntent();
         Bundle datosDesdeMain = desdeMain.getExtras();
@@ -125,6 +131,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                     prepararTrackParaReproduccion(position);
                     audioPlayer.start();
                     agregarTrackAUltimosReproducidos(trackArrayList.get(position));
+                    changeSeekbar();
                 }
 
             }
@@ -188,6 +195,9 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                         public void onCompletion(MediaPlayer mp) {
                             Random r = new Random();
                             int indiceTemaNuevo = r.nextInt(cantTemas);
+                            while (indiceTemaNuevo == viewPager.getCurrentItem()) {
+                                indiceTemaNuevo = r.nextInt(cantTemas);
+                            }
                             viewPager.setCurrentItem(indiceTemaNuevo);
                         }
                     });
@@ -200,6 +210,12 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                         }
                     });
                 }
+                audioPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                    @Override
+                    public boolean onError(MediaPlayer mp, int what, int extra) {
+                        return true;
+                    }
+                });
             }
         });
 
@@ -382,5 +398,16 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     protected void onStop() {
         super.onStop();
         actividadActiva = false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        Bundle datos = new Bundle();
+        datos.putSerializable(KEY_LISTA, trackArrayList);
+        datos.putSerializable(KEY_TRACK, trackArrayList.get(viewPager.getCurrentItem()));
+        intent.putExtras(datos);
+        setResult(RESULT_OK, intent);
+        super.onBackPressed();
     }
 }

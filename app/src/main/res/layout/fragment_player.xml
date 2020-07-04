@@ -32,7 +32,7 @@
 
     <CheckBox
         android:id="@+id/fragmentPlayerButtonAddFavorite"
-        android:layout_width="18dp"
+        android:layout_width="22dp"
         android:layout_height="22dp"
         android:layout_marginTop="25dp"
         android:button="@drawable/favoritos_track"
