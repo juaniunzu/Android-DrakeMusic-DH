@@ -1,17 +1,7 @@
 package com.example.projectointegrador.view;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.Intent;
 import android.hardware.SensorManager;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -433,7 +423,12 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     @Override
     public void hearShake() {
         //Metodo que reprodusca un tema random de la Lista.
-        int fragmentActual = viewPager.getCurrentItem();
-        viewPager.setCurrentItem(fragmentActual + 1);
+        int cantTemas = trackArrayList.size();
+        Random r = new Random();
+        int indiceTemaNuevo = r.nextInt(cantTemas);
+        while (indiceTemaNuevo == viewPager.getCurrentItem()) {
+            indiceTemaNuevo = r.nextInt(cantTemas);
+        }
+        viewPager.setCurrentItem(indiceTemaNuevo);
     }
 }

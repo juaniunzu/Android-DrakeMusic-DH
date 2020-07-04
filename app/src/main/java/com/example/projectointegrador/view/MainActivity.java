@@ -60,6 +60,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
 import static com.example.projectointegrador.view.PlayerActivity.KEY_LISTA;
 import static com.example.projectointegrador.view.PlayerActivity.KEY_TRACK;
 import static com.example.projectointegrador.view.fragment.SearchDetailFragment.KEY_QUERY;
@@ -145,7 +146,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             }
         });
 
-        //bottomNavigationView.setVisibility(View.GONE);
     }
 
     @Override
@@ -153,8 +153,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         super.onStart();
 
         if(!Utils.hayInternet(this)){
-            findViewById(R.id.activityMain_contenedorDeFragments).setVisibility(View.GONE);
-            findViewById(R.id.activityMain_contenedorDeFragmentNoInet).setVisibility(View.VISIBLE);
             bottomNavigationView.setVisibility(View.GONE);
             setFragmentInicialNoInet(new NoInetFragment());
         }
@@ -423,7 +421,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.activityMain_contenedorDeFragmentNoInet, fragment);
+        fragmentTransaction.add(R.id.activityMain_contenedorDeFragments, fragment);
         fragmentTransaction.commit();
     }
 
@@ -447,11 +445,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         final FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.activityMain_contenedorDeFragments, fragment);
-//        final int count = fragmentManager.getBackStackEntryCount();
-//
-//        if( id.equals(FRAGMENT_BOTTOM) ) {
-//            fragmentTransaction.addToBackStack(id);
-//        }
+        final int count = fragmentManager.getBackStackEntryCount();
 
         if (id.equals(FRAGMENT_BOTTOM)) {
             fragmentTransaction.addToBackStack(id);
@@ -656,10 +650,18 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     @Override
     protected void onResume() {
         super.onResume();
-        if (audioPlayer.isPlaying()) {
-            reproductorChico.setVisibility(View.VISIBLE);
-        } else {
-            reproductorChico.setVisibility(View.GONE);
+        if (audioPlayer != null) {
+            boolean isPlaying = false;
+            try {
+                isPlaying = audioPlayer.isPlaying();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (isPlaying) {
+                reproductorChico.setVisibility(View.VISIBLE);
+            } else {
+                reproductorChico.setVisibility(View.GONE);
+            }
         }
     }
 
