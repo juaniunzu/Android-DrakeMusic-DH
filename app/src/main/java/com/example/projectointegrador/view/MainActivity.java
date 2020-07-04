@@ -173,6 +173,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
                         prepararTrackParaReproduccion(trackSiguiente);
                         audioPlayer.start();
+                        if(playPauseReproductorChico.isChecked()){
+                            playPauseReproductorChico.setChecked(false);
+                            playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
+                        }
                         agregarTrackAUltimosReproducidos(listaDeReproduccion.get(trackSiguiente));
                     }
                 }
@@ -202,6 +206,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
                         prepararTrackParaReproduccion(trackAnterior);
                         audioPlayer.start();
+                        if(playPauseReproductorChico.isChecked()){
+                            playPauseReproductorChico.setChecked(false);
+                            playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
+                        }
                         agregarTrackAUltimosReproducidos(listaDeReproduccion.get(trackAnterior));
                     }
                 }
