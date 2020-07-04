@@ -45,8 +45,8 @@ public class AlbumApiDao extends DaoHelper {
         });
     }
 
-    public void buscarAlbumes(String busqueda, final ResultListener<ResponseAlbum> resultListenerFromController){
-        Call<ResponseAlbum> call = albumService.buscarAlbumes(busqueda);
+    public void buscarAlbumes(String busqueda, String limit, ResultListener<ResponseAlbum> resultListenerFromController){
+        Call<ResponseAlbum> call = albumService.buscarAlbumes(busqueda, limit);
         call.enqueue(new Callback<ResponseAlbum>() {
             @Override
             public void onResponse(Call<ResponseAlbum> call, Response<ResponseAlbum> response) {

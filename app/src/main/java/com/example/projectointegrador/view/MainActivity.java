@@ -24,13 +24,27 @@ import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.AlbumController;
 import com.example.projectointegrador.controller.ArtistController;
+import com.example.projectointegrador.controller.HistorialController;
 import com.example.projectointegrador.controller.TrackController;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
+import com.example.projectointegrador.model.Busqueda;
 import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.util.DrakePlayer;
 import com.example.projectointegrador.util.ResultListener;
 import com.example.projectointegrador.util.Utils;
+import com.example.projectointegrador.view.fragment.AlbumesFavoritosFragment;
+import com.example.projectointegrador.view.fragment.ArtistasFavoritosFragment;
+import com.example.projectointegrador.view.fragment.DetailArtistFragment;
+import com.example.projectointegrador.view.fragment.FavoritosFragment;
+import com.example.projectointegrador.view.fragment.FragmentTrackList;
+import com.example.projectointegrador.view.fragment.HomeFragment;
+import com.example.projectointegrador.view.fragment.NoInetFragment;
+import com.example.projectointegrador.view.fragment.PerfilFragment;
+import com.example.projectointegrador.view.fragment.SearchDetailFragment;
+import com.example.projectointegrador.view.fragment.SearchFragment;
+import com.example.projectointegrador.view.fragment.SearchInputFragment;
+import com.example.projectointegrador.view.fragment.TracksFavoritosFragment;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -44,12 +58,12 @@ import com.google.firebase.auth.FirebaseUser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import static androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
 import static com.example.projectointegrador.view.PlayerActivity.KEY_LISTA;
 import static com.example.projectointegrador.view.PlayerActivity.KEY_TRACK;
-import static com.example.projectointegrador.view.SearchDetailFragment.KEY_QUERY;
-import static com.example.projectointegrador.view.SearchDetailFragment.KEY_TYPE;
+import static com.example.projectointegrador.view.fragment.SearchDetailFragment.KEY_QUERY;
+import static com.example.projectointegrador.view.fragment.SearchDetailFragment.KEY_TYPE;
 
 public class MainActivity extends AppCompatActivity implements HomeFragment.FragmentHomeListener,
         DetailArtistFragment.FragmentArtistDetailListener,
@@ -88,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         setFindViewsByIds();
         // Llama al audioPlayer. Que es uno solo y existe en to.do el proyecto.
         audioPlayer = DrakePlayer.getInstance().getMediaPlayer();
+        final FavoritosFragment favoritosFragment = new FavoritosFragment();
 
         playPauseReproductorChico.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +128,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if(Objects.equals(item.getItemId(), bottomNavigationView.getSelectedItemId()))
+                    return true;
                 switch (item.getItemId()) {
                     case R.id.bottomNavigationView_Menu:
                         agregarFragmentNavegacion(new HomeFragment(), FRAGMENT_BOTTOM);
@@ -121,12 +138,26 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
                         agregarFragmentNavegacion(new SearchFragment(), FRAGMENT_BOTTOM);
                         break;
                     case R.id.bottomNavigationView_Favorites:
-                        agregarFragmentNavegacion(new FavoritosFragment(), FRAGMENT_BOTTOM);
+                        agregarFragmentNavegacion(favoritosFragment, FRAGMENT_BOTTOM);
                         break;
                 }
                 return true;
             }
         });
+
+        //bottomNavigationView.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(!Utils.hayInternet(this)){
+            findViewById(R.id.activityMain_contenedorDeFragments).setVisibility(View.GONE);
+            findViewById(R.id.activityMain_contenedorDeFragmentNoInet).setVisibility(View.VISIBLE);
+            bottomNavigationView.setVisibility(View.GONE);
+            setFragmentInicialNoInet(new NoInetFragment());
+        }
     }
 
     private void setFindViewsByIds() {
@@ -388,6 +419,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         fragmentTransaction.commit();
     }
 
+    private void setFragmentInicialNoInet(Fragment fragment) {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.activityMain_contenedorDeFragmentNoInet, fragment);
+        fragmentTransaction.commit();
+    }
+
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -408,7 +447,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         final FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.activityMain_contenedorDeFragments, fragment);
-        final int count = fragmentManager.getBackStackEntryCount();
+//        final int count = fragmentManager.getBackStackEntryCount();
+//
+//        if( id.equals(FRAGMENT_BOTTOM) ) {
+//            fragmentTransaction.addToBackStack(id);
+//        }
 
         if (id.equals(FRAGMENT_BOTTOM)) {
             fragmentTransaction.addToBackStack(id);
@@ -557,6 +600,16 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         startActivityForResult(searchToPlayer, GO_REPRODUCTOR);
     }
 
+    @Override
+    public void agregarBusquedaAlHistorial(Busqueda busqueda) {
+        HistorialController historialController = new HistorialController();
+        historialController.agregarBusquedaAlHistorial(busqueda, firebaseUser, new ResultListener<Busqueda>() {
+            @Override
+            public void finish(Busqueda resultado) {
+                Toast.makeText(MainActivity.this, resultado.getBusqueda(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     @Override
     public void onClickAlbumSearchDetailFragment(Album album) {

@@ -1,14 +1,10 @@
-package com.example.projectointegrador.view;
+package com.example.projectointegrador.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,11 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.projectointegrador.R;
-import com.example.projectointegrador.dao.SearchableDao;
+import com.example.projectointegrador.controller.HistorialController;
 import com.example.projectointegrador.databinding.FragmentSearchBinding;
 import com.example.projectointegrador.util.Utils;
+import com.example.projectointegrador.view.adapter.HistorialAdapter;
 import com.example.projectointegrador.view.adapter.SearchAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
@@ -31,6 +29,7 @@ public class SearchFragment extends Fragment implements SearchAdapter.SearchAdap
 
     private List<Utils.Searchable> searchableList;
     private SearchFragmentListener listener;
+    private FirebaseUser firebaseUser;
 
     private FragmentSearchBinding binding;
 
@@ -46,8 +45,10 @@ public class SearchFragment extends Fragment implements SearchAdapter.SearchAdap
         binding = FragmentSearchBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        //esta lista por el momento se llena con datos hardcodeados, en un futuro tiene que recibir data de Firebase
-        //setBusquedasRecientesList(view);
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        //Lista de busquedas
+        setBusquedasRecientesList(view);
 
         //Crea y pega un SearchInputFragment
         binding.fragmentSearchCardViewBuscar.setOnClickListener(new View.OnClickListener() {
@@ -60,14 +61,15 @@ public class SearchFragment extends Fragment implements SearchAdapter.SearchAdap
         return view;
     }
 
-//    private void setBusquedasRecientesList(View view) {
-//        searchableList = SearchableDao.getSearchables();
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-//        SearchAdapter searchAdapter = new SearchAdapter(searchableList, this);
-//
-//        binding.fragmentSearchRecyclerView.setAdapter(searchAdapter);
-//        binding.fragmentSearchRecyclerView.setLayoutManager(linearLayoutManager);
-//    }
+    private void setBusquedasRecientesList(View view) {
+        HistorialController historialController = new HistorialController();
+        historialController.getHistorial(firebaseUser, resultado -> {
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+            HistorialAdapter historialAdapter = new HistorialAdapter(resultado);
+            binding.fragmentSearchRecyclerView.setLayoutManager(linearLayoutManager);
+            binding.fragmentSearchRecyclerView.setAdapter(historialAdapter);
+        });
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {

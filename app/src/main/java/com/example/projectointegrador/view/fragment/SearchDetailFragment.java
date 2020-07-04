@@ -1,4 +1,4 @@
-package com.example.projectointegrador.view;
+package com.example.projectointegrador.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -6,12 +6,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.AlbumController;
@@ -71,6 +69,9 @@ public class SearchDetailFragment extends Fragment implements AlbumSearchAdapter
         binding = FragmentSearchDetailBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
+        binding.fragmentSearchDetailRecyclerView.setVisibility(View.INVISIBLE);
+        binding.fragmentSearchDetailShimmer.startShimmer();
+
 
         Bundle bundle = getArguments();
         String query = bundle.getString(KEY_QUERY);
@@ -81,38 +82,47 @@ public class SearchDetailFragment extends Fragment implements AlbumSearchAdapter
 
             case TYPE_ALBUM:
                 AlbumController albumController = new AlbumController();
-                albumController.buscarAlbumes(getContext(), query, new ResultListener<ResponseAlbum>() {
+                albumController.buscarAlbumes(getContext(), query, null, new ResultListener<ResponseAlbum>() {
                     @Override
                     public void finish(ResponseAlbum resultado) {
                         AlbumSearchAdapter albumSearchAdapter = new AlbumSearchAdapter(resultado.getAlbumes(), true, SearchDetailFragment.this);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                         binding.fragmentSearchDetailRecyclerView.setAdapter(albumSearchAdapter);
                         binding.fragmentSearchDetailRecyclerView.setLayoutManager(linearLayoutManager);
+                        binding.fragmentSearchDetailRecyclerView.setVisibility(View.VISIBLE);
+                        binding.fragmentSearchDetailShimmer.setVisibility(View.INVISIBLE);
+                        binding.fragmentSearchDetailShimmer.stopShimmer();
                     }
                 });
                 break;
 
             case TYPE_ARTIST:
                 ArtistController artistController = new ArtistController();
-                artistController.buscarArtistas(getContext(), query, new ResultListener<ResponseArtist>() {
+                artistController.buscarArtistas(getContext(), query, null, new ResultListener<ResponseArtist>() {
                     @Override
                     public void finish(ResponseArtist resultado) {
                         ArtistSearchAdapter artistSearchAdapter = new ArtistSearchAdapter(resultado.getArtistas(), true, SearchDetailFragment.this);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                         binding.fragmentSearchDetailRecyclerView.setAdapter(artistSearchAdapter);
                         binding.fragmentSearchDetailRecyclerView.setLayoutManager(linearLayoutManager);
+                        binding.fragmentSearchDetailRecyclerView.setVisibility(View.VISIBLE);
+                        binding.fragmentSearchDetailShimmer.setVisibility(View.INVISIBLE);
+                        binding.fragmentSearchDetailShimmer.stopShimmer();
                     }
                 });
                 break;
             case TYPE_TRACK:
                 TrackController trackController = new TrackController();
-                trackController.buscarTracks(getContext(), query, new ResultListener<ResponseTrack>() {
+                trackController.buscarTracks(getContext(), query, null, new ResultListener<ResponseTrack>() {
                     @Override
                     public void finish(ResponseTrack resultado) {
                         TrackSearchAdapter trackSearchAdapter = new TrackSearchAdapter(resultado.getTracks(), true, SearchDetailFragment.this);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                         binding.fragmentSearchDetailRecyclerView.setAdapter(trackSearchAdapter);
                         binding.fragmentSearchDetailRecyclerView.setLayoutManager(linearLayoutManager);
+                        binding.fragmentSearchDetailRecyclerView.setVisibility(View.VISIBLE);
+                        binding.fragmentSearchDetailShimmer.setVisibility(View.INVISIBLE);
+                        binding.fragmentSearchDetailShimmer.stopShimmer();
                     }
                 });
         }

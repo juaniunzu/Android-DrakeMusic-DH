@@ -1,4 +1,4 @@
-package com.example.projectointegrador.view;
+package com.example.projectointegrador.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,6 @@ import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.AlbumController;
 import com.example.projectointegrador.controller.ArtistController;
 import com.example.projectointegrador.controller.TrackController;
-import com.example.projectointegrador.dao.AlbumDao;
-import com.example.projectointegrador.dao.ArtistDao;
-import com.example.projectointegrador.dao.TrackDao;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
 import com.example.projectointegrador.model.Track;
@@ -28,6 +26,7 @@ import com.example.projectointegrador.view.adapter.AlbumAdapter;
 import com.example.projectointegrador.view.adapter.ArtistAdapter;
 import com.example.projectointegrador.view.adapter.RecomendadoAdapter;
 import com.example.projectointegrador.view.adapter.UltimosReproducidosAdapter;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -51,14 +50,50 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
     private FirebaseUser firebaseUser;
     private TextView textViewUltimosRep;
     private ImageView settings;
+    private ShimmerFrameLayout shimmerRecomendados;
+    private ShimmerFrameLayout shimmerUltimosReproducidos;
+    private ShimmerFrameLayout shimmerArtistas;
+    private ShimmerFrameLayout shimmerAlbumes;
+    private TextView ultimosReproducidosPlaceholder;
+    private TextView ultimosReproducidos;
+    private TextView artistasPlaceholder;
+    private TextView artistas;
+    private TextView albumesPlaceholder;
+    private TextView albumes;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        listaDeUltimasReproducciones = TrackDao.getUltimosReproducidos();
         setFindViewByIds(view);
+
+        recyclerViewRecomendados.setVisibility(View.INVISIBLE);
+        shimmerRecomendados = view.findViewById(R.id.fragmentHomeShimmerRecomendados);
+        shimmerRecomendados.startShimmer();
+
+
+
+
+
+
+
+
+        shimmerArtistas = view.findViewById(R.id.fragmentHomeShimmerArtistas);
+        shimmerArtistas.startShimmer();
+        artistasPlaceholder = view.findViewById(R.id.fragmentHome_TextViewArtistasPlaceholder);
+        artistas = view.findViewById(R.id.fragmentHome_TextViewArtistas);
+        recyclerViewArtists.setVisibility(View.INVISIBLE);
+        artistas.setVisibility(View.INVISIBLE);
+
+
+        shimmerAlbumes = view.findViewById(R.id.fragmentHomeShimmerAlbumes);
+        shimmerAlbumes.startShimmer();
+        albumesPlaceholder = view.findViewById(R.id.fragmentHome_TextViewAlbumesPlaceholder);
+        albumes = view.findViewById(R.id.fragmentHome_TextViewAlbumes);
+        recyclerViewAlbums.setVisibility(View.INVISIBLE);
+        albumes.setVisibility(View.INVISIBLE);
 
         LinearLayoutManager linearLayoutManagerAlbum = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
         LinearLayoutManager linearLayoutManagerRecomendado = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
@@ -67,52 +102,109 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        recyclerViewRecomendados.setLayoutManager(linearLayoutManagerRecomendado);
         TrackController trackController = new TrackController();
         trackController.getTracks(getContext(), new ResultListener<List<Track>>() {
             @Override
             public void finish(List<Track> resultado) {
                 RecomendadoAdapter recomendadoAdapter = new RecomendadoAdapter(resultado,HomeFragment.this);
                 recyclerViewRecomendados.setAdapter(recomendadoAdapter);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        shimmerRecomendados.stopShimmer();
+                        shimmerRecomendados.setVisibility(View.INVISIBLE);
+                        recyclerViewRecomendados.setVisibility(View.VISIBLE);
+                    }
+                }, 1000);
+
+
             }
         });
 
-        recyclerViewUltimasReproducciones.setVisibility(View.GONE);
-        textViewUltimosRep.setVisibility(View.GONE);
+        ultimosReproducidosPlaceholder = view.findViewById(R.id.fragmentHome_TextViewUltimasReproducidasPlaceholder);
+        shimmerUltimosReproducidos = view.findViewById(R.id.fragmentHomeShimmerUltimasReproducidas);
+
+        recyclerViewUltimasReproducciones.setVisibility(View.INVISIBLE);
+        textViewUltimosRep.setVisibility(View.INVISIBLE);
+        shimmerUltimosReproducidos.setVisibility(View.VISIBLE);
+        ultimosReproducidosPlaceholder.setVisibility(View.VISIBLE);
+        shimmerUltimosReproducidos.startShimmer();
 
         trackController.getUltimosReproducidos(firebaseUser, new ResultListener<List<Track>>() {
             @Override
             public void finish(List<Track> resultado) {
                 if (resultado.size() != 0){
                     UltimosReproducidosAdapter ultimosReproducidosAdapter = new UltimosReproducidosAdapter(resultado,HomeFragment.this);
-                    recyclerViewUltimasReproducciones.setAdapter(ultimosReproducidosAdapter);
                     LinearLayoutManager linearLayoutManagerUltimasReproducciones= new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
+                    recyclerViewUltimasReproducciones.setAdapter(ultimosReproducidosAdapter);
                     recyclerViewUltimasReproducciones.setLayoutManager(linearLayoutManagerUltimasReproducciones);
-                    recyclerViewUltimasReproducciones.setVisibility(View.VISIBLE);
-                    textViewUltimosRep.setVisibility(View.VISIBLE);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            recyclerViewUltimasReproducciones.setVisibility(View.VISIBLE);
+                            textViewUltimosRep.setVisibility(View.VISIBLE);
+                            shimmerUltimosReproducidos.stopShimmer();
+                            shimmerUltimosReproducidos.setVisibility(View.INVISIBLE);
+                            ultimosReproducidosPlaceholder.setVisibility(View.INVISIBLE);
+                        }
+                    }, 1200);
+
+                } else {
+                    shimmerUltimosReproducidos.stopShimmer();
+                    shimmerUltimosReproducidos.setVisibility(View.GONE);
+                    ultimosReproducidosPlaceholder.setVisibility(View.GONE);
                 }
             }
         });
+
+        recyclerViewArtists.setLayoutManager(linearLayoutManagerArtist);
         ArtistController artistController = new ArtistController();
         artistController.getArtists(getContext(), new ResultListener<List<Artist>>() {
             @Override
             public void finish(List<Artist> resultado) {
                 ArtistAdapter artistAdapter = new ArtistAdapter(resultado,HomeFragment.this);
                 recyclerViewArtists.setAdapter(artistAdapter);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        shimmerArtistas.stopShimmer();
+                        shimmerArtistas.setVisibility(View.INVISIBLE);
+                        artistas.setVisibility(View.VISIBLE);
+                        artistasPlaceholder.setVisibility(View.INVISIBLE);
+                        recyclerViewArtists.setVisibility(View.VISIBLE);
+                    }
+                }, 1000);
+
             }
         });
+
+
+        recyclerViewAlbums.setLayoutManager(linearLayoutManagerAlbum);
         AlbumController albumController = new AlbumController();
         albumController.getAlbums(getContext(), new ResultListener<List<Album>>() {
             @Override
             public void finish(List<Album> resultado) {
                 AlbumAdapter albumAdapter = new AlbumAdapter(resultado,HomeFragment.this);
                 recyclerViewAlbums.setAdapter(albumAdapter);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        shimmerAlbumes.stopShimmer();
+                        shimmerAlbumes.setVisibility(View.INVISIBLE);
+                        albumes.setVisibility(View.VISIBLE);
+                        albumesPlaceholder.setVisibility(View.INVISIBLE);
+                        recyclerViewAlbums.setVisibility(View.VISIBLE);
+                    }
+                }, 1000);
+
             }
         });
 
-
-        recyclerViewArtists.setLayoutManager(linearLayoutManagerArtist);
-        recyclerViewRecomendados.setLayoutManager(linearLayoutManagerRecomendado);
-        recyclerViewAlbums.setLayoutManager(linearLayoutManagerAlbum);
 
         settings.setOnClickListener(new View.OnClickListener() {
             @Override

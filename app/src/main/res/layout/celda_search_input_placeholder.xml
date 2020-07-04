@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="20dp"
+    android:background="#000">
+
+    <View
+        android:id="@+id/searchPlaceholderView"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@color/placeholder_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="20dp"/>
+
+    <View
+        android:id="@+id/searchPlaceholderNombre"
+        android:layout_width="100dp"
+        android:layout_height="19dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        style="@style/celdahome_titulo_celda"
+        android:background="@color/placeholder_bg"
+        app:layout_constraintLeft_toRightOf="@id/searchPlaceholderView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/searchPlaceholderNombre2"
+        android:layout_width="70dp"
+        android:layout_height="19dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/placeholder_bg"
+        style="@style/celdahome_album_artista_celda"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toRightOf="@id/searchPlaceholderView"
+        app:layout_constraintTop_toBottomOf="@id/searchPlaceholderNombre" />
+
+    <View
+        android:layout_width="280dp"
+        android:layout_height="1dp"
+        android:background="@color/placeholder_bg"
+        app:layout_constraintTop_toBottomOf="@id/searchPlaceholderNombre2"
+        app:layout_constraintStart_toStartOf="@id/searchPlaceholderNombre2"
+        android:layout_marginTop="20dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

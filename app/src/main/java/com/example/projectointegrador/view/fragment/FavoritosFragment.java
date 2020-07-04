@@ -1,25 +1,19 @@
-package com.example.projectointegrador.view;
+package com.example.projectointegrador.view.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.databinding.FragmentFavoritosBinding;
-import com.example.projectointegrador.model.Album;
-import com.example.projectointegrador.model.Artist;
-import com.example.projectointegrador.model.Track;
+import com.example.projectointegrador.view.adapter.ViewPagerFavoritosAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +44,7 @@ public class FavoritosFragment extends Fragment {
 
 
 
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getChildFragmentManager();
 
         List<Fragment> fragments = new ArrayList<>();
         AlbumesFavoritosFragment albumesFavoritosFragment = new AlbumesFavoritosFragment();
@@ -103,7 +97,16 @@ public class FavoritosFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        viewPager = null;
+        albumes = null;
+        artistas = null;
+        tracks = null;
+        getFragmentManager().beginTransaction().remove(this).commitAllowingStateLoss();
 
+    }
 
     private void findViews() {
         viewPager = binding.fragmentFavoritosViewPager;

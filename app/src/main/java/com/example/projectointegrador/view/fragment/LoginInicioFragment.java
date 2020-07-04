@@ -1,4 +1,4 @@
-package com.example.projectointegrador.view;
+package com.example.projectointegrador.view.fragment;
 
 import android.os.Bundle;
 
@@ -44,10 +44,6 @@ public class LoginInicioFragment extends Fragment {
 
         binding = FragmentLoginInicioBinding.inflate(inflater, container, false);
         final View view = binding.getRoot();
-
-
-
-
 
 
         AlphaAnimation fadeInSlogan = new AlphaAnimation(0.0f, 1.0f);

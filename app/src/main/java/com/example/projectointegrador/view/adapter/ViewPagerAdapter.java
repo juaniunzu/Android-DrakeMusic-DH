@@ -1,4 +1,4 @@
-package com.example.projectointegrador.view;
+package com.example.projectointegrador.view.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

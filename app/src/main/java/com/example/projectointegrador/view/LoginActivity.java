@@ -8,20 +8,19 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.GlideBuilder;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.databinding.ActivityLoginBinding;
+import com.example.projectointegrador.util.Utils;
+import com.example.projectointegrador.view.fragment.LoginFragment;
+import com.example.projectointegrador.view.fragment.LoginInicioFragment;
+import com.example.projectointegrador.view.fragment.NoInetFragment;
+import com.example.projectointegrador.view.fragment.SignUpFragment;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -36,11 +35,6 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -48,8 +42,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity implements LoginFragment.LoginFragmentListener,
@@ -71,6 +63,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
         View view = binding.getRoot();
         setContentView(view);
         //getHashkey();
+
 
         Glide.with(this).asGif().load(R.drawable.giffondologin).into(binding.imagenFondo);
 
@@ -115,11 +108,15 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUIFirebase(currentUser);
     }
+
     //Recibe un user de firebase, facebook, o google y pasa a la main
     private void updateUIFirebase(FirebaseUser currentUser) {
         if (currentUser != null){
-            Toast.makeText(this, "Bienvenido!", Toast.LENGTH_SHORT).show();
             pasarALaMainActivityMatandoActividadActual();
+        } else if (currentUser == null && !Utils.hayInternet(this)){
+            //binding.activityLoginFragmentContainer.setVisibility(View.GONE);
+            binding.imagenFondo.setVisibility(View.GONE);
+            pegarFragmentInicial(new NoInetFragment());
         }
     }
 

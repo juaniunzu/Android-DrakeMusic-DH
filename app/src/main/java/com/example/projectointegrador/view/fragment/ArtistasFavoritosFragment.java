@@ -1,4 +1,4 @@
-package com.example.projectointegrador.view;
+package com.example.projectointegrador.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,12 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.ArtistController;
 import com.example.projectointegrador.databinding.FragmentArtistasFavoritosBinding;
 import com.example.projectointegrador.model.Artist;
 import com.example.projectointegrador.util.ResultListener;
-import com.example.projectointegrador.view.adapter.AlbumSearchAdapter;
 import com.example.projectointegrador.view.adapter.ArtistSearchAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

@@ -1,4 +1,4 @@
-package com.example.projectointegrador.view;
+package com.example.projectointegrador.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import com.example.projectointegrador.controller.TrackController;
 import com.example.projectointegrador.databinding.FragmentSearchInputBinding;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
+import com.example.projectointegrador.model.Busqueda;
 import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.service.ResponseAlbum;
 import com.example.projectointegrador.service.ResponseArtist;
@@ -29,9 +30,9 @@ import com.example.projectointegrador.view.adapter.TrackSearchAdapter;
 
 import java.util.List;
 
-import static com.example.projectointegrador.view.SearchDetailFragment.TYPE_ALBUM;
-import static com.example.projectointegrador.view.SearchDetailFragment.TYPE_ARTIST;
-import static com.example.projectointegrador.view.SearchDetailFragment.TYPE_TRACK;
+import static com.example.projectointegrador.view.fragment.SearchDetailFragment.TYPE_ALBUM;
+import static com.example.projectointegrador.view.fragment.SearchDetailFragment.TYPE_ARTIST;
+import static com.example.projectointegrador.view.fragment.SearchDetailFragment.TYPE_TRACK;
 
 
 public class SearchInputFragment extends Fragment implements
@@ -41,6 +42,7 @@ public class SearchInputFragment extends Fragment implements
 
     private String query;
     private SearchInputFragmentListener listener;
+    private static final String LIMIT_RESULTS = "2";
 
     private FragmentSearchInputBinding binding;
 
@@ -79,6 +81,8 @@ public class SearchInputFragment extends Fragment implements
             @Override
             public boolean onQueryTextSubmit(String query) {
                 SearchInputFragment.this.query = query;
+                Busqueda busqueda = new Busqueda(query);
+                listener.agregarBusquedaAlHistorial(busqueda);
                 return false;
             }
 
@@ -91,7 +95,7 @@ public class SearchInputFragment extends Fragment implements
                 binding.fragmentSearchInputTextViewArtistas.setVisibility(View.VISIBLE);
                 binding.fragmentSearchInputTextViewTracks.setVisibility(View.VISIBLE);
 
-                    albumController.buscarAlbumes(getContext(), newText, new ResultListener<ResponseAlbum>() {
+                    albumController.buscarAlbumes(getContext(), newText, LIMIT_RESULTS, new ResultListener<ResponseAlbum>() {
                         @Override
                         public void finish(ResponseAlbum resultado) {
                             AlbumSearchAdapter albumSearchAdapter = new AlbumSearchAdapter(resultado.getAlbumes(), false, SearchInputFragment.this);
@@ -101,7 +105,7 @@ public class SearchInputFragment extends Fragment implements
                         }
                     });
 
-                    artistController.buscarArtistas(getContext(), newText, new ResultListener<ResponseArtist>() {
+                    artistController.buscarArtistas(getContext(), newText, LIMIT_RESULTS, new ResultListener<ResponseArtist>() {
                         @Override
                         public void finish(ResponseArtist resultado) {
                             ArtistSearchAdapter artistSearchAdapter = new ArtistSearchAdapter(resultado.getArtistas(), false, SearchInputFragment.this);
@@ -111,7 +115,7 @@ public class SearchInputFragment extends Fragment implements
                         }
                     });
 
-                    trackController.buscarTracks(getContext(), newText, new ResultListener<ResponseTrack>() {
+                    trackController.buscarTracks(getContext(), newText, LIMIT_RESULTS, new ResultListener<ResponseTrack>() {
                         @Override
                         public void finish(ResponseTrack resultado) {
                             TrackSearchAdapter trackSearchAdapter = new TrackSearchAdapter(resultado.getTracks(), false, SearchInputFragment.this);
@@ -178,5 +182,6 @@ public class SearchInputFragment extends Fragment implements
         void onClickAlbumSearchInputFragment (Album album);
         void onClickArtistSearchInputFragment (Artist artist);
         void onClickTrackSearchInputFragment (Track track, List<Track> trackList);
+        void agregarBusquedaAlHistorial(Busqueda busqueda);
     }
 }

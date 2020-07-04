@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorControlNormal"
-        tools:context=".view.SearchInputFragment">
+        tools:context=".view.fragment.SearchInputFragment">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/fragmentSearchInputCardViewBuscar"

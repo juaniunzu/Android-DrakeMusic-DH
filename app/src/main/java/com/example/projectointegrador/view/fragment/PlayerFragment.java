@@ -1,9 +1,5 @@
-package com.example.projectointegrador.view;
+package com.example.projectointegrador.view.fragment;
 
-import android.graphics.Bitmap;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,24 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
-import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.TrackController;
 import com.example.projectointegrador.databinding.FragmentPlayerBinding;
 import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.util.ResultListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.locks.ReadWriteLock;
 
 import static com.example.projectointegrador.util.Utils.setFragmentBackground;
 
