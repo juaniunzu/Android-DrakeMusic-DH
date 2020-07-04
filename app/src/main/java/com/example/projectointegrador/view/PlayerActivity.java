@@ -104,8 +104,9 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                //viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-                onTrackNext();
+                if(viewPager.getCurrentItem() < trackArrayList.size() - 1){
+                    onTrackNext();
+                }
             }
         });
         audioPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
@@ -189,10 +190,8 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             @Override
             public void onClick(View v) {
                 if (!buttonPlay.isChecked()) {
-                    changeSeekbar();
                     onTrackPlay();
                 } else {
-                    changeSeekbar();
                     onTrackPause();
                 }
             }
@@ -201,14 +200,18 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onTrackNext();
+                if(viewPager.getCurrentItem() < trackArrayList.size() - 1){
+                    onTrackNext();
+                }
             }
         });
 
         buttonPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onTrackPrevious();
+                if(viewPager.getCurrentItem() > 0){
+                    onTrackPrevious();
+                }
             }
         });
 
@@ -498,6 +501,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                 position, trackArrayList.size() - 1);
         isPlaying = true;
         audioPlayer.start();
+        changeSeekbar();
     }
 
     @Override
