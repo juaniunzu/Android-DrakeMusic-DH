@@ -62,7 +62,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     private ToggleButton buttonRepeat;
     private ToggleButton buttonShuffle;
     private ActivityPlayerBinding binding;
-
+    private static Boolean actividadActiva = false;
 
 
 
@@ -73,7 +73,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         binding = ActivityPlayerBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
 
         setViews();
 
@@ -112,7 +111,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
 
             }
 
@@ -163,7 +161,9 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             @Override
             public void onClick(View v) {
                 int fragmentActual = viewPager.getCurrentItem();
-                viewPager.setCurrentItem(fragmentActual + 1);
+                if(fragmentActual + 1 != trackArrayList.size()){
+                    viewPager.setCurrentItem(fragmentActual + 1);
+                }
             }
         });
 
@@ -171,7 +171,9 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             @Override
             public void onClick(View v) {
                 int fragmentActual = viewPager.getCurrentItem();
-                viewPager.setCurrentItem(fragmentActual - 1);
+                if(fragmentActual != 0){
+                    viewPager.setCurrentItem(fragmentActual - 1);
+                }
             }
         });
 
@@ -181,22 +183,20 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                 if(buttonShuffle.isChecked()){
                     buttonShuffle.setBackground(getDrawable(R.drawable.ic_shuffle_accent_24dp));
                     final int cantTemas = trackArrayList.size();
-                    for (int i = 0; i < cantTemas; i++) {
-                        audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                            @Override
-                            public void onCompletion(MediaPlayer mp) {
-                                Random r = new Random();
-                                int indiceTemaNuevo = r.nextInt(cantTemas);
-                                viewPager.setCurrentItem(indiceTemaNuevo);
-                            }
-                        });
-                    }
+                    audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            Random r = new Random();
+                            int indiceTemaNuevo = r.nextInt(cantTemas);
+                            viewPager.setCurrentItem(indiceTemaNuevo);
+                        }
+                    });
                 } else {
                     buttonShuffle.setBackground(getDrawable(R.drawable.ic_shuffle_black_24dp));
                     audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
-                            viewPager.setCurrentItem(viewPager.getCurrentItem());
+                            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
                         }
                     });
                 }
@@ -226,9 +226,11 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                seekBar.setMax(mp.getDuration());
-                mp.start();
-                changeSeekbar();
+                if (actividadActiva){
+                    seekBar.setMax(mp.getDuration());
+                    mp.start();
+                    changeSeekbar();
+                }
             }
         });
 
@@ -368,5 +370,17 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                 Toast.makeText(PlayerActivity.this, "Track agregado", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        actividadActiva = true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        actividadActiva = false;
     }
 }

@@ -62,15 +62,17 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         SearchDetailFragment.SearchDetailFragmentListener {
 
     private MediaPlayer audioPlayer;
-    private List<Track> listaDeReproduccion = new ArrayList<>();
     private DrawerLayout drawerLayout;
     private BottomNavigationView bottomNavigationView;
     private FirebaseUser firebaseUser;
     private ConstraintLayout reproductorChico;
     private Track trackSonando;
+    private List<Track> listaDeReproduccion = new ArrayList<>();
     private ImageView imagenReproductorChico;
     private TextView trackReproductorChico;
     private TextView artistaReproductorChico;
+    private ImageView imageViewTrackSiguiente;
+    private ImageView imageViewTrackAnterior;
     private ToggleButton playPauseReproductorChico;
     public static final String FRAGMENT_HOME = "1";
     public static final String FRAGMENT_BOTTOM = "2";
@@ -88,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         playPauseReproductorChico.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!playPauseReproductorChico.isChecked()){
+                if (!playPauseReproductorChico.isChecked()) {
                     audioPlayer.start();
                     playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
                 } else {
@@ -97,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
                 }
             }
         });
-
 
 
         HomeFragment homeFragment = new HomeFragment();
@@ -134,8 +135,99 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         artistaReproductorChico = findViewById(R.id.activityMainTextViewArtistaPlayer);
         imagenReproductorChico = findViewById(R.id.activityMainImageViewPlayer);
         playPauseReproductorChico = findViewById(R.id.activityMainPlayPauseButtonPlayer);
+        imageViewTrackSiguiente = findViewById(R.id.activityMainNextButtonPlayer);
+        imageViewTrackAnterior = findViewById(R.id.activityMainPreviousButtonPlayer);
     }
 
+    private void setReproductorChico(final Track track, List<Track> trackList) {
+        this.listaDeReproduccion.clear();
+        this.listaDeReproduccion.addAll(trackList);
+        this.trackSonando = track;
+        this.playPauseReproductorChico.setChecked(false);
+        this.playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
+        Glide.with(this).load(trackSonando.getAlbum().getCover()).into(imagenReproductorChico);
+        trackReproductorChico.setText(trackSonando.getTitle());
+        artistaReproductorChico.setText(trackSonando.getArtist().getName());
+
+        imageViewTrackSiguiente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int trackActual = listaDeReproduccion.indexOf(trackSonando);
+                int trackSiguiente = trackActual + 1;
+                if ((trackSiguiente < listaDeReproduccion.size())) {
+                    if (audioPlayer != null) {
+                        if (audioPlayer.isPlaying()) {
+                            audioPlayer.stop();
+                        }
+                        audioPlayer.reset();
+
+                        Track nuevoTrackAReproducir = listaDeReproduccion.get(trackSiguiente);
+                        Glide.with(MainActivity.this)
+                                .setDefaultRequestOptions(Utils.requestOptionsCircularProgressBar(MainActivity.this))
+                                .load(nuevoTrackAReproducir.getAlbum().getCover())
+                                .into(imagenReproductorChico);
+                        trackReproductorChico.setText(nuevoTrackAReproducir.getTitle());
+                        artistaReproductorChico.setText(nuevoTrackAReproducir.getArtist().getName());
+                        trackSonando = nuevoTrackAReproducir;
+
+
+                        prepararTrackParaReproduccion(trackSiguiente);
+                        audioPlayer.start();
+                        agregarTrackAUltimosReproducidos(listaDeReproduccion.get(trackSiguiente));
+                    }
+                }
+            }
+        });
+        imageViewTrackAnterior.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int trackActual = listaDeReproduccion.indexOf(trackSonando);
+                int trackAnterior = trackActual - 1;
+                if (trackActual > 0) {
+                    if (audioPlayer != null) {
+                        if (audioPlayer.isPlaying()) {
+                            audioPlayer.stop();
+                        }
+                        audioPlayer.reset();
+
+                        Track nuevoTrackAReproducir = listaDeReproduccion.get(trackAnterior);
+                        Glide.with(MainActivity.this)
+                                .setDefaultRequestOptions(Utils.requestOptionsCircularProgressBar(MainActivity.this))
+                                .load(nuevoTrackAReproducir.getAlbum().getCover())
+                                .into(imagenReproductorChico);
+                        trackReproductorChico.setText(nuevoTrackAReproducir.getTitle());
+                        artistaReproductorChico.setText(nuevoTrackAReproducir.getArtist().getName());
+                        trackSonando = nuevoTrackAReproducir;
+
+
+                        prepararTrackParaReproduccion(trackAnterior);
+                        audioPlayer.start();
+                        agregarTrackAUltimosReproducidos(listaDeReproduccion.get(trackAnterior));
+                    }
+                }
+            }
+        });
+    }
+
+    private void prepararTrackParaReproduccion(Integer ordenTrackEnLista) {
+        Track track = this.listaDeReproduccion.get(ordenTrackEnLista);
+        try {
+            audioPlayer.setDataSource(this, Uri.parse(track.getPreview()));
+            audioPlayer.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void agregarTrackAUltimosReproducidos(Track track) {
+        TrackController trackController = new TrackController();
+        trackController.agregarTrackAUltimosReproducidos(track, firebaseUser, new ResultListener<Track>() {
+            @Override
+            public void finish(Track resultado) {
+                Toast.makeText(MainActivity.this, "Track agregado", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     @Override
     public void onClickRecomendadosDesdeHomeFragment(Track track, List<Track> trackList) {
@@ -154,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
     }
 
+
     @Override
     public void onClickUltimosReproducidosDesdeHomeFragment(Track track, List<Track> trackList) {
         setReproductorChico(track, trackList);
@@ -165,16 +258,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         startActivity(mainAPlayer);
     }
 
-    private void setReproductorChico(Track track, List<Track> trackList) {
-        this.listaDeReproduccion.clear();
-        this.listaDeReproduccion.addAll(trackList);
-        this.trackSonando = track;
-        this.playPauseReproductorChico.setChecked(false);
-        this.playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
-        Glide.with(this).load(trackSonando.getAlbum().getCover()).into(imagenReproductorChico);
-        trackReproductorChico.setText(trackSonando.getTitle());
-        artistaReproductorChico.setText(trackSonando.getArtist().getName());
-    }
 
     @Override
     public void onClickArtistaDesdeHomeFragment(Artist artist) {
@@ -306,13 +389,13 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         fragmentTransaction.commit();
     }
 
-    private void agregarFragmentNavegacion(Fragment fragment, String id){
+    private void agregarFragmentNavegacion(Fragment fragment, String id) {
         final FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.activityMain_contenedorDeFragments, fragment);
         final int count = fragmentManager.getBackStackEntryCount();
 
-        if( id.equals(FRAGMENT_BOTTOM) ) {
+        if (id.equals(FRAGMENT_BOTTOM)) {
             fragmentTransaction.addToBackStack(id);
         }
 
@@ -322,7 +405,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             @Override
             public void onBackStackChanged() {
                 // If the stack decreases it means I clicked the back button
-                if( fragmentManager.getBackStackEntryCount() <= count){
+                if (fragmentManager.getBackStackEntryCount() <= count) {
                     // pop all the fragment and remove the listener
                     fragmentManager.popBackStack(FRAGMENT_BOTTOM, POP_BACK_STACK_INCLUSIVE);
                     fragmentManager.removeOnBackStackChangedListener(this);
@@ -332,7 +415,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             }
         });
     }
-
 
 
     /**
@@ -409,10 +491,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     }
 
 
-
-
-
-
     //SEARCH FRAGMENT
     @Override
     public void onClickSearchFragment(Utils.Searchable searchable) {
@@ -440,7 +518,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     @Override
     public void onClickAlbumSearchInputFragment(Album album) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(FragmentTrackList.ALBUM,album);
+        bundle.putSerializable(FragmentTrackList.ALBUM, album);
         FragmentTrackList fragmentTrackList = new FragmentTrackList();
         fragmentTrackList.setArguments(bundle);
         addFragment(fragmentTrackList);
@@ -470,7 +548,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     @Override
     public void onClickAlbumSearchDetailFragment(Album album) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(FragmentTrackList.ALBUM,album);
+        bundle.putSerializable(FragmentTrackList.ALBUM, album);
         FragmentTrackList fragmentTrackList = new FragmentTrackList();
         fragmentTrackList.setArguments(bundle);
         addFragment(fragmentTrackList);
@@ -510,7 +588,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(audioPlayer.isPlaying()){
+        if (audioPlayer.isPlaying()) {
             audioPlayer.stop();
             audioPlayer.release();
         } else {
