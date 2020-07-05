@@ -53,7 +53,7 @@
         </activity>
 
         <receiver android:name=".service.NotificationActionService" />
-        <service android:name=".service.OnClearFromRecentService" />
+        <service android:name=".util.DrakePlayer" />
 
     </application>
 

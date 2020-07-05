@@ -32,7 +32,6 @@ import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.TrackController;
 import com.example.projectointegrador.databinding.ActivityPlayerBinding;
 import com.example.projectointegrador.model.Track;
-import com.example.projectointegrador.service.OnClearFromRecentService;
 import com.example.projectointegrador.util.DrakePlayer;
 import com.example.projectointegrador.util.Playable;
 import com.example.projectointegrador.util.ResultListener;
@@ -163,7 +162,13 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
         createChannel();
         registerReceiver(broadcastReceiver, new IntentFilter("TRACKS_TRACKS"));
-        startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
+
+        Intent intent = new Intent(PlayerActivity.this, DrakePlayer.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("lista", trackArrayList);
+        intent.putExtras(bundle);
+        //startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
+        startService(intent);
 
     }
 
@@ -174,9 +179,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         notificationManager = getSystemService(NotificationManager.class);
         if (notificationManager != null) {
             notificationManager.createNotificationChannel(channel);
-
         }
-
     }
 
     private void setListenersBotonesReproductor() {
