@@ -430,5 +430,11 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             indiceTemaNuevo = r.nextInt(cantTemas);
         }
         viewPager.setCurrentItem(indiceTemaNuevo);
+        audioPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                return true;
+            }
+        });
     }
 }
