@@ -8,32 +8,108 @@
     android:background="@color/primary"
     tools:context=".view.MainActivity">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/activityMain_contenedorDeFragments"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="9" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/activityMain_contenedorDeFragmentNoInet"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="9"
-            android:visibility="gone"/>
+            <FrameLayout
+                android:id="@+id/activityMain_contenedorDeFragments"
+                android:layout_width="match_parent"
+                android:layout_height="616dp"
+                android:layout_weight="9" />
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/activityMain_BottomNavigationView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/accent_elevation_app"
-            app:itemIconTint="@drawable/tab_color"
-            app:itemTextColor="@drawable/tab_color"
-            app:menu="@menu/bottom_navigation_menu" />
-    </LinearLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mainActivity_ReproductorChiquito"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="#2C2C2C"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/activityMainImageViewPlayer"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/charizardmusicpng"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/activityMainTextViewTrackPlayer"
+                    style="@style/celdahome_titulo_celda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Nombre Track"
+                    app:layout_constraintBottom_toTopOf="@id/activityMainTextViewArtistaPlayer"
+                    app:layout_constraintStart_toEndOf="@id/activityMainImageViewPlayer"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/activityMainTextViewArtistaPlayer"
+                    style="@style/celdahome_album_artista_celda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="Nombre artista"
+                    app:layout_constraintStart_toEndOf="@id/activityMainImageViewPlayer"
+                    app:layout_constraintTop_toBottomOf="@id/activityMainTextViewTrackPlayer" />
+
+                <ImageView
+                    android:id="@+id/activityMainPreviousButtonPlayer"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="5dp"
+                    android:src="@drawable/ic_skip_previous_black_24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/activityMainPlayPauseButtonPlayer"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ToggleButton
+                    android:id="@+id/activityMainPlayPauseButtonPlayer"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/ic_pause_circle_filled_black_24dp"
+                    android:textOff=""
+                    android:textOn=""
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/activityMainNextButtonPlayer"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/activityMainNextButtonPlayer"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/ic_skip_next_black_24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/activityMain_BottomNavigationView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/accent_elevation_app"
+                app:itemIconTint="@drawable/tab_color"
+                app:itemTextColor="@drawable/tab_color"
+                app:menu="@menu/bottom_navigation_menu" />
+        </LinearLayout>
+
+
+
+    </FrameLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

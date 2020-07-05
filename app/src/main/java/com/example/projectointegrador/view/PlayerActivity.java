@@ -1,16 +1,7 @@
 package com.example.projectointegrador.view;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.Intent;
-import android.media.AudioManager;
+import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,22 +14,33 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
+
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.TrackController;
 import com.example.projectointegrador.databinding.ActivityPlayerBinding;
 import com.example.projectointegrador.model.Track;
+import com.example.projectointegrador.util.DrakePlayer;
 import com.example.projectointegrador.util.ResultListener;
 import com.example.projectointegrador.view.adapter.ViewPagerAdapter;
 import com.example.projectointegrador.view.fragment.PlayerFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.seismic.ShakeDetector;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class PlayerActivity extends AppCompatActivity implements PlayerFragment.PlayerFragmentListener {
+public class PlayerActivity extends AppCompatActivity implements PlayerFragment.PlayerFragmentListener, ShakeDetector.Listener {
 
     public static final String KEY_TRACK = "track";
     public static final String KEY_LISTA = "lista";
@@ -58,7 +60,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     private ToggleButton buttonRepeat;
     private ToggleButton buttonShuffle;
     private ActivityPlayerBinding binding;
-
+    private static Boolean actividadActiva = false;
 
 
 
@@ -70,8 +72,12 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         View view = binding.getRoot();
         setContentView(view);
 
-
         setViews();
+
+        SensorManager sensorManager = (SensorManager)
+                getSystemService(SENSOR_SERVICE);
+        ShakeDetector shakeDetector = new ShakeDetector(this);
+        shakeDetector.start(sensorManager);
 
         setSupportActionBar(toolbar);
 
@@ -82,6 +88,20 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setTitle("");
         }
+
+        audioPlayer = DrakePlayer.getInstance().getMediaPlayer();
+        audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+            }
+        });
+        audioPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                return true;
+            }
+        });
 
         Intent desdeMain = getIntent();
         Bundle datosDesdeMain = desdeMain.getExtras();
@@ -107,7 +127,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-
             }
 
             @Override
@@ -117,10 +136,11 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                         audioPlayer.stop();
                     }
                     audioPlayer.reset();
-                    audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
                     prepararTrackParaReproduccion(position);
                     audioPlayer.start();
                     agregarTrackAUltimosReproducidos(trackArrayList.get(position));
+                    changeSeekbar();
                 }
 
             }
@@ -140,11 +160,9 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             @Override
             public void onClick(View v) {
                 if(!buttonPlay.isChecked()){
-                    if(audioPlayer == null){
-                        audioPlayer = new MediaPlayer();
-                        audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                    /*if(audioPlayer == null){
                         prepararTrackParaReproduccion(viewPager.getCurrentItem());
-                    }
+                    }*/
                     audioPlayer.start();
                     changeSeekbar();
                     buttonPlay.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
@@ -159,7 +177,9 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             @Override
             public void onClick(View v) {
                 int fragmentActual = viewPager.getCurrentItem();
-                viewPager.setCurrentItem(fragmentActual + 1);
+                if(fragmentActual + 1 != trackArrayList.size()){
+                    viewPager.setCurrentItem(fragmentActual + 1);
+                }
             }
         });
 
@@ -167,7 +187,9 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             @Override
             public void onClick(View v) {
                 int fragmentActual = viewPager.getCurrentItem();
-                viewPager.setCurrentItem(fragmentActual - 1);
+                if(fragmentActual != 0){
+                    viewPager.setCurrentItem(fragmentActual - 1);
+                }
             }
         });
 
@@ -177,25 +199,32 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                 if(buttonShuffle.isChecked()){
                     buttonShuffle.setBackground(getDrawable(R.drawable.ic_shuffle_accent_24dp));
                     final int cantTemas = trackArrayList.size();
-                    for (int i = 0; i < cantTemas; i++) {
-                        audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                            @Override
-                            public void onCompletion(MediaPlayer mp) {
-                                Random r = new Random();
-                                int indiceTemaNuevo = r.nextInt(cantTemas);
-                                viewPager.setCurrentItem(indiceTemaNuevo);
+                    audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            Random r = new Random();
+                            int indiceTemaNuevo = r.nextInt(cantTemas);
+                            while (indiceTemaNuevo == viewPager.getCurrentItem()) {
+                                indiceTemaNuevo = r.nextInt(cantTemas);
                             }
-                        });
-                    }
+                            viewPager.setCurrentItem(indiceTemaNuevo);
+                        }
+                    });
                 } else {
                     buttonShuffle.setBackground(getDrawable(R.drawable.ic_shuffle_black_24dp));
                     audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
-                            viewPager.setCurrentItem(viewPager.getCurrentItem());
+                            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
                         }
                     });
                 }
+                audioPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                    @Override
+                    public boolean onError(MediaPlayer mp, int what, int extra) {
+                        return true;
+                    }
+                });
             }
         });
 
@@ -214,8 +243,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     }
 
     private void setReproductor() {
-        audioPlayer = new MediaPlayer();
-        audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        audioPlayer.reset();
         prepararTrackParaReproduccion(viewPager.getCurrentItem());
 
         handler = new Handler();
@@ -223,9 +251,11 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                seekBar.setMax(mp.getDuration());
-                mp.start();
-                changeSeekbar();
+                if (actividadActiva){
+                    seekBar.setMax(mp.getDuration());
+                    mp.start();
+                    changeSeekbar();
+                }
             }
         });
 
@@ -262,7 +292,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                 handler.postDelayed(runnable, 100);
             }
         } catch (Exception e) {
-            audioPlayer.release();
+            e.printStackTrace();
         }
 
     }
@@ -282,7 +312,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         Track track = this.trackArrayList.get(ordenTrackEnLista);
         try {
             audioPlayer.setDataSource(this, Uri.parse(track.getPreview()));
-            audioPlayer.prepare();
+            audioPlayer.prepareAsync();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -348,12 +378,12 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         handler = null;
         runnable = null;
         seekBar = null;
-        if(audioPlayer.isPlaying()){
+        /*if(audioPlayer.isPlaying()){
             audioPlayer.stop();
             audioPlayer.release();
         } else {
             audioPlayer.release();
-        }
+        }*/
 
     }
 
@@ -363,6 +393,47 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             @Override
             public void finish(Track resultado) {
                 Toast.makeText(PlayerActivity.this, "Track agregado", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        actividadActiva = true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        actividadActiva = false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        Bundle datos = new Bundle();
+        datos.putSerializable(KEY_LISTA, trackArrayList);
+        datos.putSerializable(KEY_TRACK, trackArrayList.get(viewPager.getCurrentItem()));
+        intent.putExtras(datos);
+        setResult(RESULT_OK, intent);
+        super.onBackPressed();
+    }
+
+    @Override
+    public void hearShake() {
+        //Metodo que reprodusca un tema random de la Lista.
+        int cantTemas = trackArrayList.size();
+        Random r = new Random();
+        int indiceTemaNuevo = r.nextInt(cantTemas);
+        while (indiceTemaNuevo == viewPager.getCurrentItem()) {
+            indiceTemaNuevo = r.nextInt(cantTemas);
+        }
+        viewPager.setCurrentItem(indiceTemaNuevo);
+        audioPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                return true;
             }
         });
     }
