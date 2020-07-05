@@ -69,6 +69,7 @@ public class OnboardingActivity extends AppCompatActivity {
                     public void run() {
                         Intent intent = new Intent(OnboardingActivity.this, MainActivity.class);
                         startActivity(intent);
+                        finish();
                     }
                 }, 3000);
             }
