@@ -129,7 +129,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         viewPager.setCurrentItem(position);
 
 
-        setPlayer();
+        setPlayerInicio(trackArrayList);
 
         agregarTrackAUltimosReproducidos(trackArrayList.get(viewPager.getCurrentItem()));
 
@@ -142,18 +142,14 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
             @Override
             public void onPageSelected(int position) {
-                if (audioPlayer != null) {
+                /*if (audioPlayer != null) {
                     if (audioPlayer.isPlaying()) {
                         audioPlayer.stop();
                     }
-                    /*audioPlayer.reset();
-
-                    prepararTrackParaReproduccion(position);
-                    onTrackPlay();
-                    agregarTrackAUltimosReproducidos(trackArrayList.get(position));
-                    changeSeekbar();*/
-                    setPlayer();
-                }
+                    setPlayer(trackArrayList);
+                }*/
+                PlayerActivity.this.position = position;
+                setPlayerTemaNuevo(position);
 
             }
 
@@ -180,7 +176,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             notificationManager.createNotificationChannel(channel);
 
         }
-
 
     }
 
@@ -351,7 +346,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                 }
             }
         });
-
     }
 
     @Override
@@ -441,10 +435,9 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     };
 
     @Override
-    public void setPlayer() {
+    public void setPlayerTemaNuevo(Integer posicionNueva) {
         audioPlayer.reset();
-        prepararTrackParaReproduccion(viewPager.getCurrentItem());
-        position = viewPager.getCurrentItem();
+        prepararTrackParaReproduccion(posicionNueva);
 
         handler = new Handler();
 
@@ -479,16 +472,59 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     }
 
     @Override
+    public void setPlayerInicio(ArrayList<Track> trackList) {
+        //position = viewPager.getCurrentItem();
+        audioPlayer.reset();
+        prepararTrackParaReproduccion(position);
+
+        handler = new Handler();
+
+        audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                if (actividadActiva) {
+                    seekBar.setMax(mp.getDuration());
+                    onTrackPlay();
+                }
+            }
+        });
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    audioPlayer.seekTo(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+
+
+
+    @Override
     public void onTrackPrevious() {
 
         position--;
         CreateNotification.createNotification(PlayerActivity.this, trackArrayList.get(position),
                 R.drawable.ic_pause_circle_filled_black_24dp,
                 position, trackArrayList.size() - 1);
-        int fragmentActual = viewPager.getCurrentItem();
+
+        /*int fragmentActual = viewPager.getCurrentItem();
         if (fragmentActual != 0) {
             viewPager.setCurrentItem(fragmentActual - 1);
-        }
+        }*/
+        viewPager.setCurrentItem(position);
+        setPlayerTemaNuevo(position);
 
     }
 
@@ -519,9 +555,12 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         CreateNotification.createNotification(PlayerActivity.this, trackArrayList.get(position),
                 R.drawable.ic_pause_circle_filled_black_24dp,
                 position, trackArrayList.size() - 1);
-        int fragmentActual = viewPager.getCurrentItem();
+        /*int fragmentActual = viewPager.getCurrentItem();
         if (fragmentActual + 1 != trackArrayList.size()) {
             viewPager.setCurrentItem(fragmentActual + 1);
-        }
+        }*/
+        viewPager.setCurrentItem(position);
+        setPlayerTemaNuevo(position);
+
     }
 }
