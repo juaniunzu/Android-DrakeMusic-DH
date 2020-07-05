@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.ShareActionProvider;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -61,6 +62,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     private ToggleButton buttonShuffle;
     private ActivityPlayerBinding binding;
     private static Boolean actividadActiva = false;
+    private ShakeDetector shakeDetector = new ShakeDetector(this);
 
 
 
@@ -76,7 +78,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
         SensorManager sensorManager = (SensorManager)
                 getSystemService(SENSOR_SERVICE);
-        ShakeDetector shakeDetector = new ShakeDetector(this);
+
         shakeDetector.start(sensorManager);
 
         setSupportActionBar(toolbar);
@@ -407,6 +409,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     protected void onStop() {
         super.onStop();
         actividadActiva = false;
+        shakeDetector.stop();
     }
 
     @Override
