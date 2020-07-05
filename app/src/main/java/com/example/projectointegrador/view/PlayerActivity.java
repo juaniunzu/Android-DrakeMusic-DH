@@ -9,7 +9,6 @@ import android.content.IntentFilter;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
@@ -21,7 +20,6 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -131,7 +129,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         viewPager.setCurrentItem(position);
 
 
-        setReproductor();
+        setPlayer();
 
         agregarTrackAUltimosReproducidos(trackArrayList.get(viewPager.getCurrentItem()));
 
@@ -148,12 +146,13 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                     if (audioPlayer.isPlaying()) {
                         audioPlayer.stop();
                     }
-                    audioPlayer.reset();
+                    /*audioPlayer.reset();
 
                     prepararTrackParaReproduccion(position);
                     onTrackPlay();
                     agregarTrackAUltimosReproducidos(trackArrayList.get(position));
-                    changeSeekbar();
+                    changeSeekbar();*/
+                    setPlayer();
                 }
 
             }
@@ -264,43 +263,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         });
     }
 
-    private void setReproductor() {
-        audioPlayer.reset();
-        prepararTrackParaReproduccion(viewPager.getCurrentItem());
-
-        handler = new Handler();
-
-        audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                if (actividadActiva) {
-                    seekBar.setMax(mp.getDuration());
-                    mp.start();
-                    changeSeekbar();
-                }
-            }
-        });
-
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser) {
-                    audioPlayer.seekTo(progress);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-    }
-
     private void changeSeekbar() {
         try {
             seekBar.setProgress(audioPlayer.getCurrentPosition());
@@ -339,7 +301,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             e.printStackTrace();
         }
     }
-
 
     private List<Fragment> generarFragments(List<Track> listaDeTracks) {
         List<Fragment> listaADevolver = new ArrayList<>();
@@ -478,6 +439,44 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             }
         }
     };
+
+    @Override
+    public void setPlayer() {
+        audioPlayer.reset();
+        prepararTrackParaReproduccion(viewPager.getCurrentItem());
+        position = viewPager.getCurrentItem();
+
+        handler = new Handler();
+
+        audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                if (actividadActiva) {
+                    seekBar.setMax(mp.getDuration());
+                    onTrackPlay();
+                }
+            }
+        });
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    audioPlayer.seekTo(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
 
     @Override
     public void onTrackPrevious() {
