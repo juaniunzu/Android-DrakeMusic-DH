@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.SeekBar;
-import android.widget.ShareActionProvider;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -36,6 +35,7 @@ import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.util.DrakePlayer;
 import com.example.projectointegrador.util.Playable;
 import com.example.projectointegrador.util.ResultListener;
+import com.example.projectointegrador.util.Utils;
 import com.example.projectointegrador.view.adapter.ViewPagerAdapter;
 import com.example.projectointegrador.view.fragment.PlayerFragment;
 import com.example.projectointegrador.view.notification.CreateNotification;
@@ -293,12 +293,17 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
     private void prepararTrackParaReproduccion(Integer ordenTrackEnLista) {
         Track track = this.trackArrayList.get(ordenTrackEnLista);
-        try {
-            audioPlayer.setDataSource(this, Uri.parse(track.getPreview()));
-            audioPlayer.prepareAsync();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(Utils.hayInternet(this)){
+            try {
+                audioPlayer.setDataSource(this, Uri.parse(track.getPreview()));
+                audioPlayer.prepareAsync();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            onBackPressed();
         }
+
     }
 
     private List<Fragment> generarFragments(List<Track> listaDeTracks) {

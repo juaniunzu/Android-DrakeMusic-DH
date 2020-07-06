@@ -1,14 +1,5 @@
 package com.example.projectointegrador.view;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -19,6 +10,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
@@ -178,7 +178,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         this.playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
         Glide.with(this).load(trackSonando.getAlbum().getCover()).into(imagenReproductorChico);
         trackReproductorChico.setText(trackSonando.getTitle());
+        trackReproductorChico.setSelected(true);
         artistaReproductorChico.setText(trackSonando.getArtist().getName());
+        artistaReproductorChico.setSelected(true);
 
         imageViewTrackSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -260,12 +262,19 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
     private void prepararTrackParaReproduccion(Integer ordenTrackEnLista) {
         Track track = this.listaDeReproduccion.get(ordenTrackEnLista);
-        try {
-            audioPlayer.setDataSource(this, Uri.parse(track.getPreview()));
-            audioPlayer.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(Utils.hayInternet(this)){
+            try {
+                audioPlayer.setDataSource(this, Uri.parse(track.getPreview()));
+                audioPlayer.prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            bottomNavigationView.setVisibility(View.GONE);
+            reproductorChico.setVisibility(View.GONE);
+            setFragmentInicialNoInet(new NoInetFragment());
         }
+
     }
 
     private void agregarTrackAUltimosReproducidos(Track track) {

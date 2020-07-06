@@ -45,22 +45,31 @@
                 <TextView
                     android:id="@+id/activityMainTextViewTrackPlayer"
                     style="@style/celdahome_titulo_celda"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:ellipsize="marquee"
+                    android:singleLine="true"
                     android:text="Nombre Track"
+                    android:marqueeRepeatLimit="marquee_forever"
                     app:layout_constraintBottom_toTopOf="@id/activityMainTextViewArtistaPlayer"
+                    app:layout_constraintEnd_toStartOf="@id/activityMainPreviousButtonPlayer"
                     app:layout_constraintStart_toEndOf="@id/activityMainImageViewPlayer"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/activityMainTextViewArtistaPlayer"
                     style="@style/celdahome_album_artista_celda"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text="Nombre artista"
+                    app:layout_constraintEnd_toStartOf="@id/activityMainPreviousButtonPlayer"
                     app:layout_constraintStart_toEndOf="@id/activityMainImageViewPlayer"
                     app:layout_constraintTop_toBottomOf="@id/activityMainTextViewTrackPlayer" />
 
@@ -107,7 +116,6 @@
                 app:itemTextColor="@drawable/tab_color"
                 app:menu="@menu/bottom_navigation_menu" />
         </LinearLayout>
-
 
 
     </FrameLayout>
