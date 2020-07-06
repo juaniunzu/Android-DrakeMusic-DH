@@ -142,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.makeText(LoginActivity.this, "Email o contraseña Incorrectos",
                                     Toast.LENGTH_SHORT).show();
                             updateUIFirebase(null);
                             // ...
@@ -260,7 +260,14 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
 
     @Override
     public void onClickLoginFragmentBotonLogin(String username, String password) {
-
+        if (username.isEmpty() || username.contains(" ") || !username.contains("@") || !(username.contains(".com") || username.contains(".net") || username.contains(".org"))) {
+            Toast.makeText(this, "Email o Contraseña Incorrectos", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (password.length() < 6){
+            Toast.makeText(this, "Email o Contraseña Incorrectos", Toast.LENGTH_SHORT).show();
+            return;
+        }
         loginFirebaseUser(username, password);
     }
 
@@ -337,7 +344,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
     //chequeos de mail y contraseña firebase
     @Override
     public void onClickSignUpFragmentBotonRegistrarse(String username, String password) {
-        if (username.isEmpty() || username.contains(" ") && !username.contains("@") && (!username.contains(".com") || !username.contains(".net") || !username.contains(".org"))) {
+        if (username.isEmpty() || username.contains(" ") || !username.contains("@") || !(username.contains(".com") || username.contains(".net") || username.contains(".org"))) {
             Toast.makeText(this, "El Email no es Valido", Toast.LENGTH_SHORT).show();
             return;
         }
