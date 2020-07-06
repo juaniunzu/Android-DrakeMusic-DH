@@ -33,6 +33,7 @@
     <string name="encontramusica">Encontra tu musica, nosotros te la guardamos!</string>
     <string name="cerrar_sesion">Cerrar sesion</string>
     <string name="google_idClient" translatable="false">88469903863-biig4dudq9kgk78pvb3r512a16dsk7fq.apps.googleusercontent.com</string>
+    <string name="Email">Email</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

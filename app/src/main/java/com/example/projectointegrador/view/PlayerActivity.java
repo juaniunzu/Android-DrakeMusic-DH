@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.ShareActionProvider;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -72,6 +73,11 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     private Track trackClickeado;
     private int position = 0;
     private boolean isPlaying = false;
+    private ShakeDetector shakeDetector = new ShakeDetector(this);
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +90,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
         SensorManager sensorManager = (SensorManager)
                 getSystemService(SENSOR_SERVICE);
-        ShakeDetector shakeDetector = new ShakeDetector(this);
+
         shakeDetector.start(sensorManager);
 
         setSupportActionBar(toolbar);
@@ -141,12 +147,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
             @Override
             public void onPageSelected(int position) {
-                /*if (audioPlayer != null) {
-                    if (audioPlayer.isPlaying()) {
-                        audioPlayer.stop();
-                    }
-                    setPlayer(trackArrayList);
-                }*/
+               
                 PlayerActivity.this.position = position;
                 setPlayerTemaNuevo(position);
 
@@ -389,6 +390,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     protected void onStop() {
         super.onStop();
         actividadActiva = false;
+        shakeDetector.stop();
     }
 
     @Override
@@ -527,11 +529,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         CreateNotification.createNotification(PlayerActivity.this, trackArrayList.get(position),
                 R.drawable.ic_pause_circle_filled_black_24dp,
                 position, trackArrayList.size() - 1);
-
-        /*int fragmentActual = viewPager.getCurrentItem();
-        if (fragmentActual != 0) {
-            viewPager.setCurrentItem(fragmentActual - 1);
-        }*/
         viewPager.setCurrentItem(position);
         setPlayerTemaNuevo(position);
 
@@ -564,10 +561,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         CreateNotification.createNotification(PlayerActivity.this, trackArrayList.get(position),
                 R.drawable.ic_pause_circle_filled_black_24dp,
                 position, trackArrayList.size() - 1);
-        /*int fragmentActual = viewPager.getCurrentItem();
-        if (fragmentActual + 1 != trackArrayList.size()) {
-            viewPager.setCurrentItem(fragmentActual + 1);
-        }*/
+       
         viewPager.setCurrentItem(position);
         setPlayerTemaNuevo(position);
 

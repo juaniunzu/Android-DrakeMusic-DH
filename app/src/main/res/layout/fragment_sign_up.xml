@@ -119,7 +119,7 @@
             android:id="@+id/fragmentSignup_TextInputEditTextUsername"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/Usuario"
+            android:hint="@string/Email"
             android:inputType="textEmailAddress"
             android:textColor="@color/text_subtitles"
             android:textColorHint="#000" />
