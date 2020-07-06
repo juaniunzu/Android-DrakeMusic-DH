@@ -11,16 +11,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.model.Busqueda;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.HistorialViewHolder> {
 
     private List<Busqueda> busquedaList;
+    private HistorialAdapterListener listener;
 
-    public HistorialAdapter(List<Busqueda> busquedaList) {
+    public HistorialAdapter(List<Busqueda> busquedaList, HistorialAdapterListener listener) {
         this.busquedaList = busquedaList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -50,10 +50,22 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.Hist
         public HistorialViewHolder(@NonNull View itemView) {
             super(itemView);
             tv = itemView.findViewById(R.id.tvceldahistorial);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Busqueda busqueda = busquedaList.get(getAdapterPosition());
+                    listener.onClickBusqueda(busqueda);
+                }
+            });
         }
 
         public void onBind(Busqueda busqueda) {
             tv.setText(busqueda.getBusqueda());
         }
+    }
+
+    public interface HistorialAdapterListener {
+        void onClickBusqueda (Busqueda busqueda);
     }
 }
