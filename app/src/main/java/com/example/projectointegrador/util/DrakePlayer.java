@@ -1,12 +1,18 @@
 package com.example.projectointegrador.util;
 
+import android.app.Service;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.IBinder;
 
-public class DrakePlayer {
+import androidx.annotation.Nullable;
+
+public class DrakePlayer extends Service {
 
     private static MediaPlayer mediaPlayer;
     private static DrakePlayer instance;
+    private static final String HOLA = "hola";
 
     public static DrakePlayer getInstance() {
         if (instance == null) {
@@ -20,5 +26,28 @@ public class DrakePlayer {
 
     public MediaPlayer getMediaPlayer() {
         return mediaPlayer;
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        return START_STICKY;
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        stopSelf();
     }
 }
