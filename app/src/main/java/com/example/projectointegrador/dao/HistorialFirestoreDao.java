@@ -1,22 +1,20 @@
 package com.example.projectointegrador.dao;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.example.projectointegrador.model.Busqueda;
 import com.example.projectointegrador.util.ResultListener;
-import com.example.projectointegrador.view.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.text.CollationElementIterator;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +33,7 @@ public class HistorialFirestoreDao {
         db.collection(COLECC_HISTORY)
                 .document(firebaseUser.getUid())
                 .collection(MI_HISTORIAL)
-                .document()
+                .document(busqueda.getBusqueda())
                 .set(busqueda)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -49,6 +47,7 @@ public class HistorialFirestoreDao {
         db.collection(COLECC_HISTORY)
                 .document(firebaseUser.getUid())
                 .collection(MI_HISTORIAL)
+                .orderBy("date", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -65,16 +64,16 @@ public class HistorialFirestoreDao {
                 });
     }
 
-    public void borrarHistorial(FirebaseUser firebaseUser, final Context context){
+    public void borrarItemHistorial(FirebaseUser firebaseUser, final Context context, Busqueda busqueda, ResultListener<Task<Void>> listener){
         db.collection(COLECC_HISTORY)
                 .document(firebaseUser.getUid())
                 .collection(MI_HISTORIAL)
-                .document()
+                .document(busqueda.getBusqueda())
                 .delete()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(context, "Historial eliminado", Toast.LENGTH_SHORT).show();
+                        listener.finish(task);
                     }
                 });
     }

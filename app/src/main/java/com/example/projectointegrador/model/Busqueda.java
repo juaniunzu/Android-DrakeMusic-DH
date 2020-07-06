@@ -1,11 +1,16 @@
 package com.example.projectointegrador.model;
 
 
+import com.google.firebase.firestore.ServerTimestamp;
+
 import java.io.Serializable;
+import java.util.Date;
 
 public class Busqueda implements Serializable {
 
     private String busqueda;
+    @ServerTimestamp
+    private Date date;
 
     public Busqueda() {
     }
@@ -22,4 +27,11 @@ public class Busqueda implements Serializable {
         this.busqueda = busqueda;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }

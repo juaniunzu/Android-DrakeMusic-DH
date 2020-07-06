@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Proyecto Integrador</string>
     <string name="recomendados">Recomendados</string>
     <string name="ultimas_reproducciones">Ultimas Reproducciones</string>
-    <string name="artistas">Artistas</string>
-    <string name="albumes">Albumes</string>
+    <string name="artistas">Top Artistas</string>
+    <string name="albumes">Top Albumes</string>
     <string name="template_artista">"Artista: %s"</string>
     <string name="template_titulo">"Titulo: %s"</string>
     <string name="template_album">"Album: %s"</string>

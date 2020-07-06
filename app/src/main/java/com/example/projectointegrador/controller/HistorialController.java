@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.projectointegrador.dao.HistorialFirestoreDao;
 import com.example.projectointegrador.model.Busqueda;
 import com.example.projectointegrador.util.ResultListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
@@ -35,7 +36,12 @@ public class HistorialController {
         });
     }
 
-    public void borrarHistorial(FirebaseUser firebaseUser, Context context){
-        historialFirestoreDao.borrarHistorial(firebaseUser, context);
+    public void borrarItemHistorial(FirebaseUser firebaseUser, Context context, Busqueda busqueda, ResultListener<Task<Void>> listener){
+        historialFirestoreDao.borrarItemHistorial(firebaseUser, context, busqueda, new ResultListener<com.google.android.gms.tasks.Task<Void>>() {
+            @Override
+            public void finish(com.google.android.gms.tasks.Task<Void> resultado) {
+                listener.finish(resultado);
+            }
+        });
     }
 }

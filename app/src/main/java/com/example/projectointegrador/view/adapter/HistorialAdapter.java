@@ -3,6 +3,7 @@ package com.example.projectointegrador.view.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,16 +47,26 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.Hist
     protected class HistorialViewHolder extends RecyclerView.ViewHolder{
 
         private TextView tv;
+        private ImageView iv;
 
         public HistorialViewHolder(@NonNull View itemView) {
             super(itemView);
             tv = itemView.findViewById(R.id.tvceldahistorial);
+            iv = itemView.findViewById(R.id.celdaHistorialBorrarBusquedaIndividual);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Busqueda busqueda = busquedaList.get(getAdapterPosition());
                     listener.onClickBusqueda(busqueda);
+                }
+            });
+
+            iv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Busqueda busqueda = busquedaList.get(getAdapterPosition());
+                    listener.onClickBorrarBusqueda(busqueda);
                 }
             });
         }
@@ -67,5 +78,6 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.Hist
 
     public interface HistorialAdapterListener {
         void onClickBusqueda (Busqueda busqueda);
+        void onClickBorrarBusqueda(Busqueda busqueda);
     }
 }

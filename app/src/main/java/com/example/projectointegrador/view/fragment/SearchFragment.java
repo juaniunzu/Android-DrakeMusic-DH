@@ -2,22 +2,23 @@ package com.example.projectointegrador.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.projectointegrador.controller.HistorialController;
 import com.example.projectointegrador.databinding.FragmentSearchBinding;
 import com.example.projectointegrador.model.Busqueda;
+import com.example.projectointegrador.util.ResultListener;
 import com.example.projectointegrador.util.Utils;
 import com.example.projectointegrador.view.adapter.HistorialAdapter;
 import com.example.projectointegrador.view.adapter.SearchAdapter;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -88,10 +89,30 @@ public class SearchFragment extends Fragment implements SearchAdapter.SearchAdap
         listener.onClickHistorialSearchFragment(busqueda);
     }
 
+    @Override
+    public void onClickBorrarBusqueda(Busqueda busqueda) {
+        HistorialController historialController = new HistorialController();
+        historialController.borrarItemHistorial(firebaseUser, getContext(), busqueda, new ResultListener<Task<Void>>() {
+            @Override
+            public void finish(Task<Void> resultado) {
+                historialController.getHistorial(firebaseUser, new ResultListener<List<Busqueda>>() {
+                    @Override
+                    public void finish(List<Busqueda> resultado) {
+                        HistorialAdapter historialAdapter = new HistorialAdapter(resultado, SearchFragment.this);
+                        LinearLayoutManager llm = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+                        binding.fragmentSearchRecyclerView.setAdapter(historialAdapter);
+                        binding.fragmentSearchRecyclerView.setLayoutManager(llm);
+                    }
+                });
+            }
+        });
+    }
+
     public interface SearchFragmentListener{
         void onClickSearchFragment(Utils.Searchable searchable);
         void onClickSearchFragment();
         void onClickHistorialSearchFragment(Busqueda busqueda);
+
     }
 
     @Override

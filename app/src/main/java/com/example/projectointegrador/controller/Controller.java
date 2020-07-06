@@ -202,12 +202,6 @@ public class Controller {
         });
     }
 
-    public void borrarHistorial(FirebaseUser firebaseUser, Context context){
-        historialFirestoreDao.borrarHistorial(firebaseUser, context);
-    }
-
-
-
     public void getTracks(Context context, final ResultListener<List<Track>> listenerDeLaVista) {
         boolean hayInternet = Utils.hayInternet(context);
         if (hayInternet) {
