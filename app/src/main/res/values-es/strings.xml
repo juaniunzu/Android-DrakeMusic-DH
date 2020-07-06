@@ -31,5 +31,6 @@
     <string name="encontramusica">Encontra tu musica, nosotros te la guardamos!</string>
     <string name="cerrar_sesion">Cerrar sesión</string>
     <string name="Email">Email</string>
+    <string name="busquedas_recientes">Búsquedas recientes</string>
 
 </resources>
