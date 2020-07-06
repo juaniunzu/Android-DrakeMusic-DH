@@ -27,8 +27,10 @@ import com.example.projectointegrador.util.ResultListener;
 import com.example.projectointegrador.view.adapter.AlbumSearchAdapter;
 import com.example.projectointegrador.view.adapter.ArtistSearchAdapter;
 import com.example.projectointegrador.view.adapter.TrackSearchAdapter;
+import com.google.android.gms.dynamic.IFragmentWrapper;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.example.projectointegrador.view.fragment.SearchDetailFragment.TYPE_ALBUM;
 import static com.example.projectointegrador.view.fragment.SearchDetailFragment.TYPE_ARTIST;
@@ -36,9 +38,9 @@ import static com.example.projectointegrador.view.fragment.SearchDetailFragment.
 
 
 public class SearchInputFragment extends Fragment implements
-                                                    AlbumSearchAdapter.AlbumSearchAdapterListener,
-                                                    ArtistSearchAdapter.ArtistSearchAdapterListener,
-                                                    TrackSearchAdapter.TrackSearchAdapterListener {
+        AlbumSearchAdapter.AlbumSearchAdapterListener,
+        ArtistSearchAdapter.ArtistSearchAdapterListener,
+        TrackSearchAdapter.TrackSearchAdapterListener {
 
     private String query;
     private SearchInputFragmentListener listener;
@@ -92,40 +94,56 @@ public class SearchInputFragment extends Fragment implements
             @Override
             public boolean onQueryTextChange(String newText) {
                 query = newText;
-                binding.fragmentSearchInputTextViewAlbums.setVisibility(View.VISIBLE);
-                binding.fragmentSearchInputTextViewArtistas.setVisibility(View.VISIBLE);
-                binding.fragmentSearchInputTextViewTracks.setVisibility(View.VISIBLE);
 
-                    albumController.buscarAlbumes(getContext(), newText, LIMIT_RESULTS, new ResultListener<ResponseAlbum>() {
-                        @Override
-                        public void finish(ResponseAlbum resultado) {
-                            AlbumSearchAdapter albumSearchAdapter = new AlbumSearchAdapter(resultado.getAlbumes(), false, SearchInputFragment.this);
-                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL, false);
-                            binding.fragmentSearchInputRecyclerViewAlbums.setLayoutManager(linearLayoutManager);
-                            binding.fragmentSearchInputRecyclerViewAlbums.setAdapter(albumSearchAdapter);
+                albumController.buscarAlbumes(getContext(), newText, LIMIT_RESULTS, new ResultListener<ResponseAlbum>() {
+                    @Override
+                    public void finish(ResponseAlbum resultado) {
+                        AlbumSearchAdapter albumSearchAdapter = new AlbumSearchAdapter(resultado.getAlbumes(), false, SearchInputFragment.this);
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                        binding.fragmentSearchInputRecyclerViewAlbums.setLayoutManager(linearLayoutManager);
+                        binding.fragmentSearchInputRecyclerViewAlbums.setAdapter(albumSearchAdapter);
+                        if (albumSearchAdapter.getItemCount() != 0){
+                            binding.fragmentSearchInputTextViewAlbums.setVisibility(View.VISIBLE);
                         }
-                    });
+                        else {
+                            binding.fragmentSearchInputTextViewAlbums.setVisibility(View.GONE);
+                        }
+                    }
+                });
 
-                    artistController.buscarArtistas(getContext(), newText, LIMIT_RESULTS, new ResultListener<ResponseArtist>() {
-                        @Override
-                        public void finish(ResponseArtist resultado) {
-                            ArtistSearchAdapter artistSearchAdapter = new ArtistSearchAdapter(resultado.getArtistas(), false, SearchInputFragment.this);
-                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
-                            binding.fragmentSearchInputRecyclerViewArtists.setAdapter(artistSearchAdapter);
-                            binding.fragmentSearchInputRecyclerViewArtists.setLayoutManager(linearLayoutManager);
+                artistController.buscarArtistas(getContext(), newText, LIMIT_RESULTS, new ResultListener<ResponseArtist>() {
+                    @Override
+                    public void finish(ResponseArtist resultado) {
+                        ArtistSearchAdapter artistSearchAdapter = new ArtistSearchAdapter(resultado.getArtistas(), false, SearchInputFragment.this);
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                        binding.fragmentSearchInputRecyclerViewArtists.setAdapter(artistSearchAdapter);
+                        binding.fragmentSearchInputRecyclerViewArtists.setLayoutManager(linearLayoutManager);
+                        if (artistSearchAdapter.getItemCount() != 0){
+                            binding.fragmentSearchInputTextViewArtistas.setVisibility(View.VISIBLE);
                         }
-                    });
+                        else {
+                            binding.fragmentSearchInputTextViewArtistas.setVisibility(View.GONE);
+                        }
+                    }
+                });
 
-                    trackController.buscarTracks(getContext(), newText, LIMIT_RESULTS, new ResultListener<ResponseTrack>() {
-                        @Override
-                        public void finish(ResponseTrack resultado) {
-                            TrackSearchAdapter trackSearchAdapter = new TrackSearchAdapter(resultado.getTracks(), false, SearchInputFragment.this);
-                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                            binding.fragmentSearchInputRecyclerViewTracks.setAdapter(trackSearchAdapter);
-                            binding.fragmentSearchInputRecyclerViewTracks.setLayoutManager(linearLayoutManager);
+                trackController.buscarTracks(getContext(), newText, LIMIT_RESULTS, new ResultListener<ResponseTrack>() {
+                    @Override
+                    public void finish(ResponseTrack resultado) {
+                        TrackSearchAdapter trackSearchAdapter = new TrackSearchAdapter(resultado.getTracks(), false, SearchInputFragment.this);
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                        binding.fragmentSearchInputRecyclerViewTracks.setAdapter(trackSearchAdapter);
+                        binding.fragmentSearchInputRecyclerViewTracks.setLayoutManager(linearLayoutManager);
+                        if (trackSearchAdapter.getItemCount() != 0){
+                            binding.fragmentSearchInputTextViewTracks.setVisibility(View.VISIBLE);
                         }
-                    });
-                return true;
+                        else {
+                            binding.fragmentSearchInputTextViewTracks.setVisibility(View.GONE);
+                        }
+                    }
+                });
+
+                return false;
             }
         });
 
@@ -136,7 +154,7 @@ public class SearchInputFragment extends Fragment implements
         binding.fragmentSearchInputTextViewArtistas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (query.length() != 0){
+                if (query.length() != 0) {
                     listener.onClickFiltroVerTodo(query, TYPE_ARTIST);
                 }
             }
@@ -145,7 +163,7 @@ public class SearchInputFragment extends Fragment implements
         binding.fragmentSearchInputTextViewAlbums.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (query.length() != 0){
+                if (query.length() != 0) {
                     listener.onClickFiltroVerTodo(query, TYPE_ALBUM);
                 }
             }
@@ -154,15 +172,15 @@ public class SearchInputFragment extends Fragment implements
         binding.fragmentSearchInputTextViewTracks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (query.length() != 0){
+                if (query.length() != 0) {
                     listener.onClickFiltroVerTodo(query, TYPE_TRACK);
                 }
             }
         });
 
-        if (getArguments() != null){
+        if (getArguments() != null) {
             Busqueda busqueda = (Busqueda) getArguments().getSerializable(KEY_BUSQUEDA);
-            binding.fragmentSearchInputSearchView.setQuery(busqueda.getBusqueda(),true);
+            binding.fragmentSearchInputSearchView.setQuery(busqueda.getBusqueda(), true);
         }
 
         return view;
@@ -185,9 +203,13 @@ public class SearchInputFragment extends Fragment implements
 
     public interface SearchInputFragmentListener {
         void onClickFiltroVerTodo(String query, String type);
-        void onClickAlbumSearchInputFragment (Album album);
-        void onClickArtistSearchInputFragment (Artist artist);
-        void onClickTrackSearchInputFragment (Track track, List<Track> trackList);
+
+        void onClickAlbumSearchInputFragment(Album album);
+
+        void onClickArtistSearchInputFragment(Artist artist);
+
+        void onClickTrackSearchInputFragment(Track track, List<Track> trackList);
+
         void agregarBusquedaAlHistorial(Busqueda busqueda);
     }
 }
