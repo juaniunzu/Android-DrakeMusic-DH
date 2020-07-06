@@ -8,8 +8,11 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
+import java.util.List;
+
 public class DrakePlayer extends Service {
 
+    private static List<String> trackList;
     private static MediaPlayer mediaPlayer;
     private static DrakePlayer instance;
     private static final String HOLA = "hola";
