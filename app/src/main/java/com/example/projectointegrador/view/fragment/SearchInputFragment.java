@@ -43,6 +43,7 @@ public class SearchInputFragment extends Fragment implements
     private String query;
     private SearchInputFragmentListener listener;
     private static final String LIMIT_RESULTS = "2";
+    public static final String KEY_BUSQUEDA = "busqueda";
 
     private FragmentSearchInputBinding binding;
 
@@ -158,6 +159,11 @@ public class SearchInputFragment extends Fragment implements
                 }
             }
         });
+
+        if (getArguments() != null){
+            Busqueda busqueda = (Busqueda) getArguments().getSerializable(KEY_BUSQUEDA);
+            binding.fragmentSearchInputSearchView.setQuery(busqueda.getBusqueda(),true);
+        }
 
         return view;
     }

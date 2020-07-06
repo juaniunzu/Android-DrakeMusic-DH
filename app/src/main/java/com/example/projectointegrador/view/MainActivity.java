@@ -56,6 +56,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.IOException;
+import java.nio.BufferUnderflowException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -65,6 +66,7 @@ import static com.example.projectointegrador.view.PlayerActivity.KEY_LISTA;
 import static com.example.projectointegrador.view.PlayerActivity.KEY_TRACK;
 import static com.example.projectointegrador.view.fragment.SearchDetailFragment.KEY_QUERY;
 import static com.example.projectointegrador.view.fragment.SearchDetailFragment.KEY_TYPE;
+import static com.example.projectointegrador.view.fragment.SearchInputFragment.KEY_BUSQUEDA;
 
 public class MainActivity extends AppCompatActivity implements HomeFragment.FragmentHomeListener,
         DetailArtistFragment.FragmentArtistDetailListener,
@@ -612,7 +614,16 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     @Override
     public void onClickSearchFragment() {
         SearchInputFragment searchInputFragment = new SearchInputFragment();
-        addFragment(searchInputFragment);//todo
+        addFragment(searchInputFragment);
+    }
+
+    @Override
+    public void onClickHistorialSearchFragment(Busqueda busqueda) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(KEY_BUSQUEDA, busqueda);
+        SearchInputFragment searchInputFragment = new SearchInputFragment();
+        searchInputFragment.setArguments(bundle);
+        addFragment(searchInputFragment);
     }
 
 

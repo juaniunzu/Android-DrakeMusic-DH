@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.projectointegrador.controller.HistorialController;
 import com.example.projectointegrador.databinding.FragmentSearchBinding;
+import com.example.projectointegrador.model.Busqueda;
 import com.example.projectointegrador.util.Utils;
 import com.example.projectointegrador.view.adapter.HistorialAdapter;
 import com.example.projectointegrador.view.adapter.SearchAdapter;
@@ -25,7 +26,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchFragment extends Fragment implements SearchAdapter.SearchAdapterListener {
+public class SearchFragment extends Fragment implements SearchAdapter.SearchAdapterListener, HistorialAdapter.HistorialAdapterListener {
 
     private List<Utils.Searchable> searchableList;
     private SearchFragmentListener listener;
@@ -65,7 +66,7 @@ public class SearchFragment extends Fragment implements SearchAdapter.SearchAdap
         HistorialController historialController = new HistorialController();
         historialController.getHistorial(firebaseUser, resultado -> {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-            HistorialAdapter historialAdapter = new HistorialAdapter(resultado);
+            HistorialAdapter historialAdapter = new HistorialAdapter(resultado, this);
             binding.fragmentSearchRecyclerView.setLayoutManager(linearLayoutManager);
             binding.fragmentSearchRecyclerView.setAdapter(historialAdapter);
         });
@@ -82,9 +83,15 @@ public class SearchFragment extends Fragment implements SearchAdapter.SearchAdap
         listener.onClickSearchFragment(searchable);
     }
 
+    @Override
+    public void onClickBusqueda(Busqueda busqueda) {
+        listener.onClickHistorialSearchFragment(busqueda);
+    }
+
     public interface SearchFragmentListener{
         void onClickSearchFragment(Utils.Searchable searchable);
         void onClickSearchFragment();
+        void onClickHistorialSearchFragment(Busqueda busqueda);
     }
 
     @Override

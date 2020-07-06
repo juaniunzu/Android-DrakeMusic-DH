@@ -1,7 +1,9 @@
 package com.example.projectointegrador.model;
 
 
-public class Busqueda {
+import java.io.Serializable;
+
+public class Busqueda implements Serializable {
 
     private String busqueda;
 
