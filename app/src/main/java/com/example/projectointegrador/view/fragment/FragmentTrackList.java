@@ -2,17 +2,16 @@ package com.example.projectointegrador.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
@@ -87,17 +86,22 @@ public class FragmentTrackList extends Fragment implements TrackListAdapter.Trac
         LinearLayoutManager linearLayoutManagerDeLosTracks = new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false);
 
         TrackController trackController = new TrackController();
-        trackController.getTracksDeUnAlbumPorId(albumRecibido.getId(), getContext(), new ResultListener<List<Track>>() {
-            @Override
-            public void finish(List<Track> resultado) {
-                TrackListAdapter trackListAdapter = new TrackListAdapter(resultado,FragmentTrackList.this);
-                recyclerViewListaDeTemas.setAdapter(trackListAdapter);
-                listaDeTracks = resultado;
-                for (Track track : resultado) {
-                    track.setAlbum(albumRecibido);
+        if(Utils.hayInternet(getContext())){
+            trackController.getTracksDeUnAlbumPorId(albumRecibido.getId(), getContext(), new ResultListener<List<Track>>() {
+                @Override
+                public void finish(List<Track> resultado) {
+                    TrackListAdapter trackListAdapter = new TrackListAdapter(resultado,FragmentTrackList.this);
+                    recyclerViewListaDeTemas.setAdapter(trackListAdapter);
+                    listaDeTracks = resultado;
+                    for (Track track : resultado) {
+                        track.setAlbum(albumRecibido);
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            listener.noHayInternetFragmentTrackList();
+        }
+
         recyclerViewListaDeTemas.setLayoutManager(linearLayoutManagerDeLosTracks);
 
         toggleAddFav.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +123,7 @@ public class FragmentTrackList extends Fragment implements TrackListAdapter.Trac
     }
 
     public interface FragmentTrackListListener{
+        void noHayInternetFragmentTrackList();
         void onClickTrackFragmentTrackList(Track track, List<Track> trackList);
         void onClickAddAlbumFavFragmentTrackList(Album album, ToggleButton toggleButton);
     }

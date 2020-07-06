@@ -146,6 +146,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             }
         });
 
+
+    }
+
+    private boolean estaPegadoElFragmentNoInet(){
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        Fragment mCurrentFragment = fragments.get(fragments.size() - 1);
+        String simpleName = mCurrentFragment.getClass().getSimpleName();
+        return simpleName.equals("NoInetFragment");
     }
 
     @Override
@@ -346,6 +354,13 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     }
 
     @Override
+    public void noHayInternetFragmentArtistDetail() {
+        bottomNavigationView.setVisibility(View.GONE);
+        setFragmentInicialNoInet(new NoInetFragment());
+        reproductorChico.setVisibility(View.GONE);
+    }
+
+    @Override
     public void fragmentOnClickAlbumDesdeFragmentArtistDetail(Album album) {
         Bundle datos = new Bundle();
         datos.putSerializable(FragmentTrackList.ALBUM, album);
@@ -364,6 +379,13 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
     }
 
+
+    @Override
+    public void noHayInternetFragmentTrackList() {
+        bottomNavigationView.setVisibility(View.GONE);
+        setFragmentInicialNoInet(new NoInetFragment());
+        reproductorChico.setVisibility(View.GONE);
+    }
 
     //click a un track desde adentro del detalle de un album
     @Override

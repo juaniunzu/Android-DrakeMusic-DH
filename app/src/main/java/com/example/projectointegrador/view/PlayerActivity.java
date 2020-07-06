@@ -301,7 +301,12 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                 e.printStackTrace();
             }
         } else {
-            onBackPressed();
+            if(audioPlayer.isPlaying()){
+                audioPlayer.stop();
+                onBackPressed();
+            } else {
+                onBackPressed();
+            }
         }
 
     }
@@ -400,6 +405,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
     @Override
     public void onBackPressed() {
+
         Intent intent = new Intent();
         Bundle datos = new Bundle();
         datos.putSerializable(KEY_LISTA, trackArrayList);

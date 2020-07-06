@@ -2,17 +2,16 @@ package com.example.projectointegrador.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
@@ -72,20 +71,25 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         ArtistController artistController = new ArtistController();
-        artistController.searchArtistFavoritos(artistaRecibido, firebaseUser, new ResultListener<List<Artist>>() {
-            @Override
-            public void finish(List<Artist> resultado) {
-                if (resultado.contains(artistaRecibido)){
-                    toggleAddFav.setText(R.string.en_fav);
-                    toggleAddFav.setChecked(true);
-                    //agregar funcion para sacar de favoritos
+        if(Utils.hayInternet(getContext())){
+            artistController.searchArtistFavoritos(artistaRecibido, firebaseUser, new ResultListener<List<Artist>>() {
+                @Override
+                public void finish(List<Artist> resultado) {
+                    if (resultado.contains(artistaRecibido)){
+                        toggleAddFav.setText(R.string.en_fav);
+                        toggleAddFav.setChecked(true);
+                        //agregar funcion para sacar de favoritos
+                    }
+                    else{
+                        toggleAddFav.setText(R.string.agregar_a_fav);
+                        toggleAddFav.setChecked(false);
+                    }
                 }
-                else{
-                    toggleAddFav.setText(R.string.agregar_a_fav);
-                    toggleAddFav.setChecked(false);
-                }
-            }
-        });
+            });
+        } else {
+            listener.noHayInternetFragmentArtistDetail();
+        }
+
 
         Utils.setFragmentBackground(getContext(), appBar, artistaRecibido.getPicture());
         fragmentDetailArtistTextViewNombre.setText(artistaRecibido.getName());
@@ -153,6 +157,7 @@ public class DetailArtistFragment extends Fragment implements AlbumAdapter.Album
     }
 
     public interface FragmentArtistDetailListener{
+        void noHayInternetFragmentArtistDetail();
         void fragmentOnClickAlbumDesdeFragmentArtistDetail(Album album);
         void fragmentOnClickTrackDesdeFragmentArtistDetail(Track track, List<Track> trackList);
         void onClickAddArtistFavFragmentArtistDetail(Artist artist, ToggleButton toggleButton);
