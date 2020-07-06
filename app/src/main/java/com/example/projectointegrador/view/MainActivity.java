@@ -158,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         }
     }
 
+
     private void setFindViewsByIds() {
         drawerLayout = findViewById(R.id.activityMain_DrawerLayout);
         bottomNavigationView = findViewById(R.id.activityMain_BottomNavigationView);
@@ -285,6 +286,13 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
                 Toast.makeText(MainActivity.this, "Track agregado", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void noHayInternetHomeFragment() {
+        bottomNavigationView.setVisibility(View.GONE);
+        setFragmentInicialNoInet(new NoInetFragment());
+        reproductorChico.setVisibility(View.GONE);
     }
 
     @Override
@@ -520,6 +528,13 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     }
 
     @Override
+    public void noHayInternetTracksFavFragment() {
+        bottomNavigationView.setVisibility(View.GONE);
+        setFragmentInicialNoInet(new NoInetFragment());
+        reproductorChico.setVisibility(View.GONE);
+    }
+
+    @Override
     public void onClickAlbumFavFragment(Album album) {
         Bundle datos = new Bundle();
         datos.putSerializable(FragmentTrackList.ALBUM, album);
@@ -529,12 +544,26 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     }
 
     @Override
+    public void noHayInternetAlbumFavFragment() {
+        bottomNavigationView.setVisibility(View.GONE);
+        setFragmentInicialNoInet(new NoInetFragment());
+        reproductorChico.setVisibility(View.GONE);
+    }
+
+    @Override
     public void onClickArtistasFavFragment(Artist artist) {
         Bundle datos = new Bundle();
         datos.putSerializable(DetailArtistFragment.ARTIST, artist);
         DetailArtistFragment detailArtistFragment = new DetailArtistFragment();
         detailArtistFragment.setArguments(datos);
         replaceFragment(detailArtistFragment);
+    }
+
+    @Override
+    public void noHayInternetArtistasFavFragment() {
+        bottomNavigationView.setVisibility(View.GONE);
+        setFragmentInicialNoInet(new NoInetFragment());
+        reproductorChico.setVisibility(View.GONE);
     }
 
     @Override

@@ -2,17 +2,16 @@ package com.example.projectointegrador.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.AlbumController;
@@ -22,6 +21,7 @@ import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.model.Artist;
 import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.util.ResultListener;
+import com.example.projectointegrador.util.Utils;
 import com.example.projectointegrador.view.adapter.AlbumAdapter;
 import com.example.projectointegrador.view.adapter.ArtistAdapter;
 import com.example.projectointegrador.view.adapter.RecomendadoAdapter;
@@ -104,24 +104,29 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
 
         recyclerViewRecomendados.setLayoutManager(linearLayoutManagerRecomendado);
         TrackController trackController = new TrackController();
-        trackController.getTracks(getContext(), new ResultListener<List<Track>>() {
-            @Override
-            public void finish(List<Track> resultado) {
-                RecomendadoAdapter recomendadoAdapter = new RecomendadoAdapter(resultado,HomeFragment.this);
-                recyclerViewRecomendados.setAdapter(recomendadoAdapter);
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        shimmerRecomendados.stopShimmer();
-                        shimmerRecomendados.setVisibility(View.INVISIBLE);
-                        recyclerViewRecomendados.setVisibility(View.VISIBLE);
-                    }
-                }, 1000);
+        if(Utils.hayInternet(getContext())){
+            trackController.getTracks(getContext(), new ResultListener<List<Track>>() {
+                @Override
+                public void finish(List<Track> resultado) {
+                    RecomendadoAdapter recomendadoAdapter = new RecomendadoAdapter(resultado,HomeFragment.this);
+                    recyclerViewRecomendados.setAdapter(recomendadoAdapter);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            shimmerRecomendados.stopShimmer();
+                            shimmerRecomendados.setVisibility(View.INVISIBLE);
+                            recyclerViewRecomendados.setVisibility(View.VISIBLE);
+                        }
+                    }, 1000);
 
 
-            }
-        });
+                }
+            });
+        } else {
+            listener.noHayInternetHomeFragment();
+        }
+
 
         ultimosReproducidosPlaceholder = view.findViewById(R.id.fragmentHome_TextViewUltimasReproducidasPlaceholder);
         shimmerUltimosReproducidos = view.findViewById(R.id.fragmentHomeShimmerUltimasReproducidas);
@@ -250,6 +255,7 @@ public class HomeFragment extends Fragment implements   RecomendadoAdapter.Recom
      * Main Activity.
      */
     public interface FragmentHomeListener {
+        void noHayInternetHomeFragment();
         void onClickRecomendadosDesdeHomeFragment(Track track, List<Track> trackList);
         void onClickUltimosReproducidosDesdeHomeFragment(Track track, List<Track> trackList);
         void onClickArtistaDesdeHomeFragment(Artist artist);

@@ -2,20 +2,20 @@ package com.example.projectointegrador.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.projectointegrador.controller.AlbumController;
 import com.example.projectointegrador.databinding.FragmentAlbumesFavoritosBinding;
 import com.example.projectointegrador.model.Album;
 import com.example.projectointegrador.util.ResultListener;
+import com.example.projectointegrador.util.Utils;
 import com.example.projectointegrador.view.adapter.AlbumSearchAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -54,15 +54,20 @@ public class AlbumesFavoritosFragment extends Fragment implements AlbumSearchAda
         View view = binding.getRoot();
 
         AlbumController albumController = new AlbumController();
-        albumController.getAlbumListFavoritos(currentUser, new ResultListener<List<Album>>() {
-            @Override
-            public void finish(List<Album> resultado) {
-                AlbumSearchAdapter adapter = new AlbumSearchAdapter(resultado, true, AlbumesFavoritosFragment.this);
-                LinearLayoutManager llm = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-                binding.fragmentAlbumesFavoritosRV.setAdapter(adapter);
-                binding.fragmentAlbumesFavoritosRV.setLayoutManager(llm);
-            }
-        });
+        if(Utils.hayInternet(getContext())){
+            albumController.getAlbumListFavoritos(currentUser, new ResultListener<List<Album>>() {
+                @Override
+                public void finish(List<Album> resultado) {
+                    AlbumSearchAdapter adapter = new AlbumSearchAdapter(resultado, true, AlbumesFavoritosFragment.this);
+                    LinearLayoutManager llm = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+                    binding.fragmentAlbumesFavoritosRV.setAdapter(adapter);
+                    binding.fragmentAlbumesFavoritosRV.setLayoutManager(llm);
+                }
+            });
+        } else {
+            listener.noHayInternetAlbumFavFragment();
+        }
+
 
 
 
@@ -78,5 +83,6 @@ public class AlbumesFavoritosFragment extends Fragment implements AlbumSearchAda
 
     public interface AlbumesFavoritosFragmentListener{
         void onClickAlbumFavFragment(Album album);
+        void noHayInternetAlbumFavFragment();
     }
 }
