@@ -35,6 +35,9 @@
     <string name="google_idClient" translatable="false">88469903863-biig4dudq9kgk78pvb3r512a16dsk7fq.apps.googleusercontent.com</string>
     <string name="Email">Email</string>
     <string name="busquedas_recientes">Busquedas recientes</string>
+    <string name="oops" translatable="false">Ooops!</string>
+    <string name="no_hay_inet">Parece que no hay conexión a internet.</string>
+    <string name="reintentar">Reintentar</string>
 
 
 </resources>

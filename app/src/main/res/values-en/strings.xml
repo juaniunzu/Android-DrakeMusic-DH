@@ -31,4 +31,6 @@
     <string name="cerrar_sesion">Log out</string>
     <string name="Email">Email</string>
     <string name="busquedas_recientes">Recently searched</string>
+    <string name="no_hay_inet">Seems like you\'ve lost internet connection.</string>
+    <string name="reintentar">Retry</string>
 </resources>

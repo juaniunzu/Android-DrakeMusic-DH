@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.SeekBar;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
@@ -292,6 +291,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     }
 
     private void prepararTrackParaReproduccion(Integer ordenTrackEnLista) {
+        audioPlayer.reset();
         Track track = this.trackArrayList.get(ordenTrackEnLista);
         if(Utils.hayInternet(this)){
             try {
@@ -347,14 +347,12 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                     trackController.eliminarTrackFavoritos(track, firebaseUser, new ResultListener<Track>() {
                         @Override
                         public void finish(Track resultado) {
-                            Toast.makeText(PlayerActivity.this, "Track eliminado de Favoritos", Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
                     trackController.agregarTrackAFavoritos(track, firebaseUser, new ResultListener<Track>() {
                         @Override
                         public void finish(Track resultado) {
-                            Toast.makeText(PlayerActivity.this, "Track agregado a Favoritos!", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -371,13 +369,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         notificationManager.cancelAll();
         unregisterReceiver(broadcastReceiver);
 
-        /*if(audioPlayer.isPlaying()){
-            audioPlayer.stop();
-            audioPlayer.release();
-        } else {
-            audioPlayer.release();
-        }*/
-
     }
 
     private void agregarTrackAUltimosReproducidos(Track track) {
@@ -385,7 +376,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         trackController.agregarTrackAUltimosReproducidos(track, firebaseUser, new ResultListener<Track>() {
             @Override
             public void finish(Track resultado) {
-                Toast.makeText(PlayerActivity.this, "Track agregado", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -496,7 +486,9 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     @Override
     public void setPlayerInicio(ArrayList<Track> trackList) {
         //position = viewPager.getCurrentItem();
-        audioPlayer.reset();
+        if(audioPlayer.isPlaying()){
+            audioPlayer.reset();
+        }
         prepararTrackParaReproduccion(position);
 
         handler = new Handler();

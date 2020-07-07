@@ -76,7 +76,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         PerfilFragment.PerfilFragmentListener,
         SearchFragment.SearchFragmentListener,
         SearchInputFragment.SearchInputFragmentListener,
-        SearchDetailFragment.SearchDetailFragmentListener {
+        SearchDetailFragment.SearchDetailFragmentListener,
+        NoInetFragment.NoInetFragmentListener {
 
     private MediaPlayer audioPlayer;
     private DrawerLayout drawerLayout;
@@ -110,8 +111,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             @Override
             public void onClick(View v) {
                 if (!playPauseReproductorChico.isChecked()) {
-                    audioPlayer.start();
-                    playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
+                    audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mp) {
+                            audioPlayer.start();
+                            playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
+                        }
+                    });
+
                 } else {
                     audioPlayer.pause();
                     playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_play_circle_filled_black_24dp));
@@ -221,7 +228,12 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
 
                         prepararTrackParaReproduccion(trackAnterior);
-                        audioPlayer.start();
+                        audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                            @Override
+                            public void onPrepared(MediaPlayer mp) {
+                                audioPlayer.start();
+                            }
+                        });
                         if(playPauseReproductorChico.isChecked()){
                             playPauseReproductorChico.setChecked(false);
                             playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
@@ -260,7 +272,12 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
 
                 prepararTrackParaReproduccion(trackSiguiente);
-                audioPlayer.start();
+                audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        audioPlayer.start();
+                    }
+                });
                 if(playPauseReproductorChico.isChecked()){
                     playPauseReproductorChico.setChecked(false);
                     playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
@@ -275,24 +292,24 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         if(Utils.hayInternet(this)){
             try {
                 audioPlayer.setDataSource(this, Uri.parse(track.getPreview()));
-                audioPlayer.prepare();
+                audioPlayer.prepareAsync();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            bottomNavigationView.setVisibility(View.GONE);
-            reproductorChico.setVisibility(View.GONE);
-            setFragmentInicialNoInet(new NoInetFragment());
+            noHayInternetHomeFragment();
         }
 
     }
+
+
 
     private void agregarTrackAUltimosReproducidos(Track track) {
         TrackController trackController = new TrackController();
         trackController.agregarTrackAUltimosReproducidos(track, firebaseUser, new ResultListener<Track>() {
             @Override
             public void finish(Track resultado) {
-                Toast.makeText(MainActivity.this, "Track agregado", Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -314,9 +331,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             mainAPlayer.putExtras(datos);
             startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
         } else {
-            bottomNavigationView.setVisibility(View.GONE);
-            setFragmentInicialNoInet(new NoInetFragment());
-            reproductorChico.setVisibility(View.GONE);
+            noHayInternetHomeFragment();
         }
 
     }
@@ -332,9 +347,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             mainAPlayer.putExtras(datos);
             startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
         } else {
-            bottomNavigationView.setVisibility(View.GONE);
-            setFragmentInicialNoInet(new NoInetFragment());
-            reproductorChico.setVisibility(View.GONE);
+            noHayInternetHomeFragment();
         }
     }
 
@@ -364,9 +377,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
     @Override
     public void noHayInternetFragmentArtistDetail() {
-        bottomNavigationView.setVisibility(View.GONE);
-        setFragmentInicialNoInet(new NoInetFragment());
-        reproductorChico.setVisibility(View.GONE);
+        noHayInternetHomeFragment();
     }
 
     @Override
@@ -388,18 +399,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             mainAPlayer.putExtras(datos);
             startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
         } else {
-            bottomNavigationView.setVisibility(View.GONE);
-            replaceFragment(new NoInetFragment());
-            reproductorChico.setVisibility(View.GONE);
+            noHayInternetHomeFragment();
         }
     }
 
 
     @Override
     public void noHayInternetFragmentTrackList() {
-        bottomNavigationView.setVisibility(View.GONE);
-        setFragmentInicialNoInet(new NoInetFragment());
-        reproductorChico.setVisibility(View.GONE);
+        noHayInternetHomeFragment();
     }
 
     //click a un track desde adentro del detalle de un album
@@ -413,9 +420,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             mainAPlayer.putExtras(datos);
             startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
         } else {
-            bottomNavigationView.setVisibility(View.GONE);
-            replaceFragment(new NoInetFragment());
-            reproductorChico.setVisibility(View.GONE);
+            noHayInternetHomeFragment();
         }
     }
 
@@ -427,7 +432,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             albumController.eliminarAlbumFavoritos(album, firebaseUser, new ResultListener<Album>() {
                 @Override
                 public void finish(Album resultado) {
-                    Toast.makeText(MainActivity.this, "Eliminaste el Album de Favoritos", Toast.LENGTH_SHORT).show();
                 }
             });
             toggleButton.setChecked(false);
@@ -437,7 +441,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             albumController.agregarAlbumAFavoritos(album, firebaseUser, new ResultListener<Album>() {
                 @Override
                 public void finish(Album resultado) {
-                    Toast.makeText(MainActivity.this, "Agregaste el Album a Favoritos!", Toast.LENGTH_SHORT).show();
                 }
             });
             toggleButton.setChecked(true);
@@ -451,7 +454,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             artistController.eliminarArtistFavoritos(artist, firebaseUser, new ResultListener<Artist>() {
                 @Override
                 public void finish(Artist resultado) {
-                    Toast.makeText(MainActivity.this, "Eliminaste el Artista de Favoritos", Toast.LENGTH_SHORT).show();
                 }
             });
             toggleButton.setChecked(false);
@@ -461,7 +463,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             artistController.agregarArtistAFavoritos(artist, firebaseUser, new ResultListener<Artist>() {
                 @Override
                 public void finish(Artist resultado) {
-                    Toast.makeText(MainActivity.this, "Agregaste el Artista a Favoritos!", Toast.LENGTH_SHORT).show();
                 }
             });
             toggleButton.setChecked(true);
@@ -570,17 +571,13 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             mainAPlayer.putExtras(datos);
             startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
         } else {
-            bottomNavigationView.setVisibility(View.GONE);
-            replaceFragment(new NoInetFragment());
-            reproductorChico.setVisibility(View.GONE);
+            noHayInternetHomeFragment();
         }
     }
 
     @Override
     public void noHayInternetTracksFavFragment() {
-        bottomNavigationView.setVisibility(View.GONE);
-        setFragmentInicialNoInet(new NoInetFragment());
-        reproductorChico.setVisibility(View.GONE);
+        noHayInternetHomeFragment();
     }
 
     @Override
@@ -594,9 +591,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
     @Override
     public void noHayInternetAlbumFavFragment() {
-        bottomNavigationView.setVisibility(View.GONE);
-        setFragmentInicialNoInet(new NoInetFragment());
-        reproductorChico.setVisibility(View.GONE);
+        noHayInternetHomeFragment();
     }
 
     @Override
@@ -610,9 +605,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
     @Override
     public void noHayInternetArtistasFavFragment() {
-        bottomNavigationView.setVisibility(View.GONE);
-        setFragmentInicialNoInet(new NoInetFragment());
-        reproductorChico.setVisibility(View.GONE);
+        noHayInternetHomeFragment();
     }
 
     @Override
@@ -690,9 +683,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             searchToPlayer.putExtras(bundle);
             startActivityForResult(searchToPlayer, GO_REPRODUCTOR);
         } else {
-            bottomNavigationView.setVisibility(View.GONE);
-            replaceFragment(new NoInetFragment());
-            reproductorChico.setVisibility(View.GONE);
+            noHayInternetHomeFragment();
         }
 
     }
@@ -703,7 +694,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         historialController.agregarBusquedaAlHistorial(busqueda, firebaseUser, new ResultListener<Busqueda>() {
             @Override
             public void finish(Busqueda resultado) {
-                Toast.makeText(MainActivity.this, resultado.getBusqueda(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -736,9 +726,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             searchToPlayer.putExtras(bundle);
             startActivityForResult(searchToPlayer, GO_REPRODUCTOR);
         } else {
-            bottomNavigationView.setVisibility(View.GONE);
-            replaceFragment(new NoInetFragment());
-            reproductorChico.setVisibility(View.GONE);
+            noHayInternetHomeFragment();
         }
     }
 
@@ -776,9 +764,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     @Override
     protected void onPause() {
         super.onPause();
-        if(audioPlayer.isPlaying()){
+        if (audioPlayer.isPlaying()){
             audioPlayer.stop();
         }
+
     }
 
     @Override
@@ -786,10 +775,13 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         super.onDestroy();
         if (audioPlayer.isPlaying()) {
             audioPlayer.stop();
-            audioPlayer.release();
-        } else {
-            audioPlayer.release();
         }
     }
 
+    @Override
+    public void onClickReintentar() {
+        if(Utils.hayInternet(this)){
+            setFragmentInicial(new HomeFragment());
+        }
+    }
 }

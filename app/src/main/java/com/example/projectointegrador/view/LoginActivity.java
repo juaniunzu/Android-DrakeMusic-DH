@@ -45,7 +45,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity implements LoginFragment.LoginFragmentListener,
-        LoginInicioFragment.LoginInicioFragmentListener, SignUpFragment.SignUpFragmentListener {
+        LoginInicioFragment.LoginInicioFragmentListener, SignUpFragment.SignUpFragmentListener, NoInetFragment.NoInetFragmentListener {
 
     private static final String TAG = "FIREBASE";
     private static final String EMAIL = "email";
@@ -100,6 +100,12 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
         fragmentTransaction.commit();
     }
 
+    private void replaceFragmentSinBackStack(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.activityLogin_fragmentContainer, fragment);
+        fragmentTransaction.commit();
+    }
 
     @Override
     protected void onStart() {
@@ -116,7 +122,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
         } else if (currentUser == null && !Utils.hayInternet(this)){
             //binding.activityLoginFragmentContainer.setVisibility(View.GONE);
 
-            pegarFragment(new NoInetFragment());
+            replaceFragmentSinBackStack(new NoInetFragment());
         }
     }
 
@@ -252,7 +258,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
             pegarFragment(new LoginFragment(this));
         } else {
 
-            pegarFragment(new NoInetFragment());
+            replaceFragmentSinBackStack(new NoInetFragment());
         }
 
     }
@@ -263,7 +269,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
             pegarFragment(new SignUpFragment(this));
         } else {
 
-            pegarFragment(new NoInetFragment());
+            replaceFragmentSinBackStack(new NoInetFragment());
         }
 
     }
@@ -282,7 +288,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
             loginFirebaseUser(username, password);
         } else {
 
-            pegarFragment(new NoInetFragment());
+            replaceFragmentSinBackStack(new NoInetFragment());
         }
 
     }
@@ -293,7 +299,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
             signIn();
         } else {
 
-            pegarFragment(new NoInetFragment());
+            replaceFragmentSinBackStack(new NoInetFragment());
         }
 
     }
@@ -322,7 +328,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
             });
         } else {
 
-            pegarFragment(new NoInetFragment());
+            replaceFragmentSinBackStack(new NoInetFragment());
         }
     }
 
@@ -363,7 +369,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
             signIn();
         } else {
 
-            pegarFragment(new NoInetFragment());
+            replaceFragmentSinBackStack(new NoInetFragment());
         }
 
     }
@@ -374,7 +380,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
             onClickLoginFragmentBotonLoginConFacebook(button);
         } else {
 
-            pegarFragment(new NoInetFragment());
+            replaceFragmentSinBackStack(new NoInetFragment());
         }
 
     }
@@ -394,9 +400,16 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
             createFirebaseUser(username, password);
         } else {
 
-            pegarFragment(new NoInetFragment());
+            replaceFragmentSinBackStack(new NoInetFragment());
         }
 
+    }
+
+    @Override
+    public void onClickReintentar() {
+        if(Utils.hayInternet(this)){
+            pegarFragment(new LoginInicioFragment(this));
+        }
     }
 
     //    Metodo para conseguir la hashkey.

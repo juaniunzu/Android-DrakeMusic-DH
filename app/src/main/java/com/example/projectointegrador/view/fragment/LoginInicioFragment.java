@@ -1,22 +1,13 @@
 package com.example.projectointegrador.view.fragment;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
-import android.widget.Button;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.gif.GifDrawable;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
-import com.example.projectointegrador.R;
+import androidx.fragment.app.Fragment;
+
 import com.example.projectointegrador.databinding.FragmentLoginInicioBinding;
 
 
@@ -26,8 +17,6 @@ import com.example.projectointegrador.databinding.FragmentLoginInicioBinding;
 public class LoginInicioFragment extends Fragment {
 
     private FragmentLoginInicioBinding binding;
-    private Button iniciarSesion;
-    private Button registrarse;
     private LoginInicioFragmentListener listener;
 
     public LoginInicioFragment() {
