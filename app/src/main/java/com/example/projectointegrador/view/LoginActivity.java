@@ -1,17 +1,17 @@
 package com.example.projectointegrador.view;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.projectointegrador.R;
@@ -115,8 +115,8 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
             pasarALaMainActivityMatandoActividadActual();
         } else if (currentUser == null && !Utils.hayInternet(this)){
             //binding.activityLoginFragmentContainer.setVisibility(View.GONE);
-            binding.imagenFondo.setVisibility(View.GONE);
-            pegarFragmentInicial(new NoInetFragment());
+
+            pegarFragment(new NoInetFragment());
         }
     }
 
@@ -248,56 +248,82 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
 
     @Override
     public void onClickLoginInicioBotonIniciarSesion() {
-        //pega un fragment LoginFragment
-        pegarFragment(new LoginFragment(this));
+        if(Utils.hayInternet(this)){
+            pegarFragment(new LoginFragment(this));
+        } else {
+
+            pegarFragment(new NoInetFragment());
+        }
+
     }
 
     @Override
     public void onClickLoginInicioBotonRegistrarse() {
-        //pega un fragment SignUpFragment
-        pegarFragment(new SignUpFragment(this));
+        if (Utils.hayInternet(this)) {
+            pegarFragment(new SignUpFragment(this));
+        } else {
+
+            pegarFragment(new NoInetFragment());
+        }
+
     }
 
     @Override
     public void onClickLoginFragmentBotonLogin(String username, String password) {
-        if (username.isEmpty() || username.contains(" ") || !username.contains("@") || !(username.contains(".com") || username.contains(".net") || username.contains(".org"))) {
-            Toast.makeText(this, "Email o Contraseña Incorrectos", Toast.LENGTH_SHORT).show();
-            return;
+        if(Utils.hayInternet(this)){
+            if (username.isEmpty() || username.contains(" ") || !username.contains("@") || !(username.contains(".com") || username.contains(".net") || username.contains(".org"))) {
+                Toast.makeText(this, "Email o Contraseña Incorrectos", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (password.length() < 6){
+                Toast.makeText(this, "Email o Contraseña Incorrectos", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            loginFirebaseUser(username, password);
+        } else {
+
+            pegarFragment(new NoInetFragment());
         }
-        if (password.length() < 6){
-            Toast.makeText(this, "Email o Contraseña Incorrectos", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        loginFirebaseUser(username, password);
+
     }
 
     @Override
     public void onClickLoginFragmentBotonLoginConGoogle() {
-        signIn();
+        if(Utils.hayInternet(this)){
+            signIn();
+        } else {
+
+            pegarFragment(new NoInetFragment());
+        }
+
     }
 
     @Override
     public void onClickLoginFragmentBotonLoginConFacebook(LoginButton loginButton) {
+        if(Utils.hayInternet(this)){
+            loginButton.setReadPermissions(Arrays.asList(EMAIL));
+            loginButton.setReadPermissions("email", "public_profile");
+            loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                    handleFacebookAccessToken(loginResult.getAccessToken());
+                }
 
-        loginButton.setReadPermissions(Arrays.asList(EMAIL));
-        loginButton.setReadPermissions("email", "public_profile");
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d(TAG, "facebook:onSuccess:" + loginResult);
-                handleFacebookAccessToken(loginResult.getAccessToken());
-            }
+                @Override
+                public void onCancel() {
+                    Log.d(TAG, "facebook:onCancel");
+                }
 
-            @Override
-            public void onCancel() {
-                Log.d(TAG, "facebook:onCancel");
-            }
+                @Override
+                public void onError(FacebookException exception) {
+                    Log.d(TAG, "facebook:onError", exception);
+                }
+            });
+        } else {
 
-            @Override
-            public void onError(FacebookException exception) {
-                Log.d(TAG, "facebook:onError", exception);
-            }
-        });
+            pegarFragment(new NoInetFragment());
+        }
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
@@ -333,26 +359,44 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Lo
 
     @Override
     public void onClickSignUpFragmentBotonSignUpGoogle(SignInButton button) {
-        signIn();
+        if(Utils.hayInternet(this)){
+            signIn();
+        } else {
+
+            pegarFragment(new NoInetFragment());
+        }
+
     }
 
     @Override
     public void onClickSignUpFragmentBotonSignUpFacebook(LoginButton button) {
-        onClickLoginFragmentBotonLoginConFacebook(button);
+        if(Utils.hayInternet(this)){
+            onClickLoginFragmentBotonLoginConFacebook(button);
+        } else {
+
+            pegarFragment(new NoInetFragment());
+        }
+
     }
 
     //chequeos de mail y contraseña firebase
     @Override
     public void onClickSignUpFragmentBotonRegistrarse(String username, String password) {
-        if (username.isEmpty() || username.contains(" ") || !username.contains("@") || !(username.contains(".com") || username.contains(".net") || username.contains(".org"))) {
-            Toast.makeText(this, "El Email no es Valido", Toast.LENGTH_SHORT).show();
-            return;
+        if(Utils.hayInternet(this)){
+            if (username.isEmpty() || username.contains(" ") || !username.contains("@") || !(username.contains(".com") || username.contains(".net") || username.contains(".org"))) {
+                Toast.makeText(this, "El Email no es Valido", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (password.length() < 6){
+                Toast.makeText(this, "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            createFirebaseUser(username, password);
+        } else {
+
+            pegarFragment(new NoInetFragment());
         }
-        if (password.length() < 6){
-            Toast.makeText(this, "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        createFirebaseUser(username, password);
+
     }
 
     //    Metodo para conseguir la hashkey.
