@@ -66,14 +66,14 @@
         <TextView
             android:id="@+id/fragmentHome_TextViewArtistas"
             style="@style/title_home"
-            android:text="@string/artistas"
+            android:text="@string/top_artistas"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fargmentHome_RecyclerDeRecomendados" />
 
         <TextView
             android:id="@+id/fragmentHome_TextViewArtistasPlaceholder"
             style="@style/title_home"
-            android:text="@string/artistas"
+            android:text="@string/top_artistas"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fragmentHomeShimmerRecomendados" />
 
@@ -111,7 +111,7 @@
             android:id="@+id/fragmentHome_TextViewAlbumes"
             style="@style/title_home"
             android:layout_marginTop="20dp"
-            android:text="@string/albumes"
+            android:text="@string/top_albumes"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fargmentHome_RecyclerDeArtistas" />
 
@@ -119,7 +119,7 @@
             android:id="@+id/fragmentHome_TextViewAlbumesPlaceholder"
             style="@style/title_home"
             android:layout_marginTop="20dp"
-            android:text="@string/albumes"
+            android:text="@string/top_albumes"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fragmentHomeShimmerArtistas" />
 

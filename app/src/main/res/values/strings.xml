@@ -7,8 +7,10 @@
     <string name="recomendados">Recomendados</string>
     <string name="ultimas_reproducciones">Ultimas Reproducciones</string>
     <string name="tracks" translatable="false">Tracks</string>
-    <string name="artistas">Top Artistas</string>
-    <string name="albumes">Top Albumes</string>
+    <string name="artistas">Artistas</string>
+    <string name="top_artistas">Top Artistas</string>
+    <string name="albumes">Albumes</string>
+    <string name="top_albumes">Top Albumes</string>
     <string name="home">Home</string>
     <string name="buscar">Buscar</string>
     <string name="favoritos">Favoritos</string>

@@ -2,8 +2,8 @@
 <resources>
     <string name="recomendados">Recomendados</string>
     <string name="ultimas_reproducciones">Ultimas Reproducciones</string>
-    <string name="artistas">Top Artistas</string>
-    <string name="albumes">Top Albumes</string>
+    <string name="artistas">Artistas</string>
+    <string name="albumes">Albumes</string>
     <string name="template_artista">"Artista: %s"</string>
     <string name="template_titulo">"Titulo: %s"</string>
     <string name="template_album">"Album: %s"</string>
@@ -33,5 +33,7 @@
     <string name="busquedas_recientes">Búsquedas recientes</string>
     <string name="no_hay_inet">Parece que no hay conexión a internet.</string>
     <string name="reintentar">Reintentar</string>
+    <string name="top_artistas">Top Artistas</string>
+    <string name="top_albumes">Top Albumes</string>
 
 </resources>

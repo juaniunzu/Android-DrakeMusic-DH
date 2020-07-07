@@ -1,17 +1,17 @@
 package com.example.projectointegrador.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
-import com.example.projectointegrador.R;
-import com.example.projectointegrador.view.adapter.SliderAdapter;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
+import com.example.projectointegrador.R;
+import com.example.projectointegrador.view.adapter.SliderAdapter;
 
 public class OnboardingActivity extends AppCompatActivity {
 
@@ -40,7 +40,7 @@ public class OnboardingActivity extends AppCompatActivity {
     }
 
     public void addDots(int position){
-        dots = new TextView[4];
+        dots = new TextView[5];
         dotLayout.removeAllViews();
 
         for (int i = 0; i < dots.length; i++) {
@@ -62,7 +62,7 @@ public class OnboardingActivity extends AppCompatActivity {
     ViewPager.OnPageChangeListener viewListener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            if(position == 3){
+            if(position == 4){
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
