@@ -306,28 +306,36 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
     @Override
     public void onClickRecomendadosDesdeHomeFragment(Track track, List<Track> trackList) {
+        if(Utils.hayInternet(this)){
+            Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
+            Bundle datos = new Bundle();
+            datos.putSerializable("track", track);
+            datos.putSerializable("lista", (ArrayList) trackList);
+            mainAPlayer.putExtras(datos);
+            startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
+        } else {
+            bottomNavigationView.setVisibility(View.GONE);
+            setFragmentInicialNoInet(new NoInetFragment());
+            reproductorChico.setVisibility(View.GONE);
+        }
 
-        //al momento de hacer click en un track de recomendados, me traigo tanto el track clickeado
-        //como la lista completa perteneciente al adapter. me la llevo a una nueva activity donde
-        //esta el viewpager que se encargara de crear una lista de fragments con cada track de
-        //la lista inicial
-        Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
-        Bundle datos = new Bundle();
-        datos.putSerializable("track", track);
-        datos.putSerializable("lista", (ArrayList) trackList);
-        mainAPlayer.putExtras(datos);
-        startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
     }
 
 
     @Override
     public void onClickUltimosReproducidosDesdeHomeFragment(Track track, List<Track> trackList) {
-        Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
-        Bundle datos = new Bundle();
-        datos.putSerializable("track", track);
-        datos.putSerializable("lista", (ArrayList) trackList);
-        mainAPlayer.putExtras(datos);
-        startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
+        if(Utils.hayInternet(this)){
+            Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
+            Bundle datos = new Bundle();
+            datos.putSerializable("track", track);
+            datos.putSerializable("lista", (ArrayList) trackList);
+            mainAPlayer.putExtras(datos);
+            startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
+        } else {
+            bottomNavigationView.setVisibility(View.GONE);
+            setFragmentInicialNoInet(new NoInetFragment());
+            reproductorChico.setVisibility(View.GONE);
+        }
     }
 
 
@@ -372,12 +380,18 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
     @Override
     public void fragmentOnClickTrackDesdeFragmentArtistDetail(Track track, List<Track> trackList) {
-        Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
-        Bundle datos = new Bundle();
-        datos.putSerializable("track", track);
-        datos.putSerializable("lista", (ArrayList) trackList);
-        mainAPlayer.putExtras(datos);
-        startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
+        if(Utils.hayInternet(this)){
+            Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
+            Bundle datos = new Bundle();
+            datos.putSerializable("track", track);
+            datos.putSerializable("lista", (ArrayList) trackList);
+            mainAPlayer.putExtras(datos);
+            startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
+        } else {
+            bottomNavigationView.setVisibility(View.GONE);
+            replaceFragment(new NoInetFragment());
+            reproductorChico.setVisibility(View.GONE);
+        }
     }
 
 
@@ -391,12 +405,18 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     //click a un track desde adentro del detalle de un album
     @Override
     public void onClickTrackFragmentTrackList(Track track, List<Track> trackList) {
-        Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
-        Bundle datos = new Bundle();
-        datos.putSerializable("track", track);
-        datos.putSerializable("lista", (ArrayList) trackList);
-        mainAPlayer.putExtras(datos);
-        startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
+        if(Utils.hayInternet(this)){
+            Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
+            Bundle datos = new Bundle();
+            datos.putSerializable("track", track);
+            datos.putSerializable("lista", (ArrayList) trackList);
+            mainAPlayer.putExtras(datos);
+            startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
+        } else {
+            bottomNavigationView.setVisibility(View.GONE);
+            replaceFragment(new NoInetFragment());
+            reproductorChico.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -542,12 +562,18 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
     @Override
     public void onClickTracksFavFragment(Track track, List<Track> trackList) {
-        Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
-        Bundle datos = new Bundle();
-        datos.putSerializable("track", track);
-        datos.putSerializable("lista", (ArrayList) trackList);
-        mainAPlayer.putExtras(datos);
-        startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
+        if(Utils.hayInternet(this)){
+            Intent mainAPlayer = new Intent(MainActivity.this, PlayerActivity.class);
+            Bundle datos = new Bundle();
+            datos.putSerializable("track", track);
+            datos.putSerializable("lista", (ArrayList) trackList);
+            mainAPlayer.putExtras(datos);
+            startActivityForResult(mainAPlayer, GO_REPRODUCTOR);
+        } else {
+            bottomNavigationView.setVisibility(View.GONE);
+            replaceFragment(new NoInetFragment());
+            reproductorChico.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -656,12 +682,19 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
     @Override
     public void onClickTrackSearchInputFragment(Track track, List<Track> trackList) {
-        Intent searchToPlayer = new Intent(this, PlayerActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(KEY_TRACK, track);
-        bundle.putSerializable(KEY_LISTA, (ArrayList) trackList);
-        searchToPlayer.putExtras(bundle);
-        startActivityForResult(searchToPlayer, GO_REPRODUCTOR);
+        if(Utils.hayInternet(this)){
+            Intent searchToPlayer = new Intent(this, PlayerActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(KEY_TRACK, track);
+            bundle.putSerializable(KEY_LISTA, (ArrayList) trackList);
+            searchToPlayer.putExtras(bundle);
+            startActivityForResult(searchToPlayer, GO_REPRODUCTOR);
+        } else {
+            bottomNavigationView.setVisibility(View.GONE);
+            replaceFragment(new NoInetFragment());
+            reproductorChico.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -695,13 +728,18 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
     @Override
     public void onClickTrackSearchDetailFragment(Track track, List<Track> trackList) {
-        Intent searchToPlayer = new Intent(this, PlayerActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(KEY_TRACK, track);
-        bundle.putSerializable(KEY_LISTA, (ArrayList) trackList);
-        //tracklistDeLaActividad = tracklist;
-        searchToPlayer.putExtras(bundle);
-        startActivityForResult(searchToPlayer, GO_REPRODUCTOR);
+        if(Utils.hayInternet(this)){
+            Intent searchToPlayer = new Intent(this, PlayerActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(KEY_TRACK, track);
+            bundle.putSerializable(KEY_LISTA, (ArrayList) trackList);
+            searchToPlayer.putExtras(bundle);
+            startActivityForResult(searchToPlayer, GO_REPRODUCTOR);
+        } else {
+            bottomNavigationView.setVisibility(View.GONE);
+            replaceFragment(new NoInetFragment());
+            reproductorChico.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -738,7 +776,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     @Override
     protected void onPause() {
         super.onPause();
-        audioPlayer.stop();
+        if(audioPlayer.isPlaying()){
+            audioPlayer.stop();
+        }
     }
 
     @Override
@@ -751,6 +791,5 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             audioPlayer.release();
         }
     }
-
 
 }
