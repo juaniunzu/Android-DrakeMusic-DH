@@ -2,13 +2,9 @@ package com.example.projectointegrador.view;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
@@ -32,9 +28,7 @@ import com.example.projectointegrador.controller.TrackController;
 import com.example.projectointegrador.databinding.ActivityPlayerBinding;
 import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.util.DrakePlayer;
-import com.example.projectointegrador.util.Playable;
 import com.example.projectointegrador.util.ResultListener;
-import com.example.projectointegrador.util.Utils;
 import com.example.projectointegrador.view.adapter.ViewPagerAdapter;
 import com.example.projectointegrador.view.fragment.PlayerFragment;
 import com.example.projectointegrador.view.notification.CreateNotification;
@@ -47,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class PlayerActivity extends AppCompatActivity implements PlayerFragment.PlayerFragmentListener, ShakeDetector.Listener, Playable {
+public class PlayerActivity extends AppCompatActivity implements PlayerFragment.PlayerFragmentListener, ShakeDetector.Listener {
 
     public static final String KEY_TRACK = "track";
     public static final String KEY_LISTA = "lista";
@@ -57,7 +51,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     private ArrayList<Track> trackArrayList;
     private FirebaseUser firebaseUser;
     private FirebaseAuth firebaseAuth;
-    private MediaPlayer audioPlayer;
     private Runnable runnable;
     private Handler handler;
     private SeekBar seekBar;
@@ -73,6 +66,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     private int position = 0;
     private boolean isPlaying = false;
     private ShakeDetector shakeDetector = new ShakeDetector(this);
+    private DrakePlayer drakePlayer;
 
 
 
@@ -102,21 +96,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             supportActionBar.setTitle("");
         }
 
-        audioPlayer = DrakePlayer.getInstance().getMediaPlayer();
-        audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                if(viewPager.getCurrentItem() < trackArrayList.size() - 1){
-                    onTrackNext();
-                }
-            }
-        });
-        audioPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-                return true;
-            }
-        });
+
 
         Intent desdeMain = getIntent();
         Bundle datosDesdeMain = desdeMain.getExtras();
@@ -132,8 +112,28 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
         viewPager.setCurrentItem(position);
 
+        drakePlayer = DrakePlayer.getInstance();
 
-        setPlayerInicio(trackArrayList);
+        try {
+            drakePlayer.setPlayerInicio(this, trackArrayList, position);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        drakePlayer.getMediaPlayer().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                if (viewPager.getCurrentItem() < trackArrayList.size() - 1){
+                    try {
+                        drakePlayer.next(PlayerActivity.this);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+
 
         agregarTrackAUltimosReproducidos(trackArrayList.get(viewPager.getCurrentItem()));
 
@@ -146,10 +146,15 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
             @Override
             public void onPageSelected(int position) {
-               
                 PlayerActivity.this.position = position;
-                setPlayerTemaNuevo(position);
-
+                try {
+                    drakePlayer.setPlayerTemaNuevo(PlayerActivity.this, position);
+                    buttonPlay.setChecked(false);
+                    buttonPlay.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
+                    isPlaying = true;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -161,14 +166,14 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         setListenersBotonesReproductor();
 
         createChannel();
-        registerReceiver(broadcastReceiver, new IntentFilter("TRACKS_TRACKS"));
+        //registerReceiver(broadcastReceiver, new IntentFilter("TRACKS_TRACKS"));
 
         Intent intent = new Intent(PlayerActivity.this, DrakePlayer.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("lista", trackArrayList);
         intent.putExtras(bundle);
         //startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
-        startService(intent);
+        //startService(intent);
 
     }
 
@@ -187,9 +192,13 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             @Override
             public void onClick(View v) {
                 if (!buttonPlay.isChecked()) {
-                    onTrackPlay();
+                    buttonPlay.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
+                    isPlaying = true;
+                    drakePlayer.start();
                 } else {
-                    onTrackPause();
+                    buttonPlay.setBackground(getDrawable(R.drawable.ic_play_circle_filled_black_24dp));
+                    isPlaying = false;
+                    drakePlayer.pause();
                 }
             }
         });
@@ -197,9 +206,18 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(viewPager.getCurrentItem() < trackArrayList.size() - 1){
-                    onTrackNext();
-                }
+               if(viewPager.getCurrentItem() < trackArrayList.size() - 1){
+                   try {
+                       position++;
+                       viewPager.setCurrentItem(position);
+                       drakePlayer.setPlayerTemaNuevo(PlayerActivity.this, position);
+                       buttonPlay.setChecked(false);
+                       buttonPlay.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
+                       isPlaying = true;
+                   } catch (IOException e) {
+                       e.printStackTrace();
+                   }
+               }
             }
         });
 
@@ -207,12 +225,21 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             @Override
             public void onClick(View v) {
                 if(viewPager.getCurrentItem() > 0){
-                    onTrackPrevious();
+                    try {
+                        position--;
+                        viewPager.setCurrentItem(position);
+                        drakePlayer.setPlayerTemaNuevo(PlayerActivity.this, position);
+                        buttonPlay.setChecked(false);
+                        buttonPlay.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
+                        isPlaying = true;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
 
-        buttonShuffle.setOnClickListener(new View.OnClickListener() {
+        /*buttonShuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (buttonShuffle.isChecked()) {
@@ -245,16 +272,16 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                     }
                 });
             }
-        });
+        });*/
 
         buttonRepeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (buttonRepeat.isChecked()) {
-                    audioPlayer.setLooping(true);
+                    drakePlayer.repeat(true);
                     buttonRepeat.setBackground(getDrawable(R.drawable.ic_repeat_accent_24dp));
                 } else {
-                    audioPlayer.setLooping(false);
+                    drakePlayer.repeat(false);
                     buttonRepeat.setBackground(getDrawable(R.drawable.ic_repeat_black_24dp));
                 }
             }
@@ -263,8 +290,8 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
     private void changeSeekbar() {
         try {
-            seekBar.setProgress(audioPlayer.getCurrentPosition());
-            if (audioPlayer.isPlaying()) {
+            seekBar.setProgress(drakePlayer.getMediaPlayer().getCurrentPosition());
+            if (drakePlayer.getMediaPlayer().isPlaying()) {
                 runnable = new Runnable() {
                     @Override
                     public void run() {
@@ -290,7 +317,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         buttonShuffle = binding.activityPlayerButtonShuffle;
     }
 
-    private void prepararTrackParaReproduccion(Integer ordenTrackEnLista) {
+    /*private void prepararTrackParaReproduccion(Integer ordenTrackEnLista) {
         audioPlayer.reset();
         Track track = this.trackArrayList.get(ordenTrackEnLista);
         if(Utils.hayInternet(this)){
@@ -309,7 +336,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             }
         }
 
-    }
+    }*/
 
     private List<Fragment> generarFragments(List<Track> listaDeTracks) {
         List<Fragment> listaADevolver = new ArrayList<>();
@@ -367,7 +394,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         runnable = null;
         seekBar = null;
         notificationManager.cancelAll();
-        unregisterReceiver(broadcastReceiver);
+        //unregisterReceiver(broadcastReceiver);
 
     }
 
@@ -415,7 +442,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             indiceTemaNuevo = r.nextInt(cantTemas);
         }
         viewPager.setCurrentItem(indiceTemaNuevo);
-        audioPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+        drakePlayer.getMediaPlayer().setOnErrorListener(new MediaPlayer.OnErrorListener() {
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {
                 return true;
@@ -423,7 +450,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         });
     }
 
-    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+   /* BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getExtras().getString("actionname");
@@ -444,9 +471,9 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                     break;
             }
         }
-    };
+    };*/
 
-    @Override
+    /*@Override
     public void setPlayerTemaNuevo(Integer posicionNueva) {
         audioPlayer.reset();
         prepararTrackParaReproduccion(posicionNueva);
@@ -467,7 +494,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    audioPlayer.seekTo(progress);
+                    drakePlayer.getMediaPlayer().seekTo(progress);
                 }
             }
 
@@ -481,9 +508,9 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
             }
         });
-    }
+    }*/
 
-    @Override
+   /* @Override
     public void setPlayerInicio(ArrayList<Track> trackList) {
         //position = viewPager.getCurrentItem();
         if(audioPlayer.isPlaying()){
@@ -521,11 +548,11 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
             }
         });
-    }
+    }*/
 
 
 
-    @Override
+    /*@Override
     public void onTrackPrevious() {
 
         position--;
@@ -568,5 +595,5 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         viewPager.setCurrentItem(position);
         setPlayerTemaNuevo(position);
 
-    }
+    }*/
 }
