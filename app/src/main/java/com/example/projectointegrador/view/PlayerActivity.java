@@ -45,6 +45,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
     public static final String KEY_TRACK = "track";
     public static final String KEY_LISTA = "lista";
+    public static final int DURACION_TEMA = 29989;
 
     private ViewPager viewPager;
     private Toolbar toolbar;
@@ -67,6 +68,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     private boolean isPlaying = false;
     private ShakeDetector shakeDetector = new ShakeDetector(this);
     private DrakePlayer drakePlayer;
+
 
 
 
@@ -115,7 +117,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         drakePlayer = DrakePlayer.getInstance();
 
         try {
-            drakePlayer.setPlayerInicio(this, trackArrayList, position);
+            drakePlayer.setPlayerInicio(seekBar, this, trackArrayList, position);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -125,7 +127,12 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             public void onCompletion(MediaPlayer mp) {
                 if (viewPager.getCurrentItem() < trackArrayList.size() - 1){
                     try {
-                        drakePlayer.next(PlayerActivity.this);
+                        position++;
+                        viewPager.setCurrentItem(position);
+                        drakePlayer.setPlayerTemaNuevo(seekBar, PlayerActivity.this, position);
+                        buttonPlay.setChecked(false);
+                        buttonPlay.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
+                        isPlaying = true;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -148,7 +155,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             public void onPageSelected(int position) {
                 PlayerActivity.this.position = position;
                 try {
-                    drakePlayer.setPlayerTemaNuevo(PlayerActivity.this, position);
+                    drakePlayer.setPlayerTemaNuevo(seekBar, PlayerActivity.this, position);
                     buttonPlay.setChecked(false);
                     buttonPlay.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
                     isPlaying = true;
@@ -174,6 +181,27 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         intent.putExtras(bundle);
         //startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
         //startService(intent);
+
+        seekBar.setMax(DURACION_TEMA);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    drakePlayer.getMediaPlayer().seekTo(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
 
     }
 
@@ -210,7 +238,8 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                    try {
                        position++;
                        viewPager.setCurrentItem(position);
-                       drakePlayer.setPlayerTemaNuevo(PlayerActivity.this, position);
+                       drakePlayer.setPlayerTemaNuevo(seekBar, PlayerActivity.this, position);
+
                        buttonPlay.setChecked(false);
                        buttonPlay.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
                        isPlaying = true;
@@ -228,7 +257,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                     try {
                         position--;
                         viewPager.setCurrentItem(position);
-                        drakePlayer.setPlayerTemaNuevo(PlayerActivity.this, position);
+                        drakePlayer.setPlayerTemaNuevo(seekBar, PlayerActivity.this, position);
                         buttonPlay.setChecked(false);
                         buttonPlay.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
                         isPlaying = true;

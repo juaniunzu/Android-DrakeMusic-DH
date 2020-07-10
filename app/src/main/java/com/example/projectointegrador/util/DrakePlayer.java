@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Handler;
 import android.os.IBinder;
+import android.widget.SeekBar;
 
 import androidx.annotation.Nullable;
 
@@ -71,40 +73,60 @@ public class DrakePlayer extends Service {
 
     }
 
-    public void setPlayerInicio(Context context, ArrayList<Track> trackList, int position) throws IOException {
+    public void setPlayerInicio(SeekBar seekBar, Context context, ArrayList<Track> trackList, int position) throws IOException {
         setTrackList(trackList);
         prepararTrackParaReproduccion(context, position);
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 start();
+                changeSeekbar(seekBar);
             }
         });
     }
 
-    public void setPlayerTemaNuevo (Context context, int posicionNueva) throws IOException {
+    private void changeSeekbar(SeekBar seekBar) {
+        try {
+            seekBar.setProgress(mediaPlayer.getCurrentPosition());
+            if (mediaPlayer.isPlaying()) {
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        changeSeekbar(seekBar);
+                    }
+                };
+                new Handler().postDelayed(runnable, 100);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void setPlayerTemaNuevo (SeekBar seekBar, Context context, int posicionNueva) throws IOException {
         mediaPlayer.reset();
         prepararTrackParaReproduccion(context, posicionNueva);
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 start();
+                changeSeekbar(seekBar);
             }
         });
 
     }
 
-    public void next(Context context) throws IOException {
+    public void nextConSeekbar(SeekBar seekBar, Context context) throws IOException {
         if(trackList.indexOf(trackActual) < trackList.size() - 1){
             Track trackNuevo = trackList.get(trackList.indexOf(trackActual) + 1);
-            setPlayerTemaNuevo(context, trackList.indexOf(trackNuevo));
+            setPlayerTemaNuevo(seekBar, context, trackList.indexOf(trackNuevo));
         }
     }
 
-    public void prev(Context context) throws IOException {
+    public void prevConSeekbar(SeekBar seekBar, Context context) throws IOException {
         if(trackList.indexOf(trackActual) > 0){
             Track trackNuevo = trackList.get(trackList.indexOf(trackActual) - 1);
-            setPlayerTemaNuevo(context, trackList.indexOf(trackNuevo));
+            setPlayerTemaNuevo(seekBar, context, trackList.indexOf(trackNuevo));
         }
     }
 
