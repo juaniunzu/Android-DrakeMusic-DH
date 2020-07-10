@@ -169,14 +169,14 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         setListenersBotonesReproductor();
 
         createChannel();
-        //registerReceiver(broadcastReceiver, new IntentFilter("TRACKS_TRACKS"));
+        //registerReceiver(CreateNotification.broadcastReceiver, new IntentFilter("TRACKS_TRACKS"));
 
         Intent intent = new Intent(PlayerActivity.this, DrakePlayer.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("lista", trackArrayList);
         intent.putExtras(bundle);
         //startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
-        //startService(intent);
+        startService(intent);
 
         seekBar.setMax(DURACION_TEMA);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -222,7 +222,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                 } else {
                     buttonPlay.setBackground(getDrawable(R.drawable.ic_play_circle_filled_black_24dp));
                     isPlaying = false;
-                    drakePlayer.pause();
+                    drakePlayer.pause(PlayerActivity.this);
                 }
             }
         });

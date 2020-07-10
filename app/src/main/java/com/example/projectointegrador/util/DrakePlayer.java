@@ -12,7 +12,9 @@ import android.widget.SeekBar;
 
 import androidx.annotation.Nullable;
 
+import com.example.projectointegrador.R;
 import com.example.projectointegrador.model.Track;
+import com.example.projectointegrador.view.notification.CreateNotification;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,12 +60,18 @@ public class DrakePlayer extends Service {
         changeSeekbar(seekBar);
     }
 
-    public void start(){
+    public void start(Context context){
         mediaPlayer.start();
+        CreateNotification.createNotification(context, trackActual,
+                R.drawable.ic_pause_circle_filled_black_24dp,
+                trackList.indexOf(trackActual), trackList.size() - 1);
     }
 
-    public void pause(){
+    public void pause(Context context){
         mediaPlayer.pause();
+        CreateNotification.createNotification(context, trackActual,
+                R.drawable.ic_play_circle_filled_black_24dp,
+                trackList.indexOf(trackActual), trackList.size() - 1);
     }
 
     public void stop(){
@@ -88,6 +96,9 @@ public class DrakePlayer extends Service {
                 changeSeekbar(seekBar);
             }
         });
+        CreateNotification.createNotification(context, trackClickeado,
+                R.drawable.ic_pause_circle_filled_black_24dp,
+                trackList.indexOf(trackClickeado), trackList.size() - 1);
     }
 
     public void setPlayerInicio(Context context, ArrayList<Track> trackList, Track trackClickeado) throws IOException {
@@ -97,9 +108,12 @@ public class DrakePlayer extends Service {
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                start();
+                start(context);
             }
         });
+        CreateNotification.createNotification(context, trackClickeado,
+                R.drawable.ic_pause_circle_filled_black_24dp,
+                trackList.indexOf(trackClickeado), trackList.size() - 1);
     }
 
     public void setTemaSiguienteEnLista(SeekBar seekBar, Context context){
@@ -135,6 +149,9 @@ public class DrakePlayer extends Service {
                 changeSeekbar(seekBar);
             }
         });
+        CreateNotification.createNotification(context, trackActual,
+                R.drawable.ic_pause_circle_filled_black_24dp,
+                posicionNueva, trackList.size() - 1);
 
     }
 
@@ -145,10 +162,12 @@ public class DrakePlayer extends Service {
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                start();
+                start(context);
             }
         });
-
+        CreateNotification.createNotification(context, trackActual,
+                R.drawable.ic_pause_circle_filled_black_24dp,
+                posicionNueva, trackList.size() - 1);
     }
 
     private void changeSeekbar(SeekBar seekBar) {
@@ -172,8 +191,13 @@ public class DrakePlayer extends Service {
     public void next(SeekBar seekBar, Context context) throws IOException {
         if(trackList.indexOf(trackActual) < trackList.size() - 1){
             Track trackNuevo = trackList.get(trackList.indexOf(trackActual) + 1);
+            trackActual = trackNuevo;
             try {
-                setPlayerTemaNuevo(seekBar, context, trackList.indexOf(trackNuevo));
+                setPlayerTemaNuevo(seekBar, context, trackList.indexOf(trackActual));
+                CreateNotification.createNotification(context, trackActual,
+                        R.drawable.ic_pause_circle_filled_black_24dp,
+                        trackList.indexOf(trackActual), trackList.size() - 1);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -185,6 +209,9 @@ public class DrakePlayer extends Service {
             Track trackNuevo = trackList.get(trackList.indexOf(trackActual) + 1);
             try {
                 setPlayerTemaNuevo(context, trackList.indexOf(trackNuevo));
+                CreateNotification.createNotification(context, trackActual,
+                        R.drawable.ic_pause_circle_filled_black_24dp,
+                        trackList.indexOf(trackActual), trackList.size() - 1);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -196,6 +223,9 @@ public class DrakePlayer extends Service {
             Track trackNuevo = trackList.get(trackList.indexOf(trackActual) - 1);
             try {
                 setPlayerTemaNuevo(seekBar, context, trackList.indexOf(trackNuevo));
+                CreateNotification.createNotification(context, trackActual,
+                        R.drawable.ic_pause_circle_filled_black_24dp,
+                        trackList.indexOf(trackActual), trackList.size() - 1);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -207,6 +237,9 @@ public class DrakePlayer extends Service {
             Track trackNuevo = trackList.get(trackList.indexOf(trackActual) - 1);
             try {
                 setPlayerTemaNuevo(context, trackList.indexOf(trackNuevo));
+                CreateNotification.createNotification(context, trackActual,
+                        R.drawable.ic_pause_circle_filled_black_24dp,
+                        trackList.indexOf(trackActual), trackList.size() - 1);
             } catch (IOException e) {
                 e.printStackTrace();
             }
