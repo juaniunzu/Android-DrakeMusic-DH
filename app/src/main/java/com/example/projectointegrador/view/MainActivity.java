@@ -111,13 +111,16 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
             @Override
             public void onClick(View v) {
                 if (!playPauseReproductorChico.isChecked()) {
-                    audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer mp) {
-                            audioPlayer.start();
-                            playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
-                        }
-                    });
+                    audioPlayer.start();
+                    playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
+
+//                    audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//                        @Override
+//                        public void onPrepared(MediaPlayer mp) {
+//                            audioPlayer.start();
+//                            playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
+//                        }
+//                    });
 
                 } else {
                     audioPlayer.pause();
