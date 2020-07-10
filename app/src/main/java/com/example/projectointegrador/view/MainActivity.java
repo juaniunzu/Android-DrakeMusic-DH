@@ -2,7 +2,6 @@ package com.example.projectointegrador.view;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,6 +44,7 @@ import com.example.projectointegrador.view.fragment.SearchDetailFragment;
 import com.example.projectointegrador.view.fragment.SearchFragment;
 import com.example.projectointegrador.view.fragment.SearchInputFragment;
 import com.example.projectointegrador.view.fragment.TracksFavoritosFragment;
+import com.example.projectointegrador.view.notification.CreateNotification;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         SearchDetailFragment.SearchDetailFragmentListener,
         NoInetFragment.NoInetFragmentListener {
 
-    private MediaPlayer audioPlayer;
     private DrawerLayout drawerLayout;
     private BottomNavigationView bottomNavigationView;
     private FirebaseUser firebaseUser;
@@ -95,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     public static final String FRAGMENT_HOME = "1";
     public static final String FRAGMENT_BOTTOM = "2";
     public static final Integer GO_REPRODUCTOR = 150;
+    private DrakePlayer drakePlayer;
 
 
     @Override
@@ -104,26 +104,18 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
 
         setFindViewsByIds();
         // Llama al audioPlayer. Que es uno solo y existe en to.do el proyecto.
-        audioPlayer = DrakePlayer.getInstance().getMediaPlayer();
         final FavoritosFragment favoritosFragment = new FavoritosFragment();
+        drakePlayer = DrakePlayer.getInstance();
 
         playPauseReproductorChico.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!playPauseReproductorChico.isChecked()) {
-                    audioPlayer.start();
+                    drakePlayer.start(MainActivity.this);
                     playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
 
-//                    audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//                        @Override
-//                        public void onPrepared(MediaPlayer mp) {
-//                            audioPlayer.start();
-//                            playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
-//                        }
-//                    });
-
                 } else {
-                    audioPlayer.pause();
+                    drakePlayer.pause(MainActivity.this);
                     playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_play_circle_filled_black_24dp));
                 }
             }
@@ -156,8 +148,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
                 return true;
             }
         });
-
-
     }
 
     private boolean estaPegadoElFragmentNoInet(){
@@ -193,118 +183,52 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     private void setReproductorChico(final Track track, List<Track> trackList) {
         this.listaDeReproduccion.clear();
         this.listaDeReproduccion.addAll(trackList);
-        this.trackSonando = track;
+        this.trackSonando = drakePlayer.getTrackActual();
         this.playPauseReproductorChico.setChecked(false);
         this.playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
         Glide.with(this).load(trackSonando.getAlbum().getCover()).into(imagenReproductorChico);
         trackReproductorChico.setText(trackSonando.getTitle());
-        trackReproductorChico.setSelected(true);
         artistaReproductorChico.setText(trackSonando.getArtist().getName());
+
+        trackReproductorChico.setSelected(true);
         artistaReproductorChico.setSelected(true);
 
         imageViewTrackSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reproducirSiguiente();
+                drakePlayer.setTemaSiguienteEnLista(MainActivity.this);
+                trackSonando = drakePlayer.getTrackActual();
+                Glide.with(MainActivity.this).load(trackSonando.getAlbum().getCover()).into(imagenReproductorChico);
+                trackReproductorChico.setText(trackSonando.getTitle());
+                artistaReproductorChico.setText(trackSonando.getArtist().getName());
+                agregarTrackAUltimosReproducidos(trackSonando);
             }
         });
         imageViewTrackAnterior.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int trackActual = listaDeReproduccion.indexOf(trackSonando);
-                int trackAnterior = trackActual - 1;
-                if (trackActual > 0) {
-                    if (audioPlayer != null) {
-                        if (audioPlayer.isPlaying()) {
-                            audioPlayer.stop();
-                        }
-                        audioPlayer.reset();
-
-                        Track nuevoTrackAReproducir = listaDeReproduccion.get(trackAnterior);
-                        Glide.with(MainActivity.this)
-                                .setDefaultRequestOptions(Utils.requestOptionsCircularProgressBar(MainActivity.this))
-                                .load(nuevoTrackAReproducir.getAlbum().getCover())
-                                .into(imagenReproductorChico);
-                        trackReproductorChico.setText(nuevoTrackAReproducir.getTitle());
-                        artistaReproductorChico.setText(nuevoTrackAReproducir.getArtist().getName());
-                        trackSonando = nuevoTrackAReproducir;
-
-
-                        prepararTrackParaReproduccion(trackAnterior);
-                        audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                            @Override
-                            public void onPrepared(MediaPlayer mp) {
-                                audioPlayer.start();
-                            }
-                        });
-                        if(playPauseReproductorChico.isChecked()){
-                            playPauseReproductorChico.setChecked(false);
-                            playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
-                        }
-                        agregarTrackAUltimosReproducidos(listaDeReproduccion.get(trackAnterior));
-                    }
-                }
-            }
-        });
-        audioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                reproducirSiguiente();
-            }
-        });
-    }
-
-    private void reproducirSiguiente() {
-        int trackActual = listaDeReproduccion.indexOf(trackSonando);
-        int trackSiguiente = trackActual + 1;
-        if ((trackSiguiente < listaDeReproduccion.size())) {
-            if (audioPlayer != null) {
-                if (audioPlayer.isPlaying()) {
-                    audioPlayer.stop();
-                }
-                audioPlayer.reset();
-
-                Track nuevoTrackAReproducir = listaDeReproduccion.get(trackSiguiente);
-                Glide.with(MainActivity.this)
-                        .setDefaultRequestOptions(Utils.requestOptionsCircularProgressBar(MainActivity.this))
-                        .load(nuevoTrackAReproducir.getAlbum().getCover())
-                        .into(imagenReproductorChico);
-                trackReproductorChico.setText(nuevoTrackAReproducir.getTitle());
-                artistaReproductorChico.setText(nuevoTrackAReproducir.getArtist().getName());
-                trackSonando = nuevoTrackAReproducir;
-
-
-                prepararTrackParaReproduccion(trackSiguiente);
-                audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        audioPlayer.start();
-                    }
-                });
-                if(playPauseReproductorChico.isChecked()){
+                try {
+                    drakePlayer.prev(MainActivity.this);
+                    trackSonando = drakePlayer.getTrackActual();
                     playPauseReproductorChico.setChecked(false);
                     playPauseReproductorChico.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
+                    Glide.with(MainActivity.this).load(trackSonando.getAlbum().getCover()).into(imagenReproductorChico);
+                    trackReproductorChico.setText(trackSonando.getTitle());
+                    artistaReproductorChico.setText(trackSonando.getArtist().getName());
+                    agregarTrackAUltimosReproducidos(trackSonando);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                agregarTrackAUltimosReproducidos(listaDeReproduccion.get(trackSiguiente));
             }
-        }
-    }
-
-    private void prepararTrackParaReproduccion(Integer ordenTrackEnLista) {
-        Track track = this.listaDeReproduccion.get(ordenTrackEnLista);
-        if(Utils.hayInternet(this)){
-            try {
-                audioPlayer.setDataSource(this, Uri.parse(track.getPreview()));
-                audioPlayer.prepareAsync();
-            } catch (IOException e) {
-                e.printStackTrace();
+        });
+        DrakePlayer.getInstance().getMediaPlayer().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                drakePlayer.setTemaSiguienteEnLista(MainActivity.this);
             }
-        } else {
-            noHayInternetHomeFragment();
-        }
-
+        });
     }
-
 
 
     private void agregarTrackAUltimosReproducidos(Track track) {
@@ -744,15 +668,21 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
                 setReproductorChico(track, lista);
             }
         }
+        if(drakePlayer.getMediaPlayer().isPlaying()){
+            CreateNotification.createNotification(MainActivity.this, trackSonando,
+                    R.drawable.ic_pause_circle_filled_black_24dp,
+                    listaDeReproduccion.indexOf(trackSonando), listaDeReproduccion.size() - 1);
+        }
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (audioPlayer != null) {
+        if (drakePlayer.getMediaPlayer() != null) {
             boolean isPlaying = false;
             try {
-                isPlaying = audioPlayer.isPlaying();
+                isPlaying = drakePlayer.getMediaPlayer().isPlaying();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -767,8 +697,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     @Override
     protected void onPause() {
         super.onPause();
-        if (audioPlayer.isPlaying()){
-            audioPlayer.stop();
+        if (drakePlayer.getMediaPlayer().isPlaying()){
+            drakePlayer.getMediaPlayer().stop();
         }
 
     }
@@ -776,8 +706,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (audioPlayer.isPlaying()) {
-            audioPlayer.stop();
+        if (drakePlayer.getMediaPlayer().isPlaying()) {
+            drakePlayer.stop();
         }
     }
 

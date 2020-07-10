@@ -119,8 +119,12 @@ public class DrakePlayer extends Service {
     public void setTemaSiguienteEnLista(SeekBar seekBar, Context context){
         if(trackList.indexOf(trackActual) < trackList.size() - 1){
             Track trackNuevo = trackList.get(trackList.indexOf(trackActual) + 1);
+            trackActual = trackNuevo;
             try {
                 setPlayerTemaNuevo(seekBar, context, trackList.indexOf(trackNuevo));
+                CreateNotification.createNotification(context, trackActual,
+                        R.drawable.ic_pause_circle_filled_black_24dp,
+                        trackList.indexOf(trackActual), trackList.size() - 1);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -130,8 +134,12 @@ public class DrakePlayer extends Service {
     public void setTemaSiguienteEnLista(Context context){
         if(trackList.indexOf(trackActual) < trackList.size() - 1){
             Track trackNuevo = trackList.get(trackList.indexOf(trackActual) + 1);
+            trackActual = trackNuevo;
             try {
                 setPlayerTemaNuevo(context, trackList.indexOf(trackNuevo));
+                CreateNotification.createNotification(context, trackActual,
+                        R.drawable.ic_pause_circle_filled_black_24dp,
+                        trackList.indexOf(trackActual), trackList.size() - 1);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -207,6 +215,7 @@ public class DrakePlayer extends Service {
     public void next(Context context) throws IOException {
         if(trackList.indexOf(trackActual) < trackList.size() - 1){
             Track trackNuevo = trackList.get(trackList.indexOf(trackActual) + 1);
+            trackActual = trackNuevo;
             try {
                 setPlayerTemaNuevo(context, trackList.indexOf(trackNuevo));
                 CreateNotification.createNotification(context, trackActual,
@@ -221,8 +230,10 @@ public class DrakePlayer extends Service {
     public void prev(SeekBar seekBar, Context context) throws IOException {
         if(trackList.indexOf(trackActual) > 0){
             Track trackNuevo = trackList.get(trackList.indexOf(trackActual) - 1);
+            trackActual = trackNuevo;
             try {
                 setPlayerTemaNuevo(seekBar, context, trackList.indexOf(trackNuevo));
+                trackActual = trackNuevo;
                 CreateNotification.createNotification(context, trackActual,
                         R.drawable.ic_pause_circle_filled_black_24dp,
                         trackList.indexOf(trackActual), trackList.size() - 1);
@@ -235,6 +246,7 @@ public class DrakePlayer extends Service {
     public void prev(Context context) throws IOException {
         if(trackList.indexOf(trackActual) > 0){
             Track trackNuevo = trackList.get(trackList.indexOf(trackActual) - 1);
+            trackActual = trackNuevo;
             try {
                 setPlayerTemaNuevo(context, trackList.indexOf(trackNuevo));
                 CreateNotification.createNotification(context, trackActual,
@@ -244,10 +256,6 @@ public class DrakePlayer extends Service {
                 e.printStackTrace();
             }
         }
-    }
-
-    public void shuffle(){
-
     }
 
     public void repeat(boolean repeat){

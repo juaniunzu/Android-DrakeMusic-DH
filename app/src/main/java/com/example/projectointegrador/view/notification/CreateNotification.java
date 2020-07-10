@@ -2,7 +2,6 @@ package com.example.projectointegrador.view.notification;
 
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,26 +26,6 @@ public class CreateNotification {
     public static final String ACTION_PLAY = "actionplay";
     public static final String ACTION_NEXT = "actionnext";
     public static Notification notification;
-
-    public static BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getExtras().getString("actionname");
-
-            switch (action) {
-                case CreateNotification.ACTION_PREVIOUS:
-                    System.out.println();
-                    break;
-                case CreateNotification.ACTION_PLAY:
-                    System.out.println();
-                    break;
-                case CreateNotification.ACTION_NEXT:
-                    System.out.println();
-                    break;
-            }
-        }
-    };
-
 
     public static void createNotification(Context context, Track track, int playButton, int position, int size){
 
