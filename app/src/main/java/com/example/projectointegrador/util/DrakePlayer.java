@@ -24,7 +24,7 @@ public class DrakePlayer extends Service {
     private ArrayList<Track> trackList;
     private Track trackActual;
 
-    private DrakePlayer() {
+    public DrakePlayer() {
     }
 
     public static DrakePlayer getInstance() {
@@ -58,6 +58,10 @@ public class DrakePlayer extends Service {
         changeSeekbar(seekBar);
     }
 
+    public void start(){
+        mediaPlayer.start();
+    }
+
     public void pause(){
         mediaPlayer.pause();
     }
@@ -71,7 +75,6 @@ public class DrakePlayer extends Service {
         Track trackAPreparar = trackList.get(ordenTrackEnLista);
         mediaPlayer.setDataSource(context, Uri.parse(trackAPreparar.getPreview()));
         mediaPlayer.prepareAsync();
-
     }
 
     public void setPlayerInicio(SeekBar seekBar, Context context, ArrayList<Track> trackList, Track trackClickeado) throws IOException {
@@ -87,11 +90,34 @@ public class DrakePlayer extends Service {
         });
     }
 
+    public void setPlayerInicio(Context context, ArrayList<Track> trackList, Track trackClickeado) throws IOException {
+        setTrackList(trackList);
+        setTrackActual(trackClickeado);
+        prepararTrackParaReproduccion(context, trackList.indexOf(trackClickeado));
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                start();
+            }
+        });
+    }
+
     public void setTemaSiguienteEnLista(SeekBar seekBar, Context context){
         if(trackList.indexOf(trackActual) < trackList.size() - 1){
             Track trackNuevo = trackList.get(trackList.indexOf(trackActual) + 1);
             try {
                 setPlayerTemaNuevo(seekBar, context, trackList.indexOf(trackNuevo));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void setTemaSiguienteEnLista(Context context){
+        if(trackList.indexOf(trackActual) < trackList.size() - 1){
+            Track trackNuevo = trackList.get(trackList.indexOf(trackActual) + 1);
+            try {
+                setPlayerTemaNuevo(context, trackList.indexOf(trackNuevo));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -107,6 +133,19 @@ public class DrakePlayer extends Service {
             public void onPrepared(MediaPlayer mp) {
                 start(seekBar);
                 changeSeekbar(seekBar);
+            }
+        });
+
+    }
+
+    public void setPlayerTemaNuevo (Context context, int posicionNueva) throws IOException {
+        mediaPlayer.reset();
+        prepararTrackParaReproduccion(context, posicionNueva);
+        setTrackActual(trackList.get(posicionNueva));
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                start();
             }
         });
 
@@ -130,7 +169,7 @@ public class DrakePlayer extends Service {
 
     }
 
-    public void nextConSeekbar(SeekBar seekBar, Context context) throws IOException {
+    public void next(SeekBar seekBar, Context context) throws IOException {
         if(trackList.indexOf(trackActual) < trackList.size() - 1){
             Track trackNuevo = trackList.get(trackList.indexOf(trackActual) + 1);
             try {
@@ -141,11 +180,33 @@ public class DrakePlayer extends Service {
         }
     }
 
-    public void prevConSeekbar(SeekBar seekBar, Context context) throws IOException {
+    public void next(Context context) throws IOException {
+        if(trackList.indexOf(trackActual) < trackList.size() - 1){
+            Track trackNuevo = trackList.get(trackList.indexOf(trackActual) + 1);
+            try {
+                setPlayerTemaNuevo(context, trackList.indexOf(trackNuevo));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void prev(SeekBar seekBar, Context context) throws IOException {
         if(trackList.indexOf(trackActual) > 0){
             Track trackNuevo = trackList.get(trackList.indexOf(trackActual) - 1);
             try {
                 setPlayerTemaNuevo(seekBar, context, trackList.indexOf(trackNuevo));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void prev(Context context) throws IOException {
+        if(trackList.indexOf(trackActual) > 0){
+            Track trackNuevo = trackList.get(trackList.indexOf(trackActual) - 1);
+            try {
+                setPlayerTemaNuevo(context, trackList.indexOf(trackNuevo));
             } catch (IOException e) {
                 e.printStackTrace();
             }
