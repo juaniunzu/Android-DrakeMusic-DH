@@ -117,7 +117,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         drakePlayer = DrakePlayer.getInstance();
 
         try {
-            drakePlayer.setPlayerInicio(seekBar, this, trackArrayList, position);
+            drakePlayer.setPlayerInicio(seekBar, this, trackArrayList, trackClickeado);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -126,16 +126,12 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             @Override
             public void onCompletion(MediaPlayer mp) {
                 if (viewPager.getCurrentItem() < trackArrayList.size() - 1){
-                    try {
-                        position++;
-                        viewPager.setCurrentItem(position);
-                        drakePlayer.setPlayerTemaNuevo(seekBar, PlayerActivity.this, position);
-                        buttonPlay.setChecked(false);
-                        buttonPlay.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
-                        isPlaying = true;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    position++;
+                    viewPager.setCurrentItem(position);
+                    drakePlayer.setTemaSiguienteEnLista(seekBar, PlayerActivity.this);
+                    buttonPlay.setChecked(false);
+                    buttonPlay.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
+                    isPlaying = true;
                 }
             }
         });
@@ -222,7 +218,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                 if (!buttonPlay.isChecked()) {
                     buttonPlay.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
                     isPlaying = true;
-                    drakePlayer.start();
+                    drakePlayer.start(seekBar);
                 } else {
                     buttonPlay.setBackground(getDrawable(R.drawable.ic_play_circle_filled_black_24dp));
                     isPlaying = false;
@@ -235,17 +231,8 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             @Override
             public void onClick(View v) {
                if(viewPager.getCurrentItem() < trackArrayList.size() - 1){
-                   try {
-                       position++;
-                       viewPager.setCurrentItem(position);
-                       drakePlayer.setPlayerTemaNuevo(seekBar, PlayerActivity.this, position);
-
-                       buttonPlay.setChecked(false);
-                       buttonPlay.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
-                       isPlaying = true;
-                   } catch (IOException e) {
-                       e.printStackTrace();
-                   }
+                   position++;
+                   viewPager.setCurrentItem(position);
                }
             }
         });
@@ -254,16 +241,8 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             @Override
             public void onClick(View v) {
                 if(viewPager.getCurrentItem() > 0){
-                    try {
-                        position--;
-                        viewPager.setCurrentItem(position);
-                        drakePlayer.setPlayerTemaNuevo(seekBar, PlayerActivity.this, position);
-                        buttonPlay.setChecked(false);
-                        buttonPlay.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
-                        isPlaying = true;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    position--;
+                    viewPager.setCurrentItem(position);
                 }
             }
         });
@@ -315,24 +294,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                 }
             }
         });
-    }
-
-    private void changeSeekbar() {
-        try {
-            seekBar.setProgress(drakePlayer.getMediaPlayer().getCurrentPosition());
-            if (drakePlayer.getMediaPlayer().isPlaying()) {
-                runnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        changeSeekbar();
-                    }
-                };
-                handler.postDelayed(runnable, 100);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     private void setViews() {
@@ -463,7 +424,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
     @Override
     public void hearShake() {
-        //Metodo que reprodusca un tema random de la Lista.
         int cantTemas = trackArrayList.size();
         Random r = new Random();
         int indiceTemaNuevo = r.nextInt(cantTemas);

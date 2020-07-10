@@ -53,8 +53,9 @@ public class DrakePlayer extends Service {
         this.trackActual = trackActual;
     }
 
-    public void start(){
+    public void start(SeekBar seekBar){
         mediaPlayer.start();
+        changeSeekbar(seekBar);
     }
 
     public void pause(){
@@ -73,16 +74,42 @@ public class DrakePlayer extends Service {
 
     }
 
-    public void setPlayerInicio(SeekBar seekBar, Context context, ArrayList<Track> trackList, int position) throws IOException {
+    public void setPlayerInicio(SeekBar seekBar, Context context, ArrayList<Track> trackList, Track trackClickeado) throws IOException {
         setTrackList(trackList);
-        prepararTrackParaReproduccion(context, position);
+        setTrackActual(trackClickeado);
+        prepararTrackParaReproduccion(context, trackList.indexOf(trackClickeado));
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                start();
+                start(seekBar);
                 changeSeekbar(seekBar);
             }
         });
+    }
+
+    public void setTemaSiguienteEnLista(SeekBar seekBar, Context context){
+        if(trackList.indexOf(trackActual) < trackList.size() - 1){
+            Track trackNuevo = trackList.get(trackList.indexOf(trackActual) + 1);
+            try {
+                setPlayerTemaNuevo(seekBar, context, trackList.indexOf(trackNuevo));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void setPlayerTemaNuevo (SeekBar seekBar, Context context, int posicionNueva) throws IOException {
+        mediaPlayer.reset();
+        prepararTrackParaReproduccion(context, posicionNueva);
+        setTrackActual(trackList.get(posicionNueva));
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                start(seekBar);
+                changeSeekbar(seekBar);
+            }
+        });
+
     }
 
     private void changeSeekbar(SeekBar seekBar) {
@@ -103,30 +130,25 @@ public class DrakePlayer extends Service {
 
     }
 
-    public void setPlayerTemaNuevo (SeekBar seekBar, Context context, int posicionNueva) throws IOException {
-        mediaPlayer.reset();
-        prepararTrackParaReproduccion(context, posicionNueva);
-        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                start();
-                changeSeekbar(seekBar);
-            }
-        });
-
-    }
-
     public void nextConSeekbar(SeekBar seekBar, Context context) throws IOException {
         if(trackList.indexOf(trackActual) < trackList.size() - 1){
             Track trackNuevo = trackList.get(trackList.indexOf(trackActual) + 1);
-            setPlayerTemaNuevo(seekBar, context, trackList.indexOf(trackNuevo));
+            try {
+                setPlayerTemaNuevo(seekBar, context, trackList.indexOf(trackNuevo));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void prevConSeekbar(SeekBar seekBar, Context context) throws IOException {
         if(trackList.indexOf(trackActual) > 0){
             Track trackNuevo = trackList.get(trackList.indexOf(trackActual) - 1);
-            setPlayerTemaNuevo(seekBar, context, trackList.indexOf(trackNuevo));
+            try {
+                setPlayerTemaNuevo(seekBar, context, trackList.indexOf(trackNuevo));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
