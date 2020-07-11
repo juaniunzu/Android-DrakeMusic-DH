@@ -27,7 +27,9 @@ import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.TrackController;
 import com.example.projectointegrador.databinding.ActivityPlayerBinding;
 import com.example.projectointegrador.model.Track;
+import com.example.projectointegrador.service.NotificationActionService;
 import com.example.projectointegrador.util.DrakePlayer;
+import com.example.projectointegrador.util.Playable;
 import com.example.projectointegrador.util.ResultListener;
 import com.example.projectointegrador.view.adapter.ViewPagerAdapter;
 import com.example.projectointegrador.view.fragment.PlayerFragment;
@@ -193,12 +195,22 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             }
         });
 
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (this.drakePlayer.getMediaPlayer().isPlaying()){
+            position = drakePlayer.getTrackList().indexOf(drakePlayer.getTrackActual());
+            viewPager.setCurrentItem(position);
+            seekBar.setProgress(drakePlayer.getMediaPlayer().getCurrentPosition());
+        }
     }
 
     private void createChannel() {
         NotificationChannel channel = new NotificationChannel(CreateNotification.CHANNEL_ID,
-                "DrakeMusic", NotificationManager.IMPORTANCE_LOW);
+                "Drake Music", NotificationManager.IMPORTANCE_LOW);
 
         notificationManager = getSystemService(NotificationManager.class);
         if (notificationManager != null) {
@@ -378,7 +390,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         handler = null;
         runnable = null;
         seekBar = null;
-        notificationManager.cancelAll();
+        //notificationManager.cancelAll();
         //unregisterReceiver(broadcastReceiver);
 
     }

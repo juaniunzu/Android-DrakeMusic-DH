@@ -32,7 +32,7 @@ public class TrackFirestoreDao {
     public TrackFirestoreDao() {
         this.db = FirebaseFirestore.getInstance();
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setPersistenceEnabled(false)
+                .setPersistenceEnabled(true)
                 .build();
         db.setFirestoreSettings(settings);
     }

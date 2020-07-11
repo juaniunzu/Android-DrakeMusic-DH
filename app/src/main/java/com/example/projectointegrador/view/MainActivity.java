@@ -679,17 +679,21 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     @Override
     protected void onResume() {
         super.onResume();
+        Intent intent = new Intent(MainActivity.this, DrakePlayer.class);
+        startService(intent);
+        if (drakePlayer.getTrackActual() != null){
+            CreateNotification.createNotification(this, drakePlayer.getTrackActual(),
+                    R.drawable.ic_pause_circle_filled_black_24dp,
+                    drakePlayer.getTrackList().indexOf(drakePlayer.getTrackActual()), drakePlayer.getTrackList().size() - 1);
+        }
         if (drakePlayer.getMediaPlayer() != null) {
             boolean isPlaying = false;
             try {
                 isPlaying = drakePlayer.getMediaPlayer().isPlaying();
+                //reproductorChico.setVisibility(View.VISIBLE);
+                setReproductorChico(drakePlayer.getTrackActual(), drakePlayer.getTrackList());
             } catch (Exception e) {
                 e.printStackTrace();
-            }
-            if (isPlaying) {
-                reproductorChico.setVisibility(View.VISIBLE);
-            } else {
-                reproductorChico.setVisibility(View.GONE);
             }
         }
     }
