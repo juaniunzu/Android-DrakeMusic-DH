@@ -1,5 +1,6 @@
 package com.example.projectointegrador.view;
 
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -63,6 +64,7 @@ import java.util.Objects;
 import static androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
 import static com.example.projectointegrador.view.PlayerActivity.KEY_LISTA;
 import static com.example.projectointegrador.view.PlayerActivity.KEY_TRACK;
+import static com.example.projectointegrador.view.PlayerActivity.getNotificationManager;
 import static com.example.projectointegrador.view.fragment.SearchDetailFragment.KEY_QUERY;
 import static com.example.projectointegrador.view.fragment.SearchDetailFragment.KEY_TYPE;
 import static com.example.projectointegrador.view.fragment.SearchInputFragment.KEY_BUSQUEDA;
@@ -478,6 +480,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                if (drakePlayer.getMediaPlayer().isPlaying()){
+                                    drakePlayer.getMediaPlayer().stop();
+                                }
+                                drakePlayer.getMediaPlayer().release();
+                                PlayerActivity.getNotificationManager().cancelAll();
                                 startActivity(intent);
                                 finish();
                             }
@@ -698,22 +705,32 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         }
     }
 
-    @Override
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*@Override
     protected void onPause() {
         super.onPause();
         if (drakePlayer.getMediaPlayer().isPlaying()){
             drakePlayer.getMediaPlayer().stop();
         }
 
-    }
+    }*/
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (drakePlayer.getMediaPlayer().isPlaying()) {
-            drakePlayer.stop();
-        }
-    }
 
     @Override
     public void onClickReintentar() {

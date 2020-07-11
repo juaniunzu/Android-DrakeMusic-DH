@@ -64,7 +64,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     private ToggleButton buttonShuffle;
     private ActivityPlayerBinding binding;
     private static Boolean actividadActiva = false;
-    private NotificationManager notificationManager;
+    private static NotificationManager notificationManager;
     private Track trackClickeado;
     private int position = 0;
     private boolean isPlaying = false;
@@ -195,6 +195,10 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
             }
         });
 
+    }
+
+    public static NotificationManager getNotificationManager() {
+        return notificationManager;
     }
 
     @Override
