@@ -27,9 +27,7 @@ import com.example.projectointegrador.R;
 import com.example.projectointegrador.controller.TrackController;
 import com.example.projectointegrador.databinding.ActivityPlayerBinding;
 import com.example.projectointegrador.model.Track;
-import com.example.projectointegrador.service.NotificationActionService;
 import com.example.projectointegrador.util.DrakePlayer;
-import com.example.projectointegrador.util.Playable;
 import com.example.projectointegrador.util.ResultListener;
 import com.example.projectointegrador.view.adapter.ViewPagerAdapter;
 import com.example.projectointegrador.view.fragment.PlayerFragment;
@@ -43,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class PlayerActivity extends AppCompatActivity implements PlayerFragment.PlayerFragmentListener, ShakeDetector.Listener {
+public class PlayerActivity extends AppCompatActivity implements PlayerFragment.PlayerFragmentListener, ShakeDetector.Listener, DrakePlayer.DrakePlayerListener {
 
     public static final String KEY_TRACK = "track";
     public static final String KEY_LISTA = "lista";
@@ -70,10 +68,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     private boolean isPlaying = false;
     private ShakeDetector shakeDetector = new ShakeDetector(this);
     private DrakePlayer drakePlayer;
-
-
-
-
 
 
     @Override
@@ -117,6 +111,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         viewPager.setCurrentItem(position);
 
         drakePlayer = DrakePlayer.getInstance();
+        drakePlayer.setListener(this);
 
         try {
             drakePlayer.setPlayerInicio(seekBar, this, trackArrayList, trackClickeado);
@@ -415,10 +410,17 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        //notificationManager.cancelAll();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         actividadActiva = false;
         shakeDetector.stop();
+
     }
 
     @Override
@@ -448,6 +450,26 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
                 return true;
             }
         });
+    }
+
+    @Override
+    public void onNext() {
+        if(actividadActiva){
+            if(viewPager.getCurrentItem() < trackArrayList.size() - 1){
+                position++;
+                viewPager.setCurrentItem(position);
+            }
+        }
+    }
+
+    @Override
+    public void onPrev() {
+        if(actividadActiva){
+            if(viewPager.getCurrentItem() > 0){
+                position--;
+                viewPager.setCurrentItem(position);
+            }
+        }
     }
 
    /* BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {

@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 
 import com.example.projectointegrador.R;
 import com.example.projectointegrador.model.Track;
-import com.example.projectointegrador.view.PlayerActivity;
 import com.example.projectointegrador.view.notification.CreateNotification;
 
 import java.io.IOException;
@@ -26,8 +25,10 @@ public class DrakePlayer extends Service {
     private static DrakePlayer instance;
     private ArrayList<Track> trackList;
     private Track trackActual;
+    private DrakePlayerListener listener;
 
     public DrakePlayer() {
+
     }
 
     public static DrakePlayer getInstance() {
@@ -54,6 +55,10 @@ public class DrakePlayer extends Service {
 
     public void setTrackActual(Track trackActual) {
         this.trackActual = trackActual;
+    }
+
+    public void setListener(DrakePlayerListener listener) {
+        this.listener = listener;
     }
 
     public void start(SeekBar seekBar){
@@ -84,6 +89,12 @@ public class DrakePlayer extends Service {
         Track trackAPreparar = trackList.get(ordenTrackEnLista);
         mediaPlayer.setDataSource(context, Uri.parse(trackAPreparar.getPreview()));
         mediaPlayer.prepareAsync();
+    }
+
+    public void crearNotificacion(Context context, Track track, int posicion, int size){
+        CreateNotification.createNotification(context, track,
+                R.drawable.ic_pause_circle_filled_black_24dp,
+                posicion, size);
     }
 
     public void setPlayerInicio(SeekBar seekBar, Context context, ArrayList<Track> trackList, Track trackClickeado) throws IOException {
@@ -222,6 +233,7 @@ public class DrakePlayer extends Service {
                 CreateNotification.createNotification(context, trackActual,
                         R.drawable.ic_pause_circle_filled_black_24dp,
                         trackList.indexOf(trackActual), trackList.size() - 1);
+                listener.onNext();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -253,6 +265,7 @@ public class DrakePlayer extends Service {
                 CreateNotification.createNotification(context, trackActual,
                         R.drawable.ic_pause_circle_filled_black_24dp,
                         trackList.indexOf(trackActual), trackList.size() - 1);
+                listener.onPrev();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -288,5 +301,10 @@ public class DrakePlayer extends Service {
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         stopSelf();
+    }
+
+    public interface DrakePlayerListener{
+        void onNext();
+        void onPrev();
     }
 }

@@ -1,6 +1,5 @@
 package com.example.projectointegrador.view;
 
-import android.app.NotificationManager;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -64,7 +63,6 @@ import java.util.Objects;
 import static androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
 import static com.example.projectointegrador.view.PlayerActivity.KEY_LISTA;
 import static com.example.projectointegrador.view.PlayerActivity.KEY_TRACK;
-import static com.example.projectointegrador.view.PlayerActivity.getNotificationManager;
 import static com.example.projectointegrador.view.fragment.SearchDetailFragment.KEY_QUERY;
 import static com.example.projectointegrador.view.fragment.SearchDetailFragment.KEY_TYPE;
 import static com.example.projectointegrador.view.fragment.SearchInputFragment.KEY_BUSQUEDA;
@@ -79,7 +77,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         SearchFragment.SearchFragmentListener,
         SearchInputFragment.SearchInputFragmentListener,
         SearchDetailFragment.SearchDetailFragmentListener,
-        NoInetFragment.NoInetFragmentListener {
+        NoInetFragment.NoInetFragmentListener,
+        DrakePlayer.DrakePlayerListener {
 
     private DrawerLayout drawerLayout;
     private BottomNavigationView bottomNavigationView;
@@ -108,6 +107,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         // Llama al audioPlayer. Que es uno solo y existe en to.do el proyecto.
         final FavoritosFragment favoritosFragment = new FavoritosFragment();
         drakePlayer = DrakePlayer.getInstance();
+        drakePlayer.setListener(this);
+
+        reproductorChico.setVisibility(View.GONE);
 
         playPauseReproductorChico.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,6 +184,12 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         imageViewTrackAnterior = findViewById(R.id.activityMainPreviousButtonPlayer);
     }
 
+    private void actualizarVistaReproductorChico(){
+        Glide.with(this).load(drakePlayer.getTrackActual().getAlbum().getCover()).into(imagenReproductorChico);
+        trackReproductorChico.setText(drakePlayer.getTrackActual().getTitle());
+        artistaReproductorChico.setText(drakePlayer.getTrackActual().getArtist().getName());
+    }
+
     private void setReproductorChico(final Track track, List<Track> trackList) {
         this.listaDeReproduccion.clear();
         this.listaDeReproduccion.addAll(trackList);
@@ -198,12 +206,16 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         imageViewTrackSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drakePlayer.setTemaSiguienteEnLista(MainActivity.this);
-                trackSonando = drakePlayer.getTrackActual();
-                Glide.with(MainActivity.this).load(trackSonando.getAlbum().getCover()).into(imagenReproductorChico);
-                trackReproductorChico.setText(trackSonando.getTitle());
-                artistaReproductorChico.setText(trackSonando.getArtist().getName());
-                agregarTrackAUltimosReproducidos(trackSonando);
+                try {
+                    drakePlayer.next(MainActivity.this);
+                    trackSonando = drakePlayer.getTrackActual();
+                    Glide.with(MainActivity.this).load(trackSonando.getAlbum().getCover()).into(imagenReproductorChico);
+                    trackReproductorChico.setText(trackSonando.getTitle());
+                    artistaReproductorChico.setText(trackSonando.getArtist().getName());
+                    agregarTrackAUltimosReproducidos(trackSonando);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         imageViewTrackAnterior.setOnClickListener(new View.OnClickListener() {
@@ -686,56 +698,37 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     @Override
     protected void onResume() {
         super.onResume();
-        Intent intent = new Intent(MainActivity.this, DrakePlayer.class);
-        startService(intent);
-        if (drakePlayer.getTrackActual() != null){
-            CreateNotification.createNotification(this, drakePlayer.getTrackActual(),
-                    R.drawable.ic_pause_circle_filled_black_24dp,
-                    drakePlayer.getTrackList().indexOf(drakePlayer.getTrackActual()), drakePlayer.getTrackList().size() - 1);
-        }
         if (drakePlayer.getMediaPlayer() != null) {
             boolean isPlaying = false;
             try {
                 isPlaying = drakePlayer.getMediaPlayer().isPlaying();
-                //reproductorChico.setVisibility(View.VISIBLE);
-                setReproductorChico(drakePlayer.getTrackActual(), drakePlayer.getTrackList());
+                actualizarVistaReproductorChico();
+                //drakePlayer.crearNotificacion(MainActivity.this, drakePlayer.getTrackActual(), drakePlayer.getTrackList().indexOf(drakePlayer.getTrackActual()), drakePlayer.getTrackList().size() - 1);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            if (isPlaying) {
+                reproductorChico.setVisibility(View.VISIBLE);
+            } else {
+                reproductorChico.setVisibility(View.GONE);
+            }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*@Override
-    protected void onPause() {
-        super.onPause();
-        if (drakePlayer.getMediaPlayer().isPlaying()){
-            drakePlayer.getMediaPlayer().stop();
-        }
-
-    }*/
-
 
     @Override
     public void onClickReintentar() {
         if(Utils.hayInternet(this)){
             setFragmentInicial(new HomeFragment());
         }
+    }
+
+    @Override
+    public void onNext() {
+        actualizarVistaReproductorChico();
+    }
+
+    @Override
+    public void onPrev() {
+        actualizarVistaReproductorChico();
     }
 }
