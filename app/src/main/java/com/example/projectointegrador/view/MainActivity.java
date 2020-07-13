@@ -735,6 +735,7 @@ ShakeDetector.Listener{
     public void onClickReintentar() {
         if(Utils.hayInternet(this)){
             setFragmentInicial(new HomeFragment());
+            bottomNavigationView.setVisibility(View.VISIBLE);
         }
     }
 
