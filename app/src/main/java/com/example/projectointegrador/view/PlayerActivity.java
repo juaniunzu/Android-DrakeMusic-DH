@@ -29,6 +29,7 @@ import com.example.projectointegrador.databinding.ActivityPlayerBinding;
 import com.example.projectointegrador.model.Track;
 import com.example.projectointegrador.util.DrakePlayer;
 import com.example.projectointegrador.util.ResultListener;
+import com.example.projectointegrador.util.Utils;
 import com.example.projectointegrador.view.adapter.ViewPagerAdapter;
 import com.example.projectointegrador.view.fragment.PlayerFragment;
 import com.example.projectointegrador.view.notification.CreateNotification;
@@ -122,20 +123,22 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         drakePlayer.getMediaPlayer().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                if (viewPager.getCurrentItem() < trackArrayList.size() - 1){
-                    position++;
-                    viewPager.setCurrentItem(position);
-                    buttonPlay.setChecked(false);
-                    buttonPlay.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
-                    isPlaying = true;
-                }
+                if(Utils.hayInternet(PlayerActivity.this)){
+                    if (viewPager.getCurrentItem() < trackArrayList.size() - 1){
+                        position++;
+                        viewPager.setCurrentItem(position);
+                        buttonPlay.setChecked(false);
+                        buttonPlay.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
+                        isPlaying = true;
+                    }
+                } else onBackPressed();
+
             }
         });
 
-
-
-        agregarTrackAUltimosReproducidos(trackArrayList.get(viewPager.getCurrentItem()));
-
+        if(Utils.hayInternet(this)){
+            agregarTrackAUltimosReproducidos(trackArrayList.get(viewPager.getCurrentItem()));
+        }
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -145,17 +148,19 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
             @Override
             public void onPageSelected(int position) {
-                PlayerActivity.this.position = position;
-                try {
-                    if(actividadActiva){
-                        drakePlayer.setPlayerTemaNuevo(seekBar, PlayerActivity.this, position);
-                        buttonPlay.setChecked(false);
-                        buttonPlay.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
-                        isPlaying = true;
+                if(Utils.hayInternet(PlayerActivity.this)){
+                    PlayerActivity.this.position = position;
+                    try {
+                        if(actividadActiva){
+                            drakePlayer.setPlayerTemaNuevo(seekBar, PlayerActivity.this, position);
+                            buttonPlay.setChecked(false);
+                            buttonPlay.setBackground(getDrawable(R.drawable.ic_pause_circle_filled_black_24dp));
+                            isPlaying = true;
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                } else onBackPressed();
             }
 
             @Override
@@ -237,20 +242,24 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if(viewPager.getCurrentItem() < trackArrayList.size() - 1){
-                   position++;
-                   viewPager.setCurrentItem(position);
-               }
+                if(Utils.hayInternet(PlayerActivity.this)){
+                    if(viewPager.getCurrentItem() < trackArrayList.size() - 1){
+                        position++;
+                        viewPager.setCurrentItem(position);
+                    }
+                } else onBackPressed();
             }
         });
 
         buttonPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(viewPager.getCurrentItem() > 0){
-                    position--;
-                    viewPager.setCurrentItem(position);
-                }
+                if(Utils.hayInternet(PlayerActivity.this)){
+                    if(viewPager.getCurrentItem() > 0){
+                        position--;
+                        viewPager.setCurrentItem(position);
+                    }
+                } else onBackPressed();
             }
         });
 
@@ -344,24 +353,26 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
 
     public void onClickAddTrackFavorite(final Track track, CheckBox checkBox) {
         final TrackController trackController = new TrackController();
-        trackController.searchTrackFavoritos(track, firebaseUser, new ResultListener<List<Track>>() {
-            @Override
-            public void finish(List<Track> resultado) {
-                if (resultado.contains(track)) {
-                    trackController.eliminarTrackFavoritos(track, firebaseUser, new ResultListener<Track>() {
-                        @Override
-                        public void finish(Track resultado) {
-                        }
-                    });
-                } else {
-                    trackController.agregarTrackAFavoritos(track, firebaseUser, new ResultListener<Track>() {
-                        @Override
-                        public void finish(Track resultado) {
-                        }
-                    });
+        if(Utils.hayInternet(this)){
+            trackController.searchTrackFavoritos(track, firebaseUser, new ResultListener<List<Track>>() {
+                @Override
+                public void finish(List<Track> resultado) {
+                    if (resultado.contains(track)) {
+                        trackController.eliminarTrackFavoritos(track, firebaseUser, new ResultListener<Track>() {
+                            @Override
+                            public void finish(Track resultado) {
+                            }
+                        });
+                    } else {
+                        trackController.agregarTrackAFavoritos(track, firebaseUser, new ResultListener<Track>() {
+                            @Override
+                            public void finish(Track resultado) {
+                            }
+                        });
+                    }
                 }
-            }
-        });
+            });
+        } else onBackPressed();
     }
 
     @Override
@@ -386,6 +397,9 @@ public class PlayerActivity extends AppCompatActivity implements PlayerFragment.
     @Override
     protected void onStart() {
         super.onStart();
+        if(!Utils.hayInternet(this)){
+            onBackPressed();
+        }
         actividadActiva = true;
     }
 

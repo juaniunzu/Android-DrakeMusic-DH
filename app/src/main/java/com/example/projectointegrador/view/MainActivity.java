@@ -592,46 +592,56 @@ ShakeDetector.Listener{
     //SEARCH FRAGMENT
     @Override
     public void onClickSearchFragment() {
-        SearchInputFragment searchInputFragment = new SearchInputFragment();
-        addFragment(searchInputFragment);
+        if(Utils.hayInternet(this)){
+            SearchInputFragment searchInputFragment = new SearchInputFragment();
+            addFragment(searchInputFragment);
+        } else noHayInternetHomeFragment();
     }
 
     @Override
     public void onClickHistorialSearchFragment(Busqueda busqueda) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(KEY_BUSQUEDA, busqueda);
-        SearchInputFragment searchInputFragment = new SearchInputFragment();
-        searchInputFragment.setArguments(bundle);
-        addFragment(searchInputFragment);
+        if(Utils.hayInternet(this)){
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(KEY_BUSQUEDA, busqueda);
+            SearchInputFragment searchInputFragment = new SearchInputFragment();
+            searchInputFragment.setArguments(bundle);
+            addFragment(searchInputFragment);
+        } else noHayInternetHomeFragment();
     }
 
 
     @Override
     public void onClickFiltroVerTodo(String query, String type) {
-        Bundle bundle = new Bundle();
-        bundle.putString(KEY_QUERY, query);
-        bundle.putString(KEY_TYPE, type);
-        SearchDetailFragment searchDetailFragment = new SearchDetailFragment();
-        searchDetailFragment.setArguments(bundle);
-        addFragment(searchDetailFragment);
+        if(Utils.hayInternet(this)){
+            Bundle bundle = new Bundle();
+            bundle.putString(KEY_QUERY, query);
+            bundle.putString(KEY_TYPE, type);
+            SearchDetailFragment searchDetailFragment = new SearchDetailFragment();
+            searchDetailFragment.setArguments(bundle);
+            addFragment(searchDetailFragment);
+        } else noHayInternetHomeFragment();
     }
 
     @Override
     public void onClickAlbumSearchInputFragment(Album album) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(FragmentTrackList.ALBUM, album);
-        FragmentTrackList fragmentTrackList = new FragmentTrackList();
-        fragmentTrackList.setArguments(bundle);
-        addFragment(fragmentTrackList);
+        if(Utils.hayInternet(this)){
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(FragmentTrackList.ALBUM, album);
+            FragmentTrackList fragmentTrackList = new FragmentTrackList();
+            fragmentTrackList.setArguments(bundle);
+            addFragment(fragmentTrackList);
+        } else noHayInternetHomeFragment();
     }
 
     @Override
     public void onClickArtistSearchInputFragment(Artist artist) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(DetailArtistFragment.ARTIST, artist);
-        DetailArtistFragment detailArtistFragment = new DetailArtistFragment();
-        detailArtistFragment.setArguments(bundle);
-        addFragment(detailArtistFragment);
+        if(Utils.hayInternet(this)){
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(DetailArtistFragment.ARTIST, artist);
+            DetailArtistFragment detailArtistFragment = new DetailArtistFragment();
+            detailArtistFragment.setArguments(bundle);
+            addFragment(detailArtistFragment);
+        } else noHayInternetHomeFragment();
     }
 
     @Override
@@ -652,29 +662,35 @@ ShakeDetector.Listener{
     @Override
     public void agregarBusquedaAlHistorial(Busqueda busqueda) {
         HistorialController historialController = new HistorialController();
-        historialController.agregarBusquedaAlHistorial(busqueda, firebaseUser, new ResultListener<Busqueda>() {
-            @Override
-            public void finish(Busqueda resultado) {
-            }
-        });
+        if(Utils.hayInternet(this)){
+            historialController.agregarBusquedaAlHistorial(busqueda, firebaseUser, new ResultListener<Busqueda>() {
+                @Override
+                public void finish(Busqueda resultado) {
+                }
+            });
+        } else noHayInternetHomeFragment();
     }
 
     @Override
     public void onClickAlbumSearchDetailFragment(Album album) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(FragmentTrackList.ALBUM, album);
-        FragmentTrackList fragmentTrackList = new FragmentTrackList();
-        fragmentTrackList.setArguments(bundle);
-        addFragment(fragmentTrackList);
+        if(Utils.hayInternet(this)){
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(FragmentTrackList.ALBUM, album);
+            FragmentTrackList fragmentTrackList = new FragmentTrackList();
+            fragmentTrackList.setArguments(bundle);
+            addFragment(fragmentTrackList);
+        } else noHayInternetHomeFragment();
     }
 
     @Override
     public void onClickArtistSearchDetailFragment(Artist artist) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(DetailArtistFragment.ARTIST, artist);
-        DetailArtistFragment detailArtistFragment = new DetailArtistFragment();
-        detailArtistFragment.setArguments(bundle);
-        addFragment(detailArtistFragment);
+        if(Utils.hayInternet(this)){
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(DetailArtistFragment.ARTIST, artist);
+            DetailArtistFragment detailArtistFragment = new DetailArtistFragment();
+            detailArtistFragment.setArguments(bundle);
+            addFragment(detailArtistFragment);
+        } else noHayInternetHomeFragment();
     }
 
     @Override
