@@ -509,7 +509,9 @@ ShakeDetector.Listener{
                                     drakePlayer.getMediaPlayer().stop();
                                 }
                                 drakePlayer.getMediaPlayer().release();
-                                PlayerActivity.getNotificationManager().cancelAll();
+                                if(PlayerActivity.getNotificationManager() != null){
+                                    PlayerActivity.getNotificationManager().cancelAll();
+                                }
                                 startActivity(intent);
                                 finish();
                             }
