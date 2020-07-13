@@ -101,7 +101,7 @@ ShakeDetector.Listener{
     public static final Integer GO_REPRODUCTOR = 150;
     private DrakePlayer drakePlayer;
     private ShakeDetector shakeDetector = new ShakeDetector(this);
-
+    private SensorManager sensorManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,10 +114,8 @@ ShakeDetector.Listener{
         drakePlayer = DrakePlayer.getInstance();
         drakePlayer.setListener(this);
 
-        SensorManager sensorManager = (SensorManager)
-                getSystemService(SENSOR_SERVICE);
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
-        shakeDetector.start(sensorManager);
 
         reproductorChico.setVisibility(View.GONE);
 
@@ -728,6 +726,7 @@ ShakeDetector.Listener{
                 reproductorChico.setVisibility(View.GONE);
             }
         }
+        shakeDetector.start(sensorManager);
     }
 
     @Override
@@ -750,7 +749,7 @@ ShakeDetector.Listener{
     @Override
     public void hearShake() {
 
-        if(!drakePlayer.getTrackList().isEmpty() && drakePlayer != null){
+        if(drakePlayer.getTrackList() != null && !drakePlayer.getTrackList().isEmpty()){
             int cantTemas = drakePlayer.getTrackList().size();
             Random r = new Random();
             int indiceTemaNuevo = r.nextInt(cantTemas);
