@@ -750,7 +750,9 @@ ShakeDetector.Listener{
 
     @Override
     public void hearShake() {
-
+        if(!Utils.hayInternet(this)){
+            return;
+        }
         if(drakePlayer.getTrackList() != null && !drakePlayer.getTrackList().isEmpty()){
             int cantTemas = drakePlayer.getTrackList().size();
             Random r = new Random();
