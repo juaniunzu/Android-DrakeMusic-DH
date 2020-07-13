@@ -1,6 +1,7 @@
 package com.example.projectointegrador.view;
 
 import android.content.Intent;
+import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -54,11 +55,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.seismic.ShakeDetector;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 import static androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE;
 import static com.example.projectointegrador.view.PlayerActivity.KEY_LISTA;
@@ -78,7 +81,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         SearchInputFragment.SearchInputFragmentListener,
         SearchDetailFragment.SearchDetailFragmentListener,
         NoInetFragment.NoInetFragmentListener,
-        DrakePlayer.DrakePlayerListener {
+        DrakePlayer.DrakePlayerListener,
+ShakeDetector.Listener{
 
     private DrawerLayout drawerLayout;
     private BottomNavigationView bottomNavigationView;
@@ -96,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     public static final String FRAGMENT_BOTTOM = "2";
     public static final Integer GO_REPRODUCTOR = 150;
     private DrakePlayer drakePlayer;
+    private ShakeDetector shakeDetector = new ShakeDetector(this);
 
 
     @Override
@@ -108,6 +113,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         final FavoritosFragment favoritosFragment = new FavoritosFragment();
         drakePlayer = DrakePlayer.getInstance();
         drakePlayer.setListener(this);
+
+        SensorManager sensorManager = (SensorManager)
+                getSystemService(SENSOR_SERVICE);
+
+        shakeDetector.start(sensorManager);
 
         reproductorChico.setVisibility(View.GONE);
 
@@ -171,6 +181,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        shakeDetector.stop();
+    }
 
     private void setFindViewsByIds() {
         drawerLayout = findViewById(R.id.activityMain_DrawerLayout);
@@ -730,5 +745,24 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Frag
     @Override
     public void onPrev() {
         actualizarVistaReproductorChico();
+    }
+
+    @Override
+    public void hearShake() {
+
+        if(!drakePlayer.getTrackList().isEmpty() && drakePlayer != null){
+            int cantTemas = drakePlayer.getTrackList().size();
+            Random r = new Random();
+            int indiceTemaNuevo = r.nextInt(cantTemas);
+            while (indiceTemaNuevo == drakePlayer.getTrackList().indexOf(drakePlayer.getTrackActual())){
+                indiceTemaNuevo = r.nextInt(cantTemas);
+            }
+            try {
+                drakePlayer.setPlayerTemaNuevo(this, indiceTemaNuevo);
+                actualizarVistaReproductorChico();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

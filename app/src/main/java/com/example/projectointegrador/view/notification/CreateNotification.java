@@ -82,6 +82,7 @@ public class CreateNotification {
                             .setShowActionsInCompactView(0, 1, 2)
                             .setMediaSession(mediaSessionCompat.getSessionToken()))
                         .setPriority(NotificationCompat.PRIORITY_MAX)
+                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                         .build();
 
                 notificationManagerCompat.notify(1, notification);
