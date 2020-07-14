@@ -508,7 +508,6 @@ ShakeDetector.Listener{
                                 if (drakePlayer.getMediaPlayer().isPlaying()){
                                     drakePlayer.getMediaPlayer().stop();
                                 }
-                                drakePlayer.getMediaPlayer().release();
                                 if(PlayerActivity.getNotificationManager() != null){
                                     PlayerActivity.getNotificationManager().cancelAll();
                                 }
