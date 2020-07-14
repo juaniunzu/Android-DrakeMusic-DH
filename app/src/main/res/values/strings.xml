@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">DrakeMusic</string>
+    <string name="app_name" translatable="false">DrakePlayer</string>
     <string name="template_artista">Artista: %s</string>
     <string name="template_titulo">Titulo: %s</string>
     <string name="template_album">Album: %s</string>
